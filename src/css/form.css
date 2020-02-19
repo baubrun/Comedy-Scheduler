@@ -1,0 +1,94 @@
+/*====================
+Form 
+===============*/
+
+.event-form {
+  
+}
+
+
+.modal {
+  /* background-color: rgb(0, 0, 0); */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* height: 100%; */
+  overflow: auto;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  border: 1px solid #888;
+  border-radius: 5px;
+  display: flex;
+  flex-flow: row wrap;
+  margin: 5% auto 15% auto;
+  padding: 5px;
+  width: 80%;
+}
+
+.modal button {
+  width: 100%
+}
+
+.modal-img-container{
+  position: relative;
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+}
+
+.modal-img-container img {
+  height: 120px;
+  width: 120px;
+}
+
+
+
+.modal input[type=text], input[type=password] {
+  width: 100%;
+  padding: 10px 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.modal .container {
+  width: 100%;
+}
+
+.portal-links {
+  display: flex;
+  justify-content: space-between;
+  /* margin-top: 100px; */
+  /* padding: 0 5px; */
+  width: 100%;
+}
+
+#register {
+  background-color: rgb(142, 245, 222);
+  border: 1px solid gray;
+  margin-top: 5px;
+  width: auto;
+  cursor: pointer;
+}
+
+.register-btn{
+  display: flex;
+}
+
+#register-btn{
+  background-color: rgb(23, 157, 197);
+  color: black;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+  width: 100%;
+}
+
+.reserve-btn {
+  /* background-color: rgb(40, 131, 216); */
+  color: white
+}
+

@@ -1,0 +1,11 @@
+.event {
+    display: flex;
+    flex-flow: row wrap;
+    border: 1px solid black;
+}
+
+.event li {
+    padding: 0 5px;
+    width: 100%;
+}
+

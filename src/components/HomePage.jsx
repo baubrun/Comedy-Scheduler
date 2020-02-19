@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import EventCalendar from "./EventCalendar";
+import EventCalendar from "./ReserveCalendar";
 import { Link } from "react-router-dom";
 import Login from "./Login";
 
@@ -39,31 +39,6 @@ class HomePage extends Component {
   render() {
     return (
       <>
-        <div className="home-header">
-          <div className="home-title">
-            <h1>THE COMEDY HUB</h1>
-          </div>
-          <div>Enjoy one of our venues</div>
-        </div>
-        <div className="venue-links">
-          <div>
-            <Link to="/lefoufou">Le Fou Fou</Link>
-          </div>
-          <div>
-            <Link to="/rirenow">Rire Now</Link>
-          </div>
-          <div>
-            <Link to="/jokesblagues">Jokes Blagues</Link>
-          </div>
-        </div>
-        <div className="portal-links">
-          <button>
-            <Link to="/attend">ATTEND A SHOW</Link>
-          </button>
-          <button type="button" onClick={this.toggleLogin}>
-            HOST A SHOW
-          </button>
-        </div>
         {this.state.loginModal && (
           <Login
             id="modal"
@@ -71,6 +46,29 @@ class HomePage extends Component {
             toggleLogin={this.toggleLogin}
           />
         )}
+
+        <div className="home-header">
+          <div className="home-title">
+            <h1>LE COMEDY HUB</h1>
+
+          </div>
+          <div className="venues">
+            <div>Le Fou Fou</div>
+            <div>Rire Now</div>
+            <div>Jokes Blagues</div>
+          </div>
+
+        </div>
+        <div className="home-body">
+          <div className="portal-links">
+            <div className="reserve-btn">
+              <Link id="reserve-btn" to="/reserve">RESERVE TICKETS</Link>
+            </div>
+            <div className="host-show-btn" onClick={this.toggleLogin}>
+              HOST AN EVENT
+            </div>
+          </div>
+        </div>
       </>
     );
   }

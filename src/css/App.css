@@ -1,64 +1,144 @@
+@import "./reserve.css";
+@import "./form.css";
+@import "./events.css";
+
 .App {
-  display: flex;
-  flex-flow: row wrap;
-  max-width: 1080px;
+  /* display: flex; */
+  /* flex-flow: row wrap; */
+  /* height: 100%; */
+  /* max-width: 1080px; */
 }
+
+
 
 a {
   text-decoration: none;
 }
 
-.attend-header{
-  display: flex;
-  flex-flow: row wrap;
-
+li {
+  list-style-type: none;
 }
 
-/* Header */
-.attend-header,
-.home-header,
-.host-header {
+
+/* ================
+Home Header 
+=================*/
+
+.home-header
+{
   border-bottom: 1px solid black;
   padding: 2px;
   width: 100%;
-  height: 70px;
+  /* height: 80px; */
+  height: auto;
 }
 
-.attend-title,
+.reserve-title,
 .home-title,
-.host-title {
+.host-title
+{
   text-align: center;
   width: 100%;
 }
 
 
-.venue-select {
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  border-radius: 5px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  display: none;
+  margin-top: 0;
+  min-width: 100px;
+  padding: 5px 0;
+  position: absolute;
+  right: 59px;
+  top: 0;
+  z-index: 1; 
+
+}
+
+.dropdown-content a {
+  color: black;
+
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+
+}
+
+.dropdown-content li:hover {
+  background-color:rgb(224, 151, 33);
+
+}
+
+
+
+/*==============
+ Home Body 
+ ===============*/
+
+.home{
   display: flex;
-  width: 50%;
-  height: 20px;
+  flex-flow: row wrap;
+
 }
 
-.venue-select > select {
-margin-top: 3px;
-}
-
-.venue-select h2{
- padding-right: 5px;
-}
-
-
-.user-icon{
-  /* width: 100%; */
-  margin-left: auto;
-  padding-right: 5px;
+.home-body {
+  background-image: url("./images/club-2.jpg");
+  background-size: 100%;
+  height: 100vh;
+  width: 100%;
 }
 
 
+.reserve-btn{
+  background-color: rgb(224, 151, 33);
+  border-radius: 5px;
+  color: whitesmoke;
+  cursor: pointer;
+  padding: 5px;
+}
+
+#reserve-btn {
+  justify-content: center;
+  color: whitesmoke;
+}
+
+.host-show-btn{
+  background-color: #663A2B;
+  border-radius: 5px;
+  color: whitesmoke;
+  cursor: pointer;
+  padding: 5px;
+}
 
 
-/* ==========================
-Home
-=============================*/
+.venues {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5px;
+  width: 100%;
+
+}
+
+.venue-links > div > a{
+  background-color: white;
+  border-image : url("./images/paper-border.png") 50 repeat;
+  border-style: solid;
+}
+
+.venue-links > div {
+  margin-top: 5px;
+  /* justify-content: space-between; */
+
+}
+
+
 
 
 
@@ -92,96 +172,6 @@ Home
 }
 
 
-.modal {
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
-  height: 100%;
-  overflow: auto;
-  position: fixed;
-  width: 100%;
-  z-index: 1;
-}
-
-.modal-content {
-  background-color: #fefefe;
-  border: 1px solid #888;
-  border-radius: 5px;
-  display: flex;
-  flex-flow: row wrap;
-  margin: 5% auto 15% auto;
-  padding: 5px;
-  width: 80%;
-}
-
-.modal button {
-  width: 100%
-}
-
-.modal-img-container{
-  position: relative;
-  display: flex;
-  flex-flow: row wrap;
-  width: 100%;
-}
-
-.modal-img-container img {
-  height: 120px;
-  width: 120px;
-}
 
 
 
-.modal input[type=text], input[type=password] {
-  width: 100%;
-  padding: 10px 10px;
-  margin: 5px 0;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-.modal .container {
-  width: 100%;
-}
-
-.portal-links {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 100px;
-  padding: 0 5px;
-  width: 100%;
-}
-
-#register {
-  background-color: rgb(142, 245, 222);
-  border: 1px solid gray;
-  margin-top: 5px;
-  width: auto;
-  cursor: pointer;
-}
-
-.register-btn{
-  display: flex;
-}
-
-#register-btn{
-  background-color: rgb(23, 157, 197);
-  color: black;
-  font-weight: bold;
-  margin-top: 10px;
-  text-align: center;
-  width: 100%;
-}
-
-
-/*============
-*/
-
-
-
-.venue-links {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 5px;
-  width: 100%;
-
-}
