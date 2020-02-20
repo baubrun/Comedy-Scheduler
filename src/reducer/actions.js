@@ -1,11 +1,17 @@
 import {
-    GET_EVENTS
+    GOT_EVENTS,
+    LOGGED_IN
 } from "./actionTypes"
 
 
 
 
 export const getEventsAction = events => ({
-    type: GET_EVENTS,
+    type: GOT_EVENTS,
     payload: events
+})
+
+export const loggedInAction  = ({
+    type: LOGGED_IN,
+    payload: true
 })

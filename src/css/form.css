@@ -2,14 +2,13 @@
 Form 
 ===============*/
 
-.event-form {
-  
-}
 
 
 .modal {
   /* background-color: rgb(0, 0, 0); */
-  background-color: rgba(0, 0, 0, 0.4);
+  /* background-color: rgba(0, 0, 0, 0.4); */
+  background-image: url("./images/club-2.jpg");
+
   /* height: 100%; */
   overflow: auto;
   position: fixed;
@@ -23,7 +22,7 @@ Form
   border-radius: 5px;
   display: flex;
   flex-flow: row wrap;
-  margin: 5% auto 15% auto;
+  margin: 2% auto 15% auto;
   padding: 5px;
   width: 80%;
 }
@@ -32,7 +31,7 @@ Form
   width: 100%
 }
 
-.modal-img-container{
+.modal-img-container {
   position: relative;
   display: flex;
   flex-flow: row wrap;
@@ -40,15 +39,16 @@ Form
 }
 
 .modal-img-container img {
-  height: 120px;
-  width: 120px;
+  height: 100px;
+  width: 100px;
 }
 
 
-
-.modal input[type=text], input[type=password] {
+.modal input[type=text],
+input[type=password],
+input[type=email] {
   width: 100%;
-  padding: 10px 10px;
+  padding: 5px 5px;
   margin: 5px 0;
   border: 1px solid #ccc;
   box-sizing: border-box;
@@ -61,8 +61,6 @@ Form
 .portal-links {
   display: flex;
   justify-content: space-between;
-  /* margin-top: 100px; */
-  /* padding: 0 5px; */
   width: 100%;
 }
 
@@ -74,11 +72,11 @@ Form
   cursor: pointer;
 }
 
-.register-btn{
+.register-btn {
   display: flex;
 }
 
-#register-btn{
+#register-btn {
   background-color: rgb(23, 157, 197);
   color: black;
   font-weight: bold;
@@ -87,8 +85,11 @@ Form
   width: 100%;
 }
 
+#register-img {
+
+}
+
 .reserve-btn {
   /* background-color: rgb(40, 131, 216); */
   color: white
 }
-

@@ -6,6 +6,8 @@ import Register from "./components/Register";
 import Host from "./components/Host";
 import Events from "./components/Events";
 import RenderEvent from "./components/EventDetail"
+import Profile from "./components/Profile"
+import Login from "./components/Login"
 
 
 
@@ -17,10 +19,12 @@ class App extends Component {
         <BrowserRouter>
         <Route exact={true} path="/" component={HomePage}/>
         <Route exact={true} path="/reserve" component={Reserve}/>
+        <Route exact={true} path="/login" component={Login}/>
         <Route exact={true} path="/register" component={Register}/>
         <Route exact={true} path="/host" component={Host}/>
-        <Route exact={true} path="/evt" component={Events}/>
-        <Route exact={true} path="evt/:title" component={RenderEvent} />
+        <Route exact={true} path="/events" component={Events}/>
+        <Route exact={true} path="events/:title" component={RenderEvent} />
+        <Route exact={true} path="/profile" component={Profile} />
         
         
         </BrowserRouter>

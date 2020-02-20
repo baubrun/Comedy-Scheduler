@@ -1,12 +1,12 @@
 
 import {
-    GET_EVENTS
+    GOT_EVENTS
 } from "./actionTypes"
 
 
 const eventsReducer = (state = [], action) => {
     switch (action.type) {
-        case GET_EVENTS:
+        case GOT_EVENTS:
             return action.payload
         default:
             return state

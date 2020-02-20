@@ -1,13 +1,7 @@
 @import "./reserve.css";
 @import "./form.css";
 @import "./events.css";
-
-.App {
-  /* display: flex; */
-  /* flex-flow: row wrap; */
-  /* height: 100%; */
-  /* max-width: 1080px; */
-}
+@import "./profile.css";
 
 
 
@@ -77,7 +71,6 @@ Home Header
 }
 
 
-
 /*==============
  Home Body 
  ===============*/
@@ -104,12 +97,12 @@ Home Header
   padding: 5px;
 }
 
-#reserve-btn {
+#reserve-btn, #host-btn {
   justify-content: center;
   color: whitesmoke;
 }
 
-.host-show-btn{
+.host-btn{
   background-color: #663A2B;
   border-radius: 5px;
   color: whitesmoke;
@@ -140,9 +133,9 @@ Home Header
 
 
 
-
-
-/* Modal */
+/* =====================
+Modal 
+====================*/
 .cancel-btn {
   display: flex;
 

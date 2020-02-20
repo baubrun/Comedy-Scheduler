@@ -1,22 +1,25 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
+import {connect} from "react-redux"
+import {getEventsAction} from "../reducer/actions"
 
 const Event = props => {
-    const {title, location, performer} = props.events
+  const { title, location, performer, date } = props.events;
   return (
     <div>
-          <ul className="event">
-            <li>Title: {title}</li>
-            <li>Location: {location}</li>
-            <li>Performer: {performer}</li>
-            <li>
-              <img src="" alt="" />
-            </li>
-            <li>
-              <Link to={`/${title}`}>{title}</Link>
-            </li>
-          </ul>
+      <ul className="event">
+        <li>Title: {title}</li>
+        <li>Date: {date}</li>
+        <li>Location: {location}</li>
+        <li>Performer: {performer}</li>
+        <li>
+          <img src="" alt="" />
+        </li>
+        <li>
+          <Link to={`/${title}`}>{title}</Link>
+        </li>
+      </ul>
     </div>
   );
 };
@@ -31,16 +34,26 @@ class Events extends Component {
     };
   }
 
+
+  handleGetEvents = events => {
+    this.props.getEvents(events)
+  }
+
+
   fetchData = async () => {
     const response = await fetch("/events");
     const body = await response.text();
     const parsed = JSON.parse(body);
-    this.setState({ events: parsed });
+    // this.setState({ events: parsed });
+    this.handleGetEvents(parsed)
   };
 
   componentDidMount() {
     this.fetchData();
   }
+
+
+
 
   handleSearchInput = event => {
     this.setState({ searchInput: event.target.value });
@@ -55,21 +68,35 @@ class Events extends Component {
           searchInput={this.state.searchInput}
         />
         <div>
-          {this.state.events
-            .filter(event => {
-              return (
-                event.performer
+          {this.props.events
+          // {this.state.events
+            .filter(event =>
+              Object.keys(event).some(k =>
+                event[k]
                   .toLowerCase()
-                  .indexOf(this.state.searchInput.toLowerCase()) !== -1
-              );
-            })
+                  .includes(this.state.searchInput.toLowerCase())
+              )
+            )
             .map((event, idx) => (
               <Event events={event} key={idx} />
             ))}
+
         </div>
       </div>
     );
   }
 }
 
-export default Events;
+
+const mapStateToProps = state => {
+  return {events: state.events}
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getEvents: events => dispatch(getEventsAction(events))
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Events);
