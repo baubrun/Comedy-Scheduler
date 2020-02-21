@@ -110,15 +110,6 @@ class Host extends Component {
                     onChange={this.handleChange}
                   />
                 </li>
-                <li>
-                  <label htmlFor="host">Host Name</label>
-                  <input
-                    id="host"
-                    type="text"
-                    name="host"
-                    onChange={this.handleChange}
-                  />
-                </li>
                 {/* <li>
                   <label htmlFor="seatsAvailable">Seats Available</label>
                   <input id="seatsAvailable" type="number" />

@@ -1,23 +1,22 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
-import {connect} from "react-redux"
-import {getEventsAction} from "../reducer/actions"
+import { connect } from "react-redux";
+import { getEventsAction } from "../reducer/actions";
 
 const Event = props => {
   const { title, location, performer, date } = props.events;
   return (
     <div>
       <ul className="event">
-        <li>Title: {title}</li>
+        <li>
+          <Link to={`/event/${title}`}>{title}</Link>
+        </li>
         <li>Date: {date}</li>
         <li>Location: {location}</li>
         <li>Performer: {performer}</li>
         <li>
           <img src="" alt="" />
-        </li>
-        <li>
-          <Link to={`/${title}`}>{title}</Link>
         </li>
       </ul>
     </div>
@@ -29,31 +28,25 @@ class Events extends Component {
     super(props);
 
     this.state = {
-      events: [],
       searchInput: ""
     };
   }
 
-
   handleGetEvents = events => {
-    this.props.getEvents(events)
-  }
-
+    this.props.getEvents(events);
+  };
 
   fetchData = async () => {
     const response = await fetch("/events");
     const body = await response.text();
     const parsed = JSON.parse(body);
     // this.setState({ events: parsed });
-    this.handleGetEvents(parsed)
+    this.handleGetEvents(parsed);
   };
 
   componentDidMount() {
     this.fetchData();
   }
-
-
-
 
   handleSearchInput = event => {
     this.setState({ searchInput: event.target.value });
@@ -69,7 +62,6 @@ class Events extends Component {
         />
         <div>
           {this.props.events
-          // {this.state.events
             .filter(event =>
               Object.keys(event).some(k =>
                 event[k]
@@ -80,23 +72,20 @@ class Events extends Component {
             .map((event, idx) => (
               <Event events={event} key={idx} />
             ))}
-
         </div>
       </div>
     );
   }
 }
 
-
 const mapStateToProps = state => {
-  return {events: state.events}
-}
+  return { events: state.events };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     getEvents: events => dispatch(getEventsAction(events))
-  }
-}
-
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Events);

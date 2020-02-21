@@ -15,6 +15,10 @@ const SALT_FACTOR = 10
 const generateId = () => {
     return "" + Math.floor(Math.random() * 1000000)
 }
+const generateSeats = () => {
+    return "" + Math.floor(Math.random() * 50)
+}
+
 let dbo = undefined
 let sessions = {}
 
@@ -134,7 +138,7 @@ app.post("/login", upload.none(), async (req, res) => {
     })
 })
 
-app.post("/hostevent", upload.none(), (req, res) => {
+app.post("/host", upload.none(), (req, res) => {
     const {
         title,
         date,
@@ -142,7 +146,7 @@ app.post("/hostevent", upload.none(), (req, res) => {
         end,
         location,
         performer,
-        host,
+        hostId,
     } = req.body
 
     dbo.collection("events").insertOne({
@@ -152,7 +156,8 @@ app.post("/hostevent", upload.none(), (req, res) => {
         end: end,
         location: location,
         performer: performer,
-        host: host,
+        hostId: hostId,
+        seatsAvail: generateSeats(),
         allDay: "false",
         dateAdded: new Date()
     })
@@ -165,7 +170,8 @@ app.post("/register", upload.none(), async (req, res) => {
     const {
         username,
         password,
-        email
+        email,
+        hostId
     } = req.body
 
     await dbo.collection("user").findOne({
@@ -173,7 +179,7 @@ app.post("/register", upload.none(), async (req, res) => {
     }, async (err, user) => {
         if (err) {
             console.log(err)
-            return res.json({
+            return res.status(400).json({
                 success: false
             })
         }
@@ -190,15 +196,16 @@ app.post("/register", upload.none(), async (req, res) => {
                     username: username,
                     password: hashedPassword,
                     email: email,
+                    hostId: hostId,
                     events: ""
                 })
-                return res.json({
+                return res.status(200).json({
                     success: true
                 })
 
             } catch (error) {
                 console.log(error)
-                return res.json({
+                return res.status(400).json({
                     success: false
                 })
             }

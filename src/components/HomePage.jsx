@@ -11,10 +11,6 @@ class HomePage extends Component {
       <>
 
         <div className="home-header">
-          <div className="home-title">
-            <h1>LE COMEDY HUB</h1>
-
-          </div>
           <div className="venues">
             <div>Le Fou Fou</div>
             <div>Rire Now</div>
