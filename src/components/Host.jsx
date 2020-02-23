@@ -42,14 +42,14 @@ class Host extends Component {
 
   render() {
     return (
-      <div className="modal">
+      <div className="">
         {/* <div className="host-header"></div> */}
         <div className="modal-content animate">
           <div className="">
             <form className="event-form" onSubmit={this.handleSubmit}>
               <ul>
                 <li>
-                  <label htmlFor="title">Title(optional)</label>
+                  <label htmlFor="title">Title</label>
                   <input
                     id="title"
                     type="text"
@@ -110,10 +110,33 @@ class Host extends Component {
                     onChange={this.handleChange}
                   />
                 </li>
-                {/* <li>
-                  <label htmlFor="seatsAvailable">Seats Available</label>
-                  <input id="seatsAvailable" type="number" />
-                </li> */}
+                <li>
+                  <label htmlFor="price">Price</label>
+                  <input
+                    id="price"
+                    type="number"
+                    name="price"
+                    onChange={this.handleChange}
+                  />
+                </li>
+                <li>
+                  <label htmlFor="seats">Seats</label>
+                  <input
+                    id="seats"
+                    type="number"
+                    name="seats"
+                    onChange={this.handleChange}
+                  />
+                </li>
+                <li>
+                  <label htmlFor="image">Image</label>
+                  <input
+                    id="image"
+                    type="file"
+                    name="image"
+                    onChange={this.handleChange}
+                  />
+                </li>
               </ul>
               <button type="submit">Submit</button>
             </form>

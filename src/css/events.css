@@ -1,3 +1,12 @@
+
+.calendar-header {
+    border-bottom: 1px solid black;
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+}
+
+
 .event {
     display: flex;
     flex-flow: row wrap;
@@ -9,3 +18,109 @@
     width: 100%;
 }
 
+
+.events-body {
+    border: 1px solid black;
+}
+
+
+.events-header {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+#events-search {
+    width: 100%;
+}
+
+
+.events-header-img {
+    margin: 10px 0;
+    display: flex;
+}
+
+#events-title{
+    color: #663A2B;
+    text-align: center;
+    width: 100%;
+}
+
+.seatsAvail{
+    position: relative;
+}
+
+#seatsAvail-img {
+    position: absolute;
+    top: 3px;
+    margin-left: 3px;
+}
+
+#calendar-view {
+    margin: 0 30px;
+    opacity: 0.5;
+
+}
+
+#calendar-view:hover {
+    cursor: pointer;
+    opacity: 1;
+}
+
+
+#list-view {
+    opacity: 0.5;
+}
+
+#list-view:hover {
+    cursor: pointer;
+    opacity: 1;
+}
+
+#search-label {
+    margin-right: 5px;
+}
+
+#search {
+    border-color:  #663A2B;
+    border-radius: 5px;
+    padding: 10px;
+    width: 500px;
+}
+
+::placeholder {
+    color:  #663A2B;
+    font-weight: bold;
+    opacity: 0.5;
+
+}
+
+
+.search-bar {
+    color:  #663A2B;
+    font-weight: bold;
+    margin: 10px 0;
+    text-align: center;
+
+}
+
+
+.venue-select {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    justify-content: center;
+}
+
+.venue-select h2{
+    width: 100%;
+    text-align: center;
+}
+
+
+.venue-select > select {
+    margin-top: 3px;
+    height: 20px ;
+    /* margin-right: 650px; */
+} 
+  

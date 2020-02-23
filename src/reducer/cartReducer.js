@@ -1,4 +1,4 @@
-import ADDED_TO_CART from "./actionTypes"
+import {ADDED_TO_CART} from "../actions/actionTypes"
 
 
 const cartReducer = (state = [], action) => {

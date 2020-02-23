@@ -19,25 +19,6 @@ reserve
   .profile-icon img{
     height: 50px;
     width: 50px;
-    /* margin-left: 700px; */
-  }
-  
-  
-  .venue-select {
-    display: flex;
-    /* justify-content: space-between; */
-    width: 100%;
-    /* height: auto; */
-  }
-  
-  .venue-select > select {
-  margin-top: 3px;
-  height: 20px ;
-  margin-right: 650px;
-  } 
-  
-  .venue-select h2{
-   padding-right: 5px;
   }
   
   

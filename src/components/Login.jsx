@@ -32,7 +32,7 @@ class Login extends Component {
     const response = await fetch("/login", { method: "POST", body: data });
     const body = await response.text();
     const parser = JSON.parse(body);
-    console.log(parser);
+    // console.log(parser);
     if (parser.success) {
       this.props.history.push("/profile");
     }

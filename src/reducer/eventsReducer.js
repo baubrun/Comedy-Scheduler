@@ -1,7 +1,7 @@
 
 import {
     GOT_EVENTS
-} from "./actionTypes"
+} from "../actions/actionTypes"
 
 
 const eventsReducer = (state = [], action) => {

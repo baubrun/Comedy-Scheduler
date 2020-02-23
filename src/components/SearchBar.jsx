@@ -4,8 +4,8 @@ import React from "react";
 const SearchBar = props => {
     return (
       <div>
-        <form>
-          <label htmlFor="search">Search</label>
+        <form className="search-bar">
+          <label id="search-label" htmlFor="search"></label>
           <input
             id="search"
             onChange={props.handleSearchInput}

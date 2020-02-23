@@ -1,0 +1,30 @@
+.rbc-calendar {
+    background-color: black;
+    color: white;
+}
+
+.rbc-btn-group button{
+    color: white;
+}
+
+.rbc-btn-group {
+    color: white;
+}
+
+.rbc-day-bg.rbc-today{
+   background-color: rgb(224, 151, 33)
+}
+
+.rbc-day-bg.rbc-off-range-bg {
+    background-color: black;
+
+}
+
+.rbc-date-cell.rbc-off-range a{
+    color: white;
+
+}
+
+.rbc-toolbar {
+    color: white;
+}

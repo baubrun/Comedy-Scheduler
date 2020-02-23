@@ -1,7 +1,7 @@
 import {
     LOGGED_IN,
     LOGGED_OUT
-} from "./actionTypes"
+} from "../actions/actionTypes"
 
 
 const initialAuthState = {

@@ -1,50 +1,58 @@
 import React from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
+import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
-import 'react-big-calendar/lib/css/react-big-calendar.css';
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import { connect } from "react-redux";
+import { _ } from "underscore";
 
-
-
-
+const allViews = Object.keys(Views).map(k => Views[k]);
 const localizer = momentLocalizer(moment);
-const myEventList = [
-    {
-        'title': 'My event',
-        'allDay': false,
-        // 'start': new Date(), // 10.00 AM
-        // 'end': new Date(2018, 0, 1, 14, 0), // 2.00 PM 
-      }
-];
 
 
 
-const formats = {
-  agendaTimeFormat : "HH:mm"
-}
-
-
+const eventStyleGetter = (event, start, end, isSelected) => {
+  const style = {
+    backgroundColor: "#663A2B",
+    // opacity: 0.8,
+    color: "white",
+    className: "event1"
+  };
+  return {
+    style: style
+  };
+};
 
 const ReserveCalendar = props => {
+  console.log('props.events :', props.events);
+  const ans2 = props.events.map(i => {
+    return {
+      title: i.title,
+      start: new Date(i.start),
+      end: new Date(i.end)
+    };
+  });
+   console.log('ans2 :', ans2);
+
   return (
     <div>
       <Calendar
         endAccessor="end"
-        events={myEventList}
+        events={ans2}
         localizer={localizer}
         startAccessor="start"
         step={30}
-        // min={new Date(2008, 0, 1, 8, 0)} // 8.00 AM
-        min={new Date(2020, 1, 16, 21, 0)} // 8.00 AM
-        // max={new Date(2008, 0, 1, 17, 0)} // Max will be 6.00 PM!
-        max={new Date(2020, 1, 22, 1, 0)} // Max will be 6.00 PM!
         style={{ height: 500 }}
-        // date={new Date(2018, 0, 1)}
-        view='week'
-        views={['week']}
-        formats={formats}
+        views={allViews}
+        eventPropGetter={eventStyleGetter}
       />
     </div>
   );
 };
 
-export default ReserveCalendar;
+const mapStateToProps = state => {
+  return {
+    events: state.events
+  };
+};
+
+export default connect(mapStateToProps)(ReserveCalendar);

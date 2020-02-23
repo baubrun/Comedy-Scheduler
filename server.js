@@ -19,6 +19,10 @@ const generateSeats = () => {
     return "" + Math.floor(Math.random() * 50)
 }
 
+const generateTicketPrices = () => {
+    return "" + Math.floor(Math.random() * (20 - 15) + 15)
+}
+
 let dbo = undefined
 let sessions = {}
 
@@ -141,7 +145,6 @@ app.post("/login", upload.none(), async (req, res) => {
 app.post("/host", upload.none(), (req, res) => {
     const {
         title,
-        date,
         start,
         end,
         location,
@@ -151,7 +154,6 @@ app.post("/host", upload.none(), (req, res) => {
 
     dbo.collection("events").insertOne({
         title: title,
-        date: date,
         start: start,
         end: end,
         location: location,

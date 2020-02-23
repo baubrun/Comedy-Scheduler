@@ -21,7 +21,7 @@ class HomePage extends Component {
         <div className="home-body">
           <div className="portal-links">
             <div className="reserve-btn">
-              <Link id="reserve-btn" to="/reserve">TICKETS</Link>
+              <Link id="reserve-btn" to="/events">TICKETS</Link>
             </div>
             <div className="host-btn" >
             <Link 
