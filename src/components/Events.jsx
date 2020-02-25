@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import SearchBar from "./SearchBar";
 import { connect } from "react-redux";
 import { getEventsAction } from "../actions/actions";
 import CalendarView from "./CalendarView";
-import options from "../data/data.js"
-
+import options from "../data/data.js";
 
 export const Event = props => {
-  const { title, location, performer, start, end, seatsAvail } = props.events;
+  const { title, location, performer, start, seatsAvail } = props.events;
   return (
     <div>
       <ul className="event">
@@ -16,8 +14,6 @@ export const Event = props => {
           <Link to={`/event/${title}`}>{title}</Link>
         </li>
         <li>Date: {new Date(start).toLocaleString("en-GB", options)}</li>
-        {/* <li>Start: {new Date(start).toLocaleTimeString()}</li> */}
-        {/* <li>End: {end}</li> */}
         <li>Location: {location}</li>
         <li>Performer: {performer}</li>
         <li className="seatsAvail">
@@ -88,37 +84,40 @@ class Events extends Component {
     this.setState({ venue: event.target.value });
   };
 
+  addEvent = () => {};
+
   render() {
     return (
       <>
         <div className="events-header">
-          {/* <div className="events-title">
-            <h1>{this.state.venue ? this.state.venue : "CHOOSE A VENUE"}</h1>
-          </div> */}
-          <>
-            <div className="venue-select">
-              <h2>VENUE</h2>
-              <select onChange={this.handleVenueChange} name="venue">
-                <option value=""></option>
-                <option value="LE FOU FOU">LE FOU FOU</option>
-                <option value="JOKES BLAGUES">JOKES BLAGUES</option>
-                <option value="RIRE NOW">RIRE NOW</option>
-              </select>
-            </div>
-          </>
-
-          {/* <div id="events-title">
-            <h1>EVENTS</h1>
-          </div> */}
-          <div className="events-header-img">
-            <div id="calendar-view" onClick={this.toggleCalendarView}>
-              <img src="calendar2-view-30px.png" alt="" />
-            </div>
-            <div id="list-view" onClick={this.toggleListView}>
-              <img src="list-view-30px.png" alt="" />
-            </div>
+          <div className="venue-select">
+            <h2>{this.state.venue ? this.state.venue : "CHOOSE A VENUE"}</h2>
+            <select onChange={this.handleVenueChange} name="venue">
+              <option value="">ALL VENUES</option>
+              <option value="LE FOU FOU">LE FOU FOU</option>
+              <option value="JOKES BLAGUES">JOKES BLAGUES</option>
+              <option value="RIRE NOW">RIRE NOW</option>
+            </select>
           </div>
-          <div id="events-search"></div>
+          <div className="events-header-img">
+            <img
+              id="calendar-view"
+              onClick={this.toggleCalendarView}
+              src="calendar2-view-30px.png"
+              alt=""
+            />
+            <img
+              id="list-view"
+              onClick={this.toggleListView}
+              src="list-view-30px.png"
+              alt=""
+            />
+          </div>
+        </div>
+        <div className="add-event-container">
+          <div id="add-event-btn">
+            <Link to="/host">Add Event</Link>
+          </div>
         </div>
         <div className="events-body">
           {this.state.listViewShow &&

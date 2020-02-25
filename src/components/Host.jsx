@@ -5,33 +5,36 @@ class Host extends Component {
     super(props);
 
     this.state = {
-      title: "",
-      date: "",
-      start: null,
-      end: null,
-      location: "",
-      performer: ""
+      //     title: "",
+      //     start: null,
+      //     end: null,
+      //     location: "",
+      //     performer: "",
+      //     hostId: ""
     };
   }
 
   handleSubmit = async event => {
     event.preventDefault();
-    const data = new FormData();
-    data.append("title", this.state.title);
-    data.append("date", this.state.date);
-    data.append("start", this.state.start);
-    data.append("end", this.state.end);
-    data.append("location", this.state.location);
-    data.append("performer", this.state.performer);
-    this.setState({
-      title: "",
-      date: "",
-      start: "",
-      end: "",
-      location: "",
-      performer: ""
-    });
-    await fetch("/host", { method: "POST", body: data });
+    this.props.handleSelect();
+
+    // event.preventDefault();
+    // const data = new FormData();
+    // data.append("title", this.state.title);
+    // // data.append("date", this.state.date);
+    // data.append("start", this.props.start);
+    // data.append("end", this.props.end);
+    // data.append("location", this.state.location);
+    // data.append("performer", this.state.performer);
+    // this.setState({
+    //   title: "",
+    //   date: "",
+    //   start: "",
+    //   end: "",
+    //   location: "",
+    //   performer: ""
+    // });
+    // await fetch("/host", { method: "POST", body: data });
   };
 
   handleChange = event => {
@@ -39,14 +42,16 @@ class Host extends Component {
     const value = event.target.value;
     this.setState({ [name]: value });
   };
-
+  /* input not needed as start and end will be onSelect */
   render() {
     return (
-      <div className="">
-        {/* <div className="host-header"></div> */}
-        <div className="modal-content animate">
+      <>
+        <div className="host-header">
+            <h2>Add an event</h2>
+        </div>
+        <div className="host body">
           <div className="">
-            <form className="event-form" onSubmit={this.handleSubmit}>
+            <form className="host-form"  onSubmit={this.handleSubmit}>
               <ul>
                 <li>
                   <label htmlFor="title">Title</label>
@@ -58,7 +63,7 @@ class Host extends Component {
                     name="title"
                   />
                 </li>
-                {/* <li>
+                <li>
                   <label htmlFor="date">Date</label>
                   <input
                     id="date"
@@ -67,7 +72,7 @@ class Host extends Component {
                     onChange={this.handleChange}
                     value={this.state.date}
                   />
-                </li> */}
+                </li>
                 <li>
                   <label htmlFor="start">Start time</label>
                   <input
@@ -76,8 +81,8 @@ class Host extends Component {
                     min="20:00"
                     max="23:59"
                     name="start"
-                    onChange={this.handleChange}
-                    value={this.state.time}
+                    // onChange={this.handleChange}
+                    value={this.props.start}
                   />
                 </li>
                 <li>
@@ -88,13 +93,17 @@ class Host extends Component {
                     min="20:00"
                     max="23:59"
                     name="end"
-                    onChange={this.handleChange}
-                    value={this.state.time}
+                    // onChange={this.handleChange}
+                    value={this.props.end}
                   />
                 </li>
                 <li>
                   <label htmlFor="location">Location</label>
-                  <select id="location" name="location" onChange={this.handleChange}>
+                  <select
+                    id="location"
+                    name="location"
+                    onChange={this.handleChange}
+                  >
                     <option value=""></option>
                     <option value="LE FOU FOU">LE FOU FOU</option>
                     <option value="JOKES BLAGUES">JOKES BLAGUES</option>
@@ -142,7 +151,7 @@ class Host extends Component {
             </form>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }

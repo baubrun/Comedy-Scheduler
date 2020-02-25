@@ -43,9 +43,6 @@ class Login extends Component {
       <div className="modal">
         <form className="modal-content animate" onSubmit={this.handleSubmit}>
           <div className="modal-img-container">
-            <div className="close" onClick={this.props.toggleLogin}>
-              &times;
-            </div>
             <div>
               <img className="user-icon" src="user_icon_gros.png" alt=""></img>
             </div>

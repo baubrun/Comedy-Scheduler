@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import EventCalendar from "./ReserveCalendar";
 import { Link } from "react-router-dom";
 
 
@@ -9,7 +8,6 @@ class HomePage extends Component {
   render() {
     return (
       <>
-
         <div className="home-header">
           <div className="venues">
             <div>Le Fou Fou</div>

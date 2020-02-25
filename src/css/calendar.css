@@ -1,30 +1,24 @@
-.rbc-calendar {
+.rbc-calendar,
+.rbc-day-bg.rbc-off-range-bg 
+ {
     background-color: black;
-    color: white;
 }
 
-.rbc-btn-group button{
-    color: white;
+.rbc-calendar,
+.rbc-btn-group button,
+.rbc-btn-group,
+.rbc-toolbar,
+.rbc-date-cell.rbc-off-range a
+{
+color: white;
 }
 
-.rbc-btn-group {
-    color: white;
-}
-
-.rbc-day-bg.rbc-today{
+.rbc-day-bg.rbc-today,
+.rbc-header.rbc-today,
+.rbc-day-slot.rbc-time-column.rbc-now.rbc-today
+{
    background-color: rgb(224, 151, 33)
 }
 
-.rbc-day-bg.rbc-off-range-bg {
-    background-color: black;
 
-}
 
-.rbc-date-cell.rbc-off-range a{
-    color: white;
-
-}
-
-.rbc-toolbar {
-    color: white;
-}

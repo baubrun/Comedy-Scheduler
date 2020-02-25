@@ -24,28 +24,6 @@
 }
 
 
-.events-header {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-}
-
-#events-search {
-    width: 100%;
-}
-
-
-.events-header-img {
-    margin: 10px 0;
-    display: flex;
-}
-
-#events-title{
-    color: #663A2B;
-    text-align: center;
-    width: 100%;
-}
-
 .seatsAvail{
     position: relative;
 }
@@ -56,20 +34,29 @@
     margin-left: 3px;
 }
 
+.events-header {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    
+}
+
+
 #calendar-view {
-    margin: 0 30px;
     opacity: 0.5;
+    margin-right: 50px;
 
 }
 
 #calendar-view:hover {
     cursor: pointer;
     opacity: 1;
-}
 
+}
 
 #list-view {
     opacity: 0.5;
+
 }
 
 #list-view:hover {
@@ -77,16 +64,31 @@
     opacity: 1;
 }
 
-#search-label {
-    margin-right: 5px;
+.add-event-container{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+
 }
 
-#search {
-    border-color:  #663A2B;
+#add-event-btn {
     border-radius: 5px;
-    padding: 10px;
-    width: 500px;
+    background-color: #663A2B ;
+    margin: 10px 0;
+    opacity: 0.7;
+    padding: 12px;
+
 }
+
+#add-event-btn:hover {
+    opacity: 1;
+
+}
+
+#add-event-btn a {
+color: white;
+}
+
 
 ::placeholder {
     color:  #663A2B;
@@ -96,14 +98,6 @@
 }
 
 
-.search-bar {
-    color:  #663A2B;
-    font-weight: bold;
-    margin: 10px 0;
-    text-align: center;
-
-}
-
 
 .venue-select {
     display: flex;
@@ -112,15 +106,25 @@
     justify-content: center;
 }
 
-.venue-select h2{
-    width: 100%;
+.venue-select h2 {
+    background-color: #663A2B ;
+    color: white;
+    margin-bottom: 5px;
     text-align: center;
+    width: 100%;
 }
 
 
 .venue-select > select {
-    margin-top: 3px;
+    border-color:  #663A2B;
+    color: #663A2B ;
+    cursor: pointer;
     height: 20px ;
-    /* margin-right: 650px; */
+    margin: 5px 0 10px 0;
+    text-align: center;
 } 
-  
+
+
+
+
+

@@ -94,3 +94,24 @@ Form
 .reserve-btn {
   color: white
 }
+
+/* ====================
+Host
+======================*/
+
+
+.host-header{
+  display: flex;
+}
+
+.host-header h2{
+  background-color:#663A2B;
+  color: white;
+  padding: 2px 0;
+  text-align: center;
+  width: 100%;
+}
+
+.host-form {
+  border: 1px solid gray;
+}
