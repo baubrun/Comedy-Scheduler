@@ -5,16 +5,53 @@ import { getEventsAction } from "../actions/actions";
 import CalendarView from "./CalendarView";
 import options from "../data/data.js";
 
+const dateTimeParser = (date, time) => {
+  /* regex to split date string */
+  const dateStr = date + " " +time
+  let sp = dateStr.split(/[\s-:]/);
+  const dateObj = {
+    year: sp[0],
+    month: sp[1],
+    day: sp[2],
+    hour: sp[3],
+    min: sp[4]
+  };
+  return(
+    new Date(
+      dateObj.year,
+      dateObj.month,
+      dateObj.day,
+      dateObj.hour,
+      dateObj.min
+    )
+  );
+};
+
 export const Event = props => {
-  const { title, location, performer, start, seatsAvail } = props.events;
+  const {
+    title,
+    venue,
+    date,
+    performer,
+    start,
+    end,
+    seatsAvail
+  } = props.events;
+
+  console.log(dateTimeParser(date, start))
+
+
   return (
     <div>
       <ul className="event">
         <li>
           <Link to={`/event/${title}`}>{title}</Link>
         </li>
-        <li>Date: {new Date(start).toLocaleString("en-GB", options)}</li>
-        <li>Location: {location}</li>
+        {/* <li>Date: {new Date().toUTCString()}</li> */}
+        {/* <li>Date: {new Date(date).toLocaleString("en-GB", options)}</li> */}
+        <li>Start: {dateTimeParser(date, start).toLocaleString("en-GB", options)}</li>
+        {/* <li>End: {dateTimeParser(date, end).toLocaleString("en-GB", options)}</li> */}
+        <li>Venue: {venue}</li>
         <li>Performer: {performer}</li>
         <li className="seatsAvail">
           Seats Available:{" "}
@@ -93,7 +130,7 @@ class Events extends Component {
           <div className="venue-select">
             <h2>{this.state.venue ? this.state.venue : "CHOOSE A VENUE"}</h2>
             <select onChange={this.handleVenueChange} name="venue">
-              <option value="">ALL VENUES</option>
+              <option value=""></option>
               <option value="LE FOU FOU">LE FOU FOU</option>
               <option value="JOKES BLAGUES">JOKES BLAGUES</option>
               <option value="RIRE NOW">RIRE NOW</option>
@@ -123,7 +160,7 @@ class Events extends Component {
           {this.state.listViewShow &&
             this.props.events
               .filter(event =>
-                event.location
+                event.venue
                   .toLowerCase()
                   .includes(this.state.venue.toLowerCase())
               )

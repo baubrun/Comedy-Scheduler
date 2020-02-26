@@ -100,18 +100,56 @@ Host
 ======================*/
 
 
-.host-header{
+
+.host-header {
   display: flex;
 }
 
-.host-header h2{
-  background-color:#663A2B;
+.host-header h2 {
+  background-color: #663A2B;
   color: white;
   padding: 2px 0;
   text-align: center;
   width: 100%;
 }
 
-.host-form {
-  border: 1px solid gray;
+
+.host-flex-container {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 20px 0 0  20%;
+  width: 60%;
 }
+
+.host-form-container {
+  border: 1px solid gray;
+  padding: 20px 5px;
+  width: 100%;
+}
+
+.host-form-container  li {
+  display: flex;
+  flex-flow: row wrap;
+  margin-right: 50px;
+
+}
+
+
+.host-form-container  label {
+  flex: 1 1 120px;
+  /* text-align: center; */
+}
+.host-form-container input {
+  flex: 3 1 261px;
+  margin: 10px 0 10px 0 ;
+}
+
+select#venue,
+select#start,
+select#end {
+  flex: 3 1 261px;
+  margin: 10px 0 10px 0 ;
+}
+
+
+

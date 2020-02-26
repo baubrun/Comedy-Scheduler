@@ -12,6 +12,24 @@ const bcrypt = require("bcryptjs")
 const validator = require("./validators")
 const SALT_FACTOR = 10
 
+const seatsByVenue = {}
+seatsByVenue["LE FOU FOU"] = 100
+seatsByVenue["JOKES BLAGUES"] = 90
+seatsByVenue["RIRE NOW"] = 80
+
+const venueSeating = reqBody =>{
+    switch(reqBody){
+        case "LE FOU FOU":
+            return seatsByVenue["LE FOU FOU"]
+        case "JOKES BLAGUES":
+            return seatsByVenue["JOKES BLAGUES"] 
+        case "RIRE NOW":
+            return seatsByVenue["RIRE NOW"]
+        default:
+            return 0
+    }
+}
+
 const generateId = () => {
     return "" + Math.floor(Math.random() * 1000000)
 }
@@ -145,21 +163,26 @@ app.post("/login", upload.none(), async (req, res) => {
 app.post("/host", upload.none(), (req, res) => {
     const {
         title,
+        date,
         start,
         end,
-        location,
+        venue,
         performer,
-        hostId,
+        price,
+        // hostId,
     } = req.body
+
 
     dbo.collection("events").insertOne({
         title: title,
+        date: date,
         start: start,
         end: end,
-        location: location,
+        venue: venue,
         performer: performer,
-        hostId: hostId,
-        seatsAvail: generateSeats(),
+        price: price,
+        // hostId: hostId,
+        seatsAvail: venueSeating(venue),
         allDay: "false",
         dateAdded: new Date()
     })
