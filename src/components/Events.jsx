@@ -4,28 +4,9 @@ import { connect } from "react-redux";
 import { getEventsAction } from "../actions/actions";
 import CalendarView from "./CalendarView";
 import options from "../data/data.js";
+import moment from "moment";
 
-const dateTimeParser = (date, time) => {
-  /* regex to split date string */
-  const dateStr = date + " " +time
-  let sp = dateStr.split(/[\s-:]/);
-  const dateObj = {
-    year: sp[0],
-    month: sp[1],
-    day: sp[2],
-    hour: sp[3],
-    min: sp[4]
-  };
-  return(
-    new Date(
-      dateObj.year,
-      dateObj.month,
-      dateObj.day,
-      dateObj.hour,
-      dateObj.min
-    )
-  );
-};
+
 
 export const Event = props => {
   const {
@@ -38,7 +19,6 @@ export const Event = props => {
     seatsAvail
   } = props.events;
 
-  console.log(dateTimeParser(date, start))
 
 
   return (
@@ -47,9 +27,7 @@ export const Event = props => {
         <li>
           <Link to={`/event/${title}`}>{title}</Link>
         </li>
-        {/* <li>Date: {new Date().toUTCString()}</li> */}
-        {/* <li>Date: {new Date(date).toLocaleString("en-GB", options)}</li> */}
-        <li>Start: {dateTimeParser(date, start).toLocaleString("en-GB", options)}</li>
+        <li>Start: {moment(`${date} ${start}`).format("DD-MM-YYYY HH:mm")}h</li>
         {/* <li>End: {dateTimeParser(date, end).toLocaleString("en-GB", options)}</li> */}
         <li>Venue: {venue}</li>
         <li>Performer: {performer}</li>
