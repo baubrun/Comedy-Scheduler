@@ -7,15 +7,14 @@ import options from "../data/data.js";
 import moment from "moment";
 
 
-
 export const Event = props => {
   const {
     title,
     venue,
-    date,
+    startDate,
     performer,
-    start,
-    end,
+    startTime,
+    image,
     seatsAvail
   } = props.events;
 
@@ -27,8 +26,7 @@ export const Event = props => {
         <li>
           <Link to={`/event/${title}`}>{title}</Link>
         </li>
-        <li>Start: {moment(`${date} ${start}`).format("DD-MM-YYYY HH:mm")}h</li>
-        {/* <li>End: {dateTimeParser(date, end).toLocaleString("en-GB", options)}</li> */}
+        <li>Start: {moment(`${startDate} ${startTime}`).format("DD-MM-YYYY HH:mm")}h</li>
         <li>Venue: {venue}</li>
         <li>Performer: {performer}</li>
         <li className="seatsAvail">
@@ -44,7 +42,7 @@ export const Event = props => {
           )}
         </li>
         <li>
-          <img src="" alt="" />
+          <img id="performer-img" src={`../../${image}`} alt="" />
         </li>
       </ul>
     </div>
@@ -60,6 +58,11 @@ class Events extends Component {
       listViewShow: true,
       venue: ""
     };
+  }
+
+
+  addEvent = (event) => {
+    return 
   }
 
   handleGetEvents = events => {
@@ -130,8 +133,8 @@ class Events extends Component {
           </div>
         </div>
         <div className="add-event-container">
-          <div id="add-event-btn">
-            <Link to="/host">Add Event</Link>
+          <div className="add-event-btn" >
+            <Link id="add-event-btn" to="/host">Add Event</Link>
           </div>
         </div>
         <div className="events-body">

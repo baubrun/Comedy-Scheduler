@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+
+
 const timeSelector = () => {
   let selectTimes = [];
   let hour = 20;
@@ -32,11 +34,14 @@ class Host extends Component {
 
     this.state = {
       title: "",
-      date: "",
-      start: "",
-      end: "",
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: "",
       venue: "",
       performer: "",
+      image: "",
+      price: "",
       hostId: ""
     };
   }
@@ -48,23 +53,32 @@ class Host extends Component {
     event.preventDefault();
     const data = new FormData();
     data.append("title", this.state.title);
-    data.append("date", this.state.date);
-    data.append("start", this.state.start);
-    data.append("end", this.state.end);
+    data.append("startDate", this.state.startDate);
+    data.append("startTime", this.state.startTime);
+    data.append("endDate", this.state.endDate);
+    data.append("endTime", this.state.endTime);
     data.append("venue", this.state.venue);
     data.append("performer", this.state.performer);
+    data.append("image", this.state.image);
     data.append("price", this.state.price);
     this.setState({
       title: "",
-      date: "",
-      start: "",
-      end: "",
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: "",
       venue: "",
       performer: "",
-      price: ""
+      price: "",
+      hostId: ""
     });
     await fetch("/host", { method: "POST", body: data });
   };
+
+
+  handleImage = event => {
+    this.setState({image: event.target.files[0]})
+  }
 
   handleChange = event => {
     const name = event.target.name;
@@ -76,11 +90,11 @@ class Host extends Component {
     this.setState({ venue: event.target.value });
   };
 
-  handleStartChange = event => {
-    this.setState({ start: event.target.value });
+  handleStartTime = event => {
+    this.setState({ startTime: event.target.value });
   };
-  handleEndChange = event => {
-    this.setState({ end: event.target.value });
+  handleEndTime = event => {
+    this.setState({ endTime: event.target.value });
   };
 
 
@@ -99,24 +113,24 @@ class Host extends Component {
                 <input
                   id="title"
                   type="text"
+                  name="title"
                   onChange={this.handleChange}
                   value={this.state.title}
-                  name="title"
                 />
               </li>
               <li>
-                <label htmlFor="date">Date</label>
+                <label htmlFor="start-date">Start date</label>
                 <input
-                  id="date"
+                  id="start-date"
                   type="date"
-                  name="date"
+                  name="startDate"
                   onChange={this.handleChange}
-                  value={this.state.date}
+                  value={this.state.startDate}
                 />
               </li>
               <li>
-                <label htmlFor="start">Start time</label>
-                <select id="start" onChange={this.handleStartChange}>
+                <label htmlFor="start-time">Start time</label>
+                <select id="start-time" onChange={this.handleStartTime}>
                 <option value=""></option>
                   {timeSelector().map((t, idx) => {
                     return <option key={idx} value={t}>{t}</option>;
@@ -124,8 +138,19 @@ class Host extends Component {
                 </select>
               </li>
               <li>
-                <label htmlFor="end">End time</label>
-                <select id="end" onChange={this.handleEndChange}>
+                <label htmlFor="end-date">End date</label>
+                <input
+                  id="end-date"
+                  type="date"
+                  name="endDate"
+                  onChange={this.handleChange}
+                  value={this.state.endDate}
+                />
+              </li>
+
+              <li>
+                <label htmlFor="end-time">End time</label>
+                <select id="end-time" onChange={this.handleEndTime}>
                 <option value=""></option>
                   {timeSelector().map((t, idx) => {
                     return <option key={idx} value={t}>{t}</option>;
@@ -162,7 +187,7 @@ class Host extends Component {
                   type="number"
                   name="price"
                   onChange={this.handleChange}
-                  value={this.state.price || ""}
+                  value={this.state.price}
                 />
               </li>
               {/* <li>
@@ -175,12 +200,12 @@ class Host extends Component {
                 />
               </li> */}
               <li>
-                <label htmlFor="image">Image</label>
+                <label htmlFor="upload">Image</label>
                 <input
-                  id="image"
+                  id="upload"
                   type="file"
                   name="image"
-                  onChange={this.handleChange}
+                  onChange={this.handleImage}
                 />
               </li>
               <li>

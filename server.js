@@ -3,7 +3,6 @@ const app = express()
 const port = 4000
 require("dotenv/config")
 const multer = require("multer")
-const upload = multer()
 const cookieParser = require("cookie-parser")
 const mongodb = require("mongodb")
 const MongoClient = mongodb.MongoClient
@@ -11,11 +10,45 @@ const ObjectId = mongodb.ObjectID
 const bcrypt = require("bcryptjs")
 const validator = require("./validators")
 const SALT_FACTOR = 10
-
+let dbo = undefined
+let sessions = {}
 const seatsByVenue = {}
 seatsByVenue["LE FOU FOU"] = 100
 seatsByVenue["JOKES BLAGUES"] = 90
 seatsByVenue["RIRE NOW"] = 80
+
+
+
+
+/*===============
+ Helper functions 
+ ================*/
+
+ const fileFilter = (req, file, cb) => {
+     if (file !== undefined){
+         cb(null, true)
+     } else {
+         cb(null, false)
+     }
+ }
+
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "uploads/")
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    },
+    fileFilter: fileFilter
+})
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: (1024 ** 2) * 5
+    }
+})
 
 const venueSeating = reqBody =>{
     switch(reqBody){
@@ -41,11 +74,14 @@ const generateTicketPrices = () => {
     return "" + Math.floor(Math.random() * (20 - 15) + 15)
 }
 
-let dbo = undefined
-let sessions = {}
 
 
-/* Middleware */
+
+
+/*=============
+ Middleware 
+ ==============*/
+
 app.use(express.json())
 app.use(cookieParser())
 app.use("/", express.static("uploads"))
@@ -61,6 +97,14 @@ MongoClient.connect(
     dbo = client.db("Comedy-hub")
     console.log("\nConnected to Mongo DB!\n")
 }).catch(err => console.log(err))
+
+
+
+
+
+
+
+
 
 
 
@@ -160,12 +204,13 @@ app.post("/login", upload.none(), async (req, res) => {
     })
 })
 
-app.post("/host", upload.none(), (req, res) => {
+app.post("/host", upload.single("image"), (req, res) => {
     const {
         title,
-        date,
-        start,
-        end,
+        startDate,
+        startTime,
+        endDate,
+        endTime,
         venue,
         performer,
         price,
@@ -175,11 +220,13 @@ app.post("/host", upload.none(), (req, res) => {
 
     dbo.collection("events").insertOne({
         title: title,
-        date: date,
-        start: start,
-        end: end,
+        startDate: startDate,
+        startTime: startTime,
+        endDate: endDate,
+        endTime: endTime,
         venue: venue,
         performer: performer,
+        image: req.file.originalname,
         price: price,
         // hostId: hostId,
         seatsAvail: venueSeating(venue),

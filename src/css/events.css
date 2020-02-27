@@ -71,22 +71,26 @@
 
 }
 
-#add-event-btn {
+.add-event-btn {
     border-radius: 5px;
     background-color: #663A2B ;
     margin: 10px 0;
     opacity: 0.7;
-    padding: 12px;
-
+    padding: 10px;
 }
 
-#add-event-btn:hover {
+
+#add-event-btn{
+    justify-content: center;
+    color: white;
+}
+
+.add-event-btn:hover {
     opacity: 1;
-
 }
 
-#add-event-btn a {
-color: white;
+#add-event-btn  {
+    padding: 10px 2px;
 }
 
 
@@ -124,6 +128,10 @@ color: white;
     text-align: center;
 } 
 
+#performer-img {
+    height: 50px;
+    width: 50px;
+}
 
 
 

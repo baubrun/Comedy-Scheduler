@@ -4,7 +4,7 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { connect } from "react-redux";
 import Host from "./Host"
-
+import 'moment/locale/en-gb';
 
 const allViews = Object.keys(Views).map(k => Views[k]);
 const localizer = momentLocalizer(moment);
@@ -20,6 +20,25 @@ const eventStyleGetter = (event, start, end, isSelected) => {
 };
 
 
+const formats = {
+  // eventTimeRangeStartFormat: "",
+  // eventTimeRangeFormat: ""
+  eventTimeRangeStartFormat: ({ start}, culture, localizer) => ( 
+  localizer.format(start, { date: 'short' }, culture)
+),
+  eventTimeRangeEndFormat: ({ end}, culture, localizer) => (
+  localizer.format(end, { date: 'short' }, culture)
+  )
+
+}
+
+
+
+const DateTimeFormatter = (date, time) => {
+  // return moment(`${date} ${time}`).format("YYYY-MM-DD HH:mm").format()
+  return  moment(`${date} ${time}`).format()
+
+}
 class CalendarView extends Component {
   constructor(...args) {
     super(...args);
@@ -29,21 +48,28 @@ class CalendarView extends Component {
       title: "",
       start: null,
       end: null,
-      location: "",
+      venue: "",
       performer: "",
-      hostId: ""
-
+      price: "",
+      hostId: "",
+      culture: "en-gb",
     };
   }
 
   formattedEvents = () => {
-    const filterEventProps = this.props.events.map(i => {
+    console.log('this.props.events :', this.props.events);
+
+    const filterEventProps = this.props.events.map(event => {
+      console.log("DateTimeFormatter", DateTimeFormatter(event.startDate, event.startTime))
+      console.log("DateTimeFormatter", DateTimeFormatter(event.endDate, event.endTime))
       return {
-        title: i.title,
-        start: new Date(i.start),
-        end: new Date(i.end)
+        // works for non overnight events
+        title: event.title,
+        start: new Date(DateTimeFormatter(event.startDate, event.startTime)),
+        end: new Date(DateTimeFormatter(event.endDate, event.endTime)),
       };
     });
+    console.log('filterEventProps :', filterEventProps);
     return filterEventProps
   };
 
@@ -68,25 +94,27 @@ class CalendarView extends Component {
   // }
 
 
-  /* fix this here */
 
   render() {
+    console.log('this.state.events :', this.state.events);
+
     return (
       <div>
         <Calendar
           endAccessor="end"
-          // events={this.formattedEvents}
+          formats={formats}
           events={this.state.events}
           selectable
           localizer={localizer}
           startAccessor="start"
-          step={15}
+          step={30}
           style={{ height: 500 }}
           views={allViews}
           eventPropGetter={eventStyleGetter}
           onSelectEvent={event => alert(event.title)}
           onSelectSlot={this.handleSelect}
           // onSelectSlot={this.renderHostForm}
+          culture={this.state.culture}
         />
       </div>
     );

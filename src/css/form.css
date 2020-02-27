@@ -145,8 +145,8 @@ Host
 }
 
 select#venue,
-select#start,
-select#end {
+select#time-start,
+select#time-end {
   flex: 3 1 261px;
   margin: 10px 0 10px 0 ;
 }
