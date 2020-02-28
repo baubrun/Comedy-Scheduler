@@ -155,6 +155,9 @@ NavBar
   font-family: "Oswald";
 }
 
+.home-title  a{
+color: black}
+
 
 .cart {
   margin-left: auto;

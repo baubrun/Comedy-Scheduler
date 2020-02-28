@@ -132,11 +132,11 @@ class Events extends Component {
             />
           </div>
         </div>
-        <div className="add-event-container">
+        {/* <div className="add-event-container">
           <div className="add-event-btn" >
             <Link id="add-event-btn" to="/host">Add Event</Link>
           </div>
-        </div>
+        </div> */}
         <div className="events-body">
           {this.state.listViewShow &&
             this.props.events

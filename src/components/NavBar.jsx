@@ -1,33 +1,48 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { logOutAction } from "../actions/actions";
 
 class NavBar extends Component {
+
+  dispatchLogout = () => {
+    this.props.logoutUser()
+  }
+
+
   render() {
     return (
       <div className="navbar">
         <div className="home-title">
-          <h1>LE COMEDY HUB</h1>
-        </div>
-        <div className="dropdown">
-          <img id="dropdown-img" src="menu-grid.png" alt="" />
-          <div className="dropdown-content">
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/profile">Profile</Link>
-              </li>
-              <li>
-                <Link to="/events">Tickets</Link>
-              </li>
-              <li>
-                <Link to="/host">Host an event</Link>
-              </li>
-            </ul>
+          <h1>
+            <Link to="/">LE COMEDY HUB</Link>
+          </h1>
+          <div className="hostId">
+            {this.props.loggedIn ? `Salut ${this.props.hostId}!` : ""}
           </div>
         </div>
+        {/* {this.props.loggedIn && ( */}
+          <div className="dropdown">
+            <img id="dropdown-img" src="menu-grid.png" alt="" />
+            <div className="dropdown-content">
+              <ul>
+                <li>
+                  <Link to="/profile">Profile</Link>
+                </li>
+                <li>
+                  <Link to="/events">Tickets</Link>
+                </li>
+                <li>
+                  <Link to="/host">Host an event</Link>
+                </li>
+                <li>
+                  <Link to="/" onClick={this.dispatchLogout}>Logout</Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        {/* )} */}
+
         <div className="cart">
           <Link to="/cart">
             <img src="cart-arrow-blk-wht.png" alt=""></img>
@@ -40,8 +55,17 @@ class NavBar extends Component {
 
 const mapStateToProps = state => {
   return {
-    loggedIn: state.loggedIn
+    loggedIn: state.auth.loggedIn,
+    hostId: state.auth.hostId
   };
 };
 
-export default connect(mapStateToProps)(NavBar);
+
+
+const mapDispatchToProps = dispatch => {
+  return{
+    logoutUser: () => dispatch(logOutAction())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

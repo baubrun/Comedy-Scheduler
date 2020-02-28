@@ -6,7 +6,7 @@ import {
 
 const initialAuthState = {
     loggedIn: false,
-    user: ""
+    hostId: ""
 }
 
 
@@ -15,7 +15,7 @@ const authReducer = (state = initialAuthState, action) => {
         case LOGGED_IN:
             return action.payload
         case LOGGED_OUT:
-            return state
+            return action.payload
         default:
             return state
     }

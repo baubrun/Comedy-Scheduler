@@ -14,13 +14,22 @@ export const getEventsAction = events => ({
     payload: events
 })
 
-export const logInAction  = user => ({
+
+export const logInAction = hostId => ({
     type: LOGGED_IN,
-    payload: {loggedIn: true, user: user}
+    payload: {
+        loggedIn: true,
+        hostId: hostId
+    }
 })
 
-export const logOutAction = ({
-    type: LOGGED_OUT
+
+export const logOutAction = () => ({
+    type: LOGGED_OUT,
+    payload: {
+        loggedIn: false,
+        hostId: ""    
+    }
 })
 
 
@@ -34,4 +43,3 @@ export const addToCartAction = item => ({
     type: ADDED_TO_CART,
     payload: item
 })
-

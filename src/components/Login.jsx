@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Register from "./Register";
+import { connect } from "react-redux";
+import { logInAction } from "../actions/actions";
+
+
 
 class Login extends Component {
   constructor(props) {
@@ -11,6 +14,12 @@ class Login extends Component {
       password: "",
     };
   }
+
+
+  dispatchLogin = hostId => {
+    this.props.loginUser(hostId)
+  }
+
 
   handleChange = event => {
     const name = event.target.name;
@@ -25,15 +34,15 @@ class Login extends Component {
     data.append("password", this.state.password);
     this.setState({
       username: "",
-      password: "",
+      password: ""
     });
     // await fetch("/", { method: "POST", body: data });
     // make dynamic url profile page for push history
     const response = await fetch("/login", { method: "POST", body: data });
     const body = await response.text();
     const parser = JSON.parse(body);
-    // console.log(parser);
     if (parser.success) {
+      this.dispatchLogin(parser.hostId)
       this.props.history.push("/profile");
     }
   };
@@ -81,4 +90,14 @@ class Login extends Component {
     );
   }
 }
-export default Login;
+
+
+
+const mapDispatchToProps = dispatch => {
+  return{
+    loginUser: (hostId) => dispatch(logInAction(hostId))
+  }
+}
+
+
+export default connect(null, mapDispatchToProps)(Login);

@@ -15,6 +15,11 @@ class Register extends Component {
     };
   }
 
+  dispatchLogin = hostId => {
+    this.props.loginUser(hostId)
+  }
+
+
   handleChange = event => {
     const name = event.target.name;
     const value = event.target.value;
@@ -37,7 +42,9 @@ class Register extends Component {
     const response = await fetch("/register", { method: "POST", body: data });
     const body = await response.text();
     const parser = JSON.parse(body);
+    console.log('parser :', parser);
     if (parser.success) {
+      this.dispatchLogin(parser.hostId)
       this.props.history.push("/profile");
     }
   };
@@ -113,4 +120,11 @@ class Register extends Component {
   }
 }
 
-export default Register;
+
+const mapDispatchToProps = dispatch => {
+  return{
+    loginUser: hostId => dispatch(logInAction(hostId))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Register);

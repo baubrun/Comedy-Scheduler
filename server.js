@@ -12,71 +12,6 @@ const validator = require("./validators")
 const SALT_FACTOR = 10
 let dbo = undefined
 let sessions = {}
-const seatsByVenue = {}
-seatsByVenue["LE FOU FOU"] = 100
-seatsByVenue["JOKES BLAGUES"] = 90
-seatsByVenue["RIRE NOW"] = 80
-
-
-
-
-/*===============
- Helper functions 
- ================*/
-
- const fileFilter = (req, file, cb) => {
-     if (file !== undefined){
-         cb(null, true)
-     } else {
-         cb(null, false)
-     }
- }
-
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "uploads/")
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname)
-    },
-    fileFilter: fileFilter
-})
-
-const upload = multer({
-    storage: storage,
-    limits: {
-        fileSize: (1024 ** 2) * 5
-    }
-})
-
-const venueSeating = reqBody =>{
-    switch(reqBody){
-        case "LE FOU FOU":
-            return seatsByVenue["LE FOU FOU"]
-        case "JOKES BLAGUES":
-            return seatsByVenue["JOKES BLAGUES"] 
-        case "RIRE NOW":
-            return seatsByVenue["RIRE NOW"]
-        default:
-            return 0
-    }
-}
-
-const generateId = () => {
-    return "" + Math.floor(Math.random() * 1000000)
-}
-const generateSeats = () => {
-    return "" + Math.floor(Math.random() * 50)
-}
-
-const generateTicketPrices = () => {
-    return "" + Math.floor(Math.random() * (20 - 15) + 15)
-}
-
-
-
-
 
 /*=============
  Middleware 
@@ -97,6 +32,72 @@ MongoClient.connect(
     dbo = client.db("Comedy-hub")
     console.log("\nConnected to Mongo DB!\n")
 }).catch(err => console.log(err))
+
+
+
+
+
+
+
+/*===============
+ Helper functions 
+ ================*/
+
+const fileFilter = (req, file, cb) => {
+    if (file !== undefined) {
+        cb(null, true)
+    } else {
+        cb(null, false)
+    }
+}
+
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "uploads/")
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    },
+    fileFilter: fileFilter
+})
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: (1024 ** 2) * 5
+    }
+})
+
+const seatsByVenue = {}
+seatsByVenue["LE FOU FOU"] = 100
+seatsByVenue["JOKES BLAGUES"] = 90
+seatsByVenue["RIRE NOW"] = 80
+
+const venueSeating = reqBody => {
+    switch (reqBody) {
+        case "LE FOU FOU":
+            return seatsByVenue["LE FOU FOU"]
+        case "JOKES BLAGUES":
+            return seatsByVenue["JOKES BLAGUES"]
+        case "RIRE NOW":
+            return seatsByVenue["RIRE NOW"]
+        default:
+            return 0
+    }
+}
+
+const generateId = () => {
+    return "" + Math.floor(Math.random() * 1000000)
+}
+const generateSeats = () => {
+    return "" + Math.floor(Math.random() * 50)
+}
+
+const generateTicketPrices = () => {
+    return "" + Math.floor(Math.random() * (20 - 15) + 15)
+}
+
 
 
 
@@ -185,8 +186,11 @@ app.post("/login", upload.none(), async (req, res) => {
                 sessions[sessionId] = givenUsername
                 res.cookie("sid", sessionId)
 
+                const hostId = user.hostId
+
                 return res.json({
-                    success: true
+                    success: true,
+                    hostId: hostId
                 })
 
             } else {
@@ -272,7 +276,8 @@ app.post("/register", upload.none(), async (req, res) => {
                     events: ""
                 })
                 return res.status(200).json({
-                    success: true
+                    success: true, 
+                    hostId: hostId
                 })
 
             } catch (error) {
