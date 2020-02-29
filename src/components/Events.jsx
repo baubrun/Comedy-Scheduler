@@ -15,10 +15,8 @@ export const Event = props => {
     performer,
     startTime,
     image,
-    seatsAvail
+    seatsAvail,
   } = props.events;
-
-
 
   return (
     <div>
@@ -102,7 +100,6 @@ class Events extends Component {
     this.setState({ venue: event.target.value });
   };
 
-  addEvent = () => {};
 
   render() {
     return (

@@ -106,7 +106,7 @@ Host
 }
 
 .host-header h2 {
-  background-color: #663A2B;
+  background-color: rgb(224, 151, 33) ;
   color: white;
   padding: 2px 0;
   text-align: center;

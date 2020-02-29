@@ -124,6 +124,16 @@ app.get("/events", async (req, res) => {
     })
 })
 
+app.get("/profile", async (req, res) => {
+    dbo.collection("events").find({}).toArray((err, evt) => {
+        if (err) {
+            console.log(err)
+            return res.send("fail")
+        }
+        return res.json(evt)
+    })
+})
+
 app.get("/hostevents", (req, res) => {
     dbo.collection("events").find({
         host: req.host
@@ -208,7 +218,8 @@ app.post("/login", upload.none(), async (req, res) => {
     })
 })
 
-app.post("/host", upload.single("image"), (req, res) => {
+/* changed to /profile from /host */
+app.post("/profile", upload.single("image"), async (req, res) => {
     const {
         title,
         startDate,
@@ -218,7 +229,7 @@ app.post("/host", upload.single("image"), (req, res) => {
         venue,
         performer,
         price,
-        // hostId,
+        hostId,
     } = req.body
 
 
@@ -232,15 +243,29 @@ app.post("/host", upload.single("image"), (req, res) => {
         performer: performer,
         image: req.file.originalname,
         price: price,
-        // hostId: hostId,
+        hostId: hostId,
         seatsAvail: venueSeating(venue),
         allDay: "false",
         dateAdded: new Date()
     })
-    return res.json({
-        success: true
+
+    /*here return send events to front end*/
+    // await dbo.collection("events").find({
+    //     hostId: hostId
+    // }).toArray((err, event) => {
+    //     if (err) {
+    //         console.log(err)
+    //         return res.status(400).json({
+    //             success: false
+    //         })
+    //     }
+        return res.json({
+            success: true,
+            // events: event
+        // })
     })
 })
+
 
 app.post("/register", upload.none(), async (req, res) => {
     const {
@@ -276,7 +301,7 @@ app.post("/register", upload.none(), async (req, res) => {
                     events: ""
                 })
                 return res.status(200).json({
-                    success: true, 
+                    success: true,
                     hostId: hostId
                 })
 

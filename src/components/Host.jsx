@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 
 
@@ -42,7 +43,7 @@ class Host extends Component {
       performer: "",
       image: "",
       price: "",
-      hostId: ""
+      hostId: this.props.hostId
     };
   }
 
@@ -61,6 +62,7 @@ class Host extends Component {
     data.append("performer", this.state.performer);
     data.append("image", this.state.image);
     data.append("price", this.state.price);
+    data.append("hostId", this.state.hostId);
     this.setState({
       title: "",
       startDate: "",
@@ -69,10 +71,9 @@ class Host extends Component {
       endTime: "",
       venue: "",
       performer: "",
-      price: "",
-      hostId: ""
+      price: ""
     });
-    await fetch("/host", { method: "POST", body: data });
+    await fetch("/profile", { method: "POST", body: data });
   };
 
 
@@ -219,4 +220,15 @@ class Host extends Component {
   }
 }
 
-export default Host;
+
+const mapStateToProps = state => {
+  return {
+    loggedIn: state.auth.loggedIn,
+    hostId: state.auth.hostId
+  };
+};
+
+
+export default connect(mapStateToProps)(Host);
+
+

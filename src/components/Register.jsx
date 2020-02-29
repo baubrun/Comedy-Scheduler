@@ -97,7 +97,7 @@ class Register extends Component {
               onChange={this.handleChange}
             />
             <label htmlFor="host">
-              <b>Enter your host name.</b>
+              <b>What will be your host name?</b>
             </label>
             <input
               id="host"
