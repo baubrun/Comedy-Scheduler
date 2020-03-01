@@ -6,13 +6,13 @@ const multer = require("multer")
 const cookieParser = require("cookie-parser")
 const mongodb = require("mongodb")
 const MongoClient = mongodb.MongoClient
-const ObjectId = mongodb.ObjectID
+const ObjectID = mongodb.ObjectID
 const bcrypt = require("bcryptjs")
 const validator = require("./validators")
 const SALT_FACTOR = 10
 let dbo = undefined
 let sessions = {}
-
+const assert = require("assert")
 /*=============
  Middleware 
  ==============*/
@@ -102,19 +102,21 @@ const generateTicketPrices = () => {
 
 
 
-
-
-
-
-
-
-
 /* ==================
 GET 
 ====================*/
 
 
-app.get("/events", async (req, res) => {
+// app.get("/events", async (req, res) => {
+//     dbo.collection("events").find({}).toArray((err, evt) => {
+//         if (err) {
+//             console.log(err)
+//             return res.send("fail")
+//         }
+//         return res.json(evt)
+//     })
+
+app.get(["/events", "/profile"], async (req, res) => {
     dbo.collection("events").find({}).toArray((err, evt) => {
         if (err) {
             console.log(err)
@@ -124,44 +126,36 @@ app.get("/events", async (req, res) => {
     })
 })
 
-app.get("/profile", async (req, res) => {
-    dbo.collection("events").find({}).toArray((err, evt) => {
-        if (err) {
-            console.log(err)
-            return res.send("fail")
-        }
-        return res.json(evt)
-    })
-})
 
-app.get("/hostevents", (req, res) => {
-    dbo.collection("events").find({
-        host: req.host
-    }).toArray((err, evt) => {
-        if (err) {
-            console.log(err)
-        }
-        return res.json({
-            success: true,
-            events: evt
-        })
 
-    })
-})
+// app.get("/hostevents", (req, res) => {
+//     dbo.collection("events").find({
+//         host: req.host
+//     }).toArray((err, evt) => {
+//         if (err) {
+//             console.log(err)
+//         }
+//         return res.json({
+//             success: true,
+//             events: evt
+//         })
 
-app.get("/userevents", (req, res) => {
-    dbo.collection("user").find({
-        username: req.username
-    }).toArray((err, evt) => {
-        if (err) {
-            console.log(err)
-        }
-        return res.json({
-            success: true,
-            events: evt
-        })
-    })
-})
+//     })
+// })
+
+// app.get("/userevents", (req, res) => {
+//     dbo.collection("user").find({
+//         username: req.username
+//     }).toArray((err, evt) => {
+//         if (err) {
+//             console.log(err)
+//         }
+//         return res.json({
+//             success: true,
+//             events: evt
+//         })
+//     })
+// })
 
 
 
@@ -169,104 +163,6 @@ app.get("/userevents", (req, res) => {
 /* =====================
 POST 
 ========================*/
-
-
-app.post("/login", upload.none(), async (req, res) => {
-    const givenPassword = req.body.password
-    const givenUsername = req.body.username
-
-    await dbo.collection("user").findOne({
-        username: givenUsername
-    }, async (err, user) => {
-        if (err) {
-            console.log(err)
-            return res.json({
-                success: false
-            })
-        }
-        if (!user) {
-            return res.json({
-                success: false
-            })
-        }
-
-        try {
-            if (await bcrypt.compare(givenPassword, user.password)) {
-                const sessionId = generateId()
-                sessions[sessionId] = givenUsername
-                res.cookie("sid", sessionId)
-
-                const hostId = user.hostId
-
-                return res.json({
-                    success: true,
-                    hostId: hostId
-                })
-
-            } else {
-                return res.json({
-                    success: false,
-                    msg: "Invalid username or password."
-                })
-            }
-        } catch (err) {
-            console.log(err)
-            return res.json({
-                success: false
-            })
-        }
-    })
-})
-
-/* changed to /profile from /host */
-app.post("/profile", upload.single("image"), async (req, res) => {
-    const {
-        title,
-        startDate,
-        startTime,
-        endDate,
-        endTime,
-        venue,
-        performer,
-        price,
-        hostId,
-    } = req.body
-
-
-    dbo.collection("events").insertOne({
-        title: title,
-        startDate: startDate,
-        startTime: startTime,
-        endDate: endDate,
-        endTime: endTime,
-        venue: venue,
-        performer: performer,
-        image: req.file.originalname,
-        price: price,
-        hostId: hostId,
-        seatsAvail: venueSeating(venue),
-        allDay: "false",
-        dateAdded: new Date()
-    })
-
-    /*here return send events to front end*/
-    // await dbo.collection("events").find({
-    //     hostId: hostId
-    // }).toArray((err, event) => {
-    //     if (err) {
-    //         console.log(err)
-    //         return res.status(400).json({
-    //             success: false
-    //         })
-    //     }
-        return res.json({
-            success: true,
-            // events: event
-        // })
-    })
-})
-
-
 app.post("/register", upload.none(), async (req, res) => {
     const {
         username,
@@ -316,16 +212,108 @@ app.post("/register", upload.none(), async (req, res) => {
 })
 
 
-// app.post('/update', upload.none(), (req, res) => { 
-//     console.log("request to /update") 
-//     let id = req.body.id.toString() 
-//     let desc = req.body.description 
-//     console.log("sent from client", desc, id) 
-//     dbo.collection('posts').updateOne( 
-//         { "_id": ObjectID(id) }, 
-//         { $set: { description: desc } }) 
-//     res.send("success") 
-// }) 
+
+app.post("/login", upload.none(), async (req, res) => {
+    const givenPassword = req.body.password
+    const givenUsername = req.body.username
+
+    await dbo.collection("user").findOne({
+        username: givenUsername
+    }, async (err, user) => {
+        if (err) {
+            console.log(err)
+            return res.json({
+                success: false
+            })
+        }
+        if (!user) {
+            return res.json({
+                success: false
+            })
+        }
+
+        try {
+            if (await bcrypt.compare(givenPassword, user.password)) {
+                const sessionId = generateId()
+                sessions[sessionId] = givenUsername
+                res.cookie("sid", sessionId)
+
+                const hostId = user.hostId
+
+                return res.json({
+                    success: true,
+                    hostId: hostId
+                })
+
+            } else {
+                return res.json({
+                    success: false,
+                    msg: "Invalid username or password."
+                })
+            }
+        } catch (err) {
+            console.log(err)
+            return res.json({
+                success: false
+            })
+        }
+    })
+})
+
+app.post("/profile", upload.single("image"), async (req, res) => {
+    const {
+        title,
+        startDate,
+        startTime,
+        endDate,
+        endTime,
+        venue,
+        performer,
+        price,
+        hostId,
+    } = req.body
+
+
+    dbo.collection("events").insertOne({
+        title: title,
+        startDate: startDate,
+        startTime: startTime,
+        endDate: endDate,
+        endTime: endTime,
+        venue: venue,
+        performer: performer,
+        image: req.file.originalname,
+        price: price,
+        hostId: hostId,
+        seatsAvail: venueSeating(venue),
+        allDay: "false",
+        dateAdded: new Date()
+    })
+
+    return res.json({
+        success: true
+    })
+})
+
+app.post("/delete", upload.single("image"), async (req, res) => {
+
+    const id = req.body.ids
+
+
+    await dbo.collection("events")
+        .findOneAndDelete({
+            _id: ObjectID(id)
+        }, (err, r) => {
+                if (err) {
+                    console.log(err)
+                }               
+            }          
+        )
+        return res.json({
+            success: true
+        })
+})
+
 
 
 app.post("/userevent", upload.none(), (req, res) => {

@@ -1,9 +1,14 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import EventsHistory from "./EventsHistory";
 import { getEventsAction } from "../actions/actions";
 import Host from "./Host";
+
+const changeCheckState = (id, events) => {
+  const ans = events.find(evt => evt._id === id);
+  ans.isChecked = !ans.isChecked;
+  return ans;
+};
 
 class Profile extends Component {
   constructor(props) {
@@ -11,35 +16,76 @@ class Profile extends Component {
 
     this.state = {
       showHistory: false,
-      showAddEventForm: false
+      showAddEventForm: false,
+      userEvents: null,
+      selectedEvent: null
     };
   }
 
-
-  handleEventsHistory = events => {
+  getEventsHistory = events => {
     this.props.getEventsHistory(events);
   };
 
+  getUserEvents = () => {
+    return this.props.events
+      .filter(
+        event =>
+          event.hostId
+            .toLowerCase()
+            .indexOf(this.props.hostId.toLowerCase()) !== -1
+      )
+      .map(
+        event => Object.assign(event, { isChecked: false })
+      );
+  };
 
   showEventHistory = async () => {
-    const response = await fetch("/profile")
-    const body = await response.text()
-    const parser = JSON.parse(body)
-    this.handleEventsHistory(parser)
-
-    this.setState({ 
-      showHistory: true, 
-      showAddEvent: false 
+    const response = await fetch("/profile");
+    const body = await response.text();
+    const parser = JSON.parse(body);
+    this.getEventsHistory(parser);
+    this.setState({
+      showHistory: true,
+      showAddEvent: false,
+      userEvents: this.getUserEvents()
     });
   };
+
+  handleCheckedInput = event => {
+    const selValue = event.target.value;
+    const events = this.state.userEvents;
+    this.setState({
+      selectedEvent: changeCheckState(selValue, events)
+    });
+  };
+
+  getCheckedEvents = () => {
+    const checked = this.state.userEvents.filter(
+      event => event.isChecked === true
+    ).map(e => e._id)
+    return checked
+  };
+
+  deleteEvent = async () => {
+    // window.confirm("Delete event(s) ?")
+    // this.getCheckedEvents();
+
+    const data = new FormData();
+    data.append("ids", this.getCheckedEvents());
+    const response = await fetch("/delete", { method: "POST", body: data });
+    const body = await response.text();
+    const parser = JSON.parse(body);
+    if (parser.success) {
+      this.showEventHistory()
+  };
+  }
 
   showAddEventForm = () => {
-    this.setState({ 
-      showHistory: false, 
-      showAddEvent: true 
+    this.setState({
+      showHistory: false,
+      showAddEvent: true
     });
   };
-
 
 
   render() {
@@ -55,29 +101,29 @@ class Profile extends Component {
             </li>
             <li>
               <div id="add-event-btn" onClick={this.showAddEventForm}>
-              Add Event
+                Add Event
               </div>
             </li>
             <li>
-                <div id="delete-event-btn">Delete Event</div>
+              <div onClick={this.deleteEvent} id="delete-event-btn">
+                Delete Event
+              </div>
             </li>
             <li>
-                <div id="update-event-btn">Update Event</div>
+              <div id="update-event-btn">Update Event</div>
             </li>
           </ul>
           <div className="add-event-container"></div>
         </div>
         <div className="profile-body">
           {this.state.showHistory && (
-          <EventsHistory
-            events={this.props.events}
-            hostId={this.props.hostId}
-          />
+            <EventsHistory
+              handleCheckedInput={this.handleCheckedInput}
+              userEvents={this.state.userEvents}
+              hostId={this.props.hostId}
+            />
           )}
-          {this.state.showAddEvent && (
-          <Host />
-          )}
-
+          {this.state.showAddEvent && <Host />}
         </div>
       </div>
     );
@@ -92,9 +138,10 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return{
+  return {
     getEventsHistory: events => dispatch(getEventsAction(events))
-  }
-}
- 
+  };
+};
+
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+// export default connect(mapStateToProps)(Profile);
