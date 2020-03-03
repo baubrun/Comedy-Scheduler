@@ -4,11 +4,7 @@ import EventsHistory from "./EventsHistory";
 import { getEventsAction } from "../actions/actions";
 import Host from "./Host";
 
-const changeCheckState = (id, events) => {
-  const ans = events.find(evt => evt._id === id);
-  ans.isChecked = !ans.isChecked;
-  return ans;
-};
+
 
 class Profile extends Component {
   constructor(props) {
@@ -51,11 +47,18 @@ class Profile extends Component {
     });
   };
 
+  changeCheckState = (id, events) => {
+    const ans = events.find(evt => evt._id === id);
+    ans.isChecked = !ans.isChecked;
+    return ans;
+  };
+  
+
   handleCheckedInput = event => {
     const selValue = event.target.value;
     const events = this.state.userEvents;
     this.setState({
-      selectedEvent: changeCheckState(selValue, events)
+      selectedEvent: this.changeCheckState(selValue, events)
     });
   };
 

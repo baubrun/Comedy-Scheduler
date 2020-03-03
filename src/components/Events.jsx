@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getEventsAction } from "../actions/actions";
 import CalendarView from "./CalendarView";
-import options from "../data/data.js";
 import moment from "moment";
 
 
@@ -25,7 +24,7 @@ export const Event = props => {
           <Link to={`/event/${title}`}>{title}</Link>
         </li>
         <li>Start: {moment(`${startDate} ${startTime}`).format("DD-MM-YYYY HH:mm")}h</li>
-        <li>Venue: {venue}</li>
+        {/* <li>Venue: {venue}</li> */}
         <li>Performer: {performer}</li>
         <li className="seatsAvail">
           Seats Available:{" "}
@@ -108,7 +107,7 @@ class Events extends Component {
           <div className="venue-select">
             <h2>{this.state.venue ? this.state.venue : "CHOOSE A VENUE"}</h2>
             <select onChange={this.handleVenueChange} name="venue">
-              <option value=""></option>
+              <option value="">CHOOSE A VENUE</option>
               <option value="LE FOU FOU">LE FOU FOU</option>
               <option value="JOKES BLAGUES">JOKES BLAGUES</option>
               <option value="RIRE NOW">RIRE NOW</option>
@@ -129,11 +128,6 @@ class Events extends Component {
             />
           </div>
         </div>
-        {/* <div className="add-event-container">
-          <div className="add-event-btn" >
-            <Link id="add-event-btn" to="/host">Add Event</Link>
-          </div>
-        </div> */}
         <div className="events-body">
           {this.state.listViewShow &&
             this.props.events

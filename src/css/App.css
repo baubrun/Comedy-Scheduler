@@ -3,7 +3,7 @@
 @import "./events.css";
 @import "./profile.css";
 @import "./calendar.css";
-
+@import "./cart-event-detail.css";
 
 
 a {
@@ -13,8 +13,6 @@ a {
 li {
   list-style-type: none;
 }
-
-
 
 body {
   font-family: "Roboto";
@@ -167,6 +165,12 @@ color: black}
   opacity: 0.5;
 }
 
+
+.cart-length{
+  background-color: #663A2B;
+  color: white
+}
+
 .cart:hover {
   opacity: 1;
 }
@@ -193,7 +197,6 @@ color: black}
 
 .dropdown-content li:hover {
   background-color: #663A2B;
-  /* background-color:rgb(224, 151, 33); */
 }
 
 .dropdown-content li {

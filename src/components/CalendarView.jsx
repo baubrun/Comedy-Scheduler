@@ -35,8 +35,7 @@ const formats = {
 
 
 const DateTimeFormatter = (date, time) => {
-  // return moment(`${date} ${time}`).format("YYYY-MM-DD HH:mm").format()
-  return  moment(`${date} ${time}`).format()
+  return moment(`${date} ${time}`).format()
 
 }
 class CalendarView extends Component {
@@ -113,7 +112,6 @@ class CalendarView extends Component {
           eventPropGetter={eventStyleGetter}
           onSelectEvent={event => alert(event.title)}
           onSelectSlot={this.handleSelect}
-          // onSelectSlot={this.renderHostForm}
           culture={this.state.culture}
         />
       </div>

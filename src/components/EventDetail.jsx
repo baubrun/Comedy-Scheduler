@@ -1,47 +1,61 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { AddedToCart } from "./RenderCart";
 import { addToCartAction } from "../actions/actions";
-import options from "../data/data.js"
-
+import moment from "moment";
+import { Link } from "react-router-dom";
 
 const EventDetail = props => {
+
+  const reserveTicket = () => {
+    const rsvBtn = document.getElementsByClassName("reserve-btn")
+    rsvBtn.disabled = true
+
+  }
+
+
   const dispatchAddToCart = () => {
     props.addToCart(props.event);
   };
 
   const {
     title,
-    date,
-    start,
-    location,
+    venue,
+    startDate,
     performer,
-    seatsAvail,
+    startTime,
+    image,
     price
   } = props.event;
 
   return (
     <div>
-      <ul className="event" key={title}>
-        <li>Title: {title}</li>
-        <li>Date: {new Date(start).toLocaleString("en-GB", options)}</li>
-        {/* <li>Start: {start}</li> */}
-        <li>Location: {location}</li>
-        <li>Performer: {performer}</li>
-        {/* {replace seats avail by icons} */}
-        <li>Seats Available: {seatsAvail}</li>
-        <li>Price: ${price}</li>
-        {/* <li className="select-show-btn">
-          <Link to="/checkout">Select</Link>
-        </li> */}
-        <li>
-          {/* <AddedToCart addToCart={dispatchAddToCart}/> */}
-          <button className="reserve-btn" onClick={dispatchAddToCart}>
-            Reserve
-          </button>
-        </li>
-      </ul>
+      <div className="event-detail-header">
+      <Link to="/events">RETURN TO EVENTS</Link>
+        <div></div>{title}
+      </div>
+      <div className="event-detail-body">
+        <ul className="event" key={title}>
+          <li>Title: {title}</li>
+          <li>
+            Start:{" "}
+            {moment(`${startDate} ${startTime}`).format("DD-MM-YYYY HH:mm")}h
+          </li>
+          <li>Venue: {venue}</li>
+          <li>Performer: {performer}</li>
+          <li>Price: ${price}</li>
+          <li>
+            <img id="performer-img" src={`../../${image}`} alt="" />
+          </li>
+
+          <li>
+            <Link to="/cart">
+            <button className="reserve-btn" onClick={dispatchAddToCart}>
+              Reserve
+            </button>
+            </Link>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };
@@ -51,12 +65,7 @@ const RenderEvent = props => {
   const selectedTitle = props.events.find(event => {
     return event.title === eventTitle;
   });
-  return (
-    <EventDetail
-      event={selectedTitle}
-      addToCart={props.addToCart}
-    />
-  );
+  return <EventDetail event={selectedTitle} addToCart={props.addToCart} />;
 };
 
 const mapStateToProps = state => {

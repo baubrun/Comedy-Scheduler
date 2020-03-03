@@ -20,35 +20,44 @@ class NavBar extends Component {
           </div>
         </div>
         {this.props.loggedIn && (
-        <div className="dropdown">
+          <div className="dropdown">
             <img id="dropdown-img" src="menu-grid.png" alt="" />
-          <div className="dropdown-content">
-            <ul>
-              <li>
-                <Link to="/profile">Profile</Link>
-              </li>
-              <li>
-                <Link to="/events">Tickets</Link>
-              </li>
-              <li>
-                <Link to="/host">Host an event</Link>
-              </li>
-              <li>
-                <Link to="/" onClick={this.dispatchLogout}>
-                  Logout
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-         )} 
-        {this.props.cart.length > 0 && (
-          <div className="cart">
-            <Link to="/cart">
-              <img src="cart-arrow-blk-wht.png" alt=""></img>
-            </Link>
+            <div className="dropdown-content">
+              <ul>
+                <li>
+                  <Link to="/profile">Profile</Link>
+                </li>
+                <li>
+                  <Link to="/events">Tickets</Link>
+                </li>
+                <li>
+                  <Link to="/host">Host an event</Link>
+                </li>
+                <li>
+                  <Link to="/" onClick={this.dispatchLogout}>
+                    Logout
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
         )}
+        {
+          // this.props.cart.length > 0 && (
+          // this.props.cart
+          <div className="cart">
+            <Link to="/cart">
+              {/* <img src="cart-arrow-blk-wht.png" alt=""></img> */}
+              <img src="ticket-blk-white.png" alt=""></img>
+              {this.props.cart.length > 0 ? (
+                <div className="cart-length">{this.props.cart.length}</div>
+              ) : (
+                ""
+              )}
+            </Link>
+          </div>
+          //  )
+        }
       </div>
     );
   }

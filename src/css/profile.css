@@ -73,3 +73,44 @@
 #add-event-btn  {
     color: white;
 }
+
+
+
+/*================
+
+Events history       
+
+==================*/
+
+.checkbox {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+} 
+
+.checkbox-input {
+    display: none;
+}
+
+#custom-checkbox {
+    align-items: center;
+    border: 2px solid  rgb(224, 151, 33);
+    border-radius: 5px;
+    display: flex;
+    flex-shrink: 0;
+    height: 1.25em;
+    justify-content: center;
+    margin-right: 5px;
+    width: 1.25em;
+}
+
+
+#custom-checkbox::after {
+    color: white;
+    content: "\2714";
+}
+
+.checkbox-input:checked + #custom-checkbox {
+   background-color: rgb(224, 151, 33);
+
+} 
