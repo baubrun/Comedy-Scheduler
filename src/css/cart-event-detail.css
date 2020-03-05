@@ -1,4 +1,4 @@
-.cart-length{
+.cart-length {
     align-items: center;
     border-radius: 50%;
     margin-bottom: 2px;
@@ -8,8 +8,8 @@
 }
 
 .cart-header,
-.event-detail-header  
-{
+.checkout-header,
+.event-detail-header {
     background-color: #663A2B;
     display: flex;
     color: white;
@@ -17,27 +17,35 @@
 }
 
 .cart-header a,
-.event-detail-header a 
-{
-  color: rgb(224, 151, 33);
-  margin-right: 37%;
-}    
+.event-detail-header a {
+    color: rgb(224, 151, 33);
+    margin-right: 37%;
+}
 
 .cart-header a:hover,
-.event-detail-header a:hover 
-{
+.event-detail-header a:hover {
     color: white;
 }
 
 .cart-body {
     display: flex;
     flex-flow: row wrap;
+    padding: 5px 5px;
+    width: 100%;
 }
 
-.cart-body h1{
+.cart-body h1 {
     margin-top: 10px;
     text-align: left;
     width: 100%;
+}
+
+.cart-body tbody td {
+    padding: 10px;
+}
+
+.cart-body table {
+    width: 50%;
 }
 
 .cart-item {
@@ -46,19 +54,51 @@
     width: 100%;
 }
 
+#checkout-btn {
+    border: none;
+    background-color: rgb(29, 25, 25);
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    margin: 10px 0;
+    opacity: 0.7;
+    padding: 10px 10px;
+    margin-left: 50%;
+}
 
-.cart-body tbody td {
-    padding: 10px;
+#checkout-btn:hover {
+    opacity: 1;
+}
+
+.remove-btn {
+    cursor: pointer;
+}
+
+
+.reserve-btn {
+    background-color: rgb(224, 151, 33);
+    border: none;
+    border-radius: 5px;
+    color: whitesmoke;
+    cursor: pointer;
+    padding: 5px;
+}
+
+#reserve-btn,
+#host-btn {
+    justify-content: center;
+    color: whitesmoke;
 }
 
 .total {
     display: flex;
     flex-flow: row wrap;
-    border: 1px solid black;
-    width: 40%;
+    border: 1px solid rgb(224, 151, 33);
+    padding-bottom: 10px;
+    width: 50%;
 }
 
 .total li {
-    padding: 2px;
+    padding: 5px 2px;
     width: 50%;
 }

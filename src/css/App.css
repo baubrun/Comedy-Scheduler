@@ -4,6 +4,7 @@
 @import "./profile.css";
 @import "./calendar.css";
 @import "./cart-event-detail.css";
+@import "./checkout-confirmation.css";
 
 
 a {
@@ -59,18 +60,6 @@ Home Header
 }
 
 
-.reserve-btn{
-  background-color: rgb(224, 151, 33);
-  border-radius: 5px;
-  color: whitesmoke;
-  cursor: pointer;
-  padding: 5px;
-}
-
-#reserve-btn, #host-btn {
-  justify-content: center;
-  color: whitesmoke;
-}
 
 .host-btn{
   background-color: #663A2B;
@@ -140,7 +129,7 @@ NavBar
 .dropdown img {
   width: 40px;
   height: 40px;
-  opacity: 0.5;
+  opacity: 0.7;
 
 }
 
@@ -162,17 +151,25 @@ color: black}
 
 .cart {
   margin-left: auto;
-  opacity: 0.5;
+  opacity: 1;
+  position: relative;
+  margin-right: 10px;
 }
 
 
 .cart-length{
   background-color: #663A2B;
-  color: white
+  border: 1px solid  rgb(224, 151, 33); 
+  border-radius: 50%;
+  color: white;
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  padding: 5px 5px;
 }
 
 .cart:hover {
-  opacity: 1;
+  opacity: 0.8;
 }
 
 

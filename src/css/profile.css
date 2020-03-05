@@ -1,6 +1,7 @@
 
 
-#add-event-btn {
+#add-event-btn,
+#remove-btn {
     background-color: #663A2B ;
 }
 
@@ -70,8 +71,23 @@
     width: 100%;
 }
 
-#add-event-btn  {
+#add-event-btn {
     color: white;
+}
+
+
+#remove-btn  {
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    opacity: 0.7;
+    padding: 10px 5px;
+
+}
+
+#remove-btn:hover  {
+opacity: 1;
 }
 
 

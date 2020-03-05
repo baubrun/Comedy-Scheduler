@@ -9,10 +9,10 @@ import Profile from "./components/Profile"
 import Login from "./components/Login"
 import NavBar from "./components/NavBar"
 import Checkout from "./components/Checkout"
-import Confirm from "./components/Confirm"
+import Confirmation from "./components/Confirmation"
 import RenderCart from "./components/RenderCart"
-import { getEventsAction } from "./actions/actions";
-import { connect } from "react-redux";
+// import { getEventsAction } from "./actions/actions";
+// import { connect } from "react-redux";
 
 
 class App extends Component {
@@ -46,7 +46,7 @@ class App extends Component {
         <Route exact={true} path="/event/:title" component={RenderEvent} />
         <Route exact={true} path="/profile" component={Profile} />
         <Route exact={true} path="/checkout" component={Checkout} />
-        <Route exact={true} path="/confirm" component={Confirm} />
+        <Route exact={true} path="/confirm" component={Confirmation} />
         <Route exact={true} path="/cart" component={RenderCart} />
         </BrowserRouter>
       </div>

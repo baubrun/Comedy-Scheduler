@@ -116,7 +116,6 @@ class Profile extends Component {
               <div id="update-event-btn">Update Event</div>
             </li>
           </ul>
-          <div className="add-event-container"></div>
         </div>
         <div className="profile-body">
           {this.state.showHistory && (

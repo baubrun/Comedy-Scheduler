@@ -6,11 +6,6 @@ import { Link } from "react-router-dom";
 
 const EventDetail = props => {
 
-  const reserveTicket = () => {
-    const rsvBtn = document.getElementsByClassName("reserve-btn")
-    rsvBtn.disabled = true
-
-  }
 
 
   const dispatchAddToCart = () => {

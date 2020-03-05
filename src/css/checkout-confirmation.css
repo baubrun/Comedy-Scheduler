@@ -1,0 +1,91 @@
+.checkout-header {
+    /* width: 100%; */
+}
+
+
+.checkout-body{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    padding-top: 10px;
+    /* width: 100%; */
+}
+
+.checkout-flex-container {
+    border: 1px solid rgb(224, 151, 33);
+    display: flex;
+    margin: 5px;
+    width: 100%;
+}
+
+.checkout-form-container {
+    /* display: flex; */
+    /* flex-flow: row wrap ; */
+    /* justify-content: center; */
+}
+
+.checkout-form-container label {
+    flex: 1 1 120px;
+   margin-right: 50px;
+}
+
+.checkout-form-container input {
+    flex: 3 1 261px;
+}
+
+.checkout-form-container input[type=text]{
+    width: 100%;
+}
+
+.checkout-form-container li {
+    display: flex;
+    margin: 10px;
+}
+
+.cc {
+    flex: 1 1 120px;
+    /* margin-right: 50px; */
+
+}
+
+.exp-cvv {
+    /* display: inline-flex; */
+    width: 50%;
+}
+
+
+.exp-cvv input[type=text] {
+    margin-right: 20px;
+    width: 80px;
+}
+
+
+
+.items-summary li{
+    border-top: 1px solid #663A2B;
+}
+
+.process-btn {
+    background-color: #663A2B;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    opacity: 0.7;
+    padding: 10px 5px;
+}
+
+.process-btn:hover {
+    opacity: 1;
+}
+
+.total-checkout {
+    border: 1px solid #663A2B;
+    margin: 10px;
+    width: 100%;
+}
+
+.total-checkout h2 {
+    text-align: center;
+}
+

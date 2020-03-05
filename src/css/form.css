@@ -2,15 +2,6 @@
 Form 
 ===============*/
 
-.checkout-form {
-  display: flex;
-  flex-flow: row wrap;
-}
-
-
-.checkout-form label {
-  flex: 1 1 120px;
-}
 
 
 
@@ -117,7 +108,7 @@ Host
 .host-flex-container {
   display: flex;
   flex-flow: row wrap;
-  margin: 20px 0 0  20%;
+  margin: 20px 0 0 20%;
   width: 60%;
 }
 

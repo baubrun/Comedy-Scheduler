@@ -26,9 +26,8 @@ app.use("/", express.static("uploads"))
 
 
 MongoClient.connect(
-    process.env.DB_URI,
-    // "mongodb://localhost:27017/Comedy-hub", 
-    {
+    // process.env.DB_URI,
+    "mongodb://localhost:27017/Comedy-hub", {
         useNewUrlParser: true,
         useUnifiedTopology: true
     }).then(client => {
@@ -307,29 +306,51 @@ app.post("/delete", upload.single("image"), async (req, res) => {
         .findOneAndDelete({
             _id: ObjectID(id)
         }, (err, r) => {
-                if (err) {
-                    console.log(err)
-                }               
-            }          
-        )
-        return res.json({
-            success: true
+            if (err) {
+                console.log(err)
+            }
         })
-})
-
-
-
-app.post("/userevent", upload.none(), (req, res) => {
-    const username = req.body.username.toString()
-    const event = req.body.event
-    dbo.collection("user").updateOne({
-        "username": username
-    }, {
-        $set: {
-            event: event
-        }
+    return res.json({
+        success: true
     })
 })
+
+
+
+
+
+
+
+app.post("/checkout", upload.none(), (req, res) => {
+    const {
+        firstName,
+        lastName,
+        email,
+        itemsBought,
+        total
+    } = req.body
+
+    dbo.collection("purchases").insertOne({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        itemsBought: itemsBought,
+        total: total
+    
+    })
+})
+
+// app.post("/userevent", upload.none(), (req, res) => {
+//     const username = req.body.username.toString()
+//     const event = req.body.event
+//     dbo.collection("user").updateOne({
+//         "username": username
+//     }, {
+//         $set: {
+//             event: event
+//         }
+//     })
+// })
 
 
 

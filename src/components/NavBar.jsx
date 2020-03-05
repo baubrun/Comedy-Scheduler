@@ -43,14 +43,11 @@ class NavBar extends Component {
           </div>
         )}
         {
-          // this.props.cart.length > 0 && (
-          // this.props.cart
           <div className="cart">
             <Link to="/cart">
-              {/* <img src="cart-arrow-blk-wht.png" alt=""></img> */}
               <img src="ticket-blk-white.png" alt=""></img>
               {this.props.cart.length > 0 ? (
-                <div className="cart-length">{this.props.cart.length}</div>
+                <span className="cart-length">{this.props.cart.length}</span>
               ) : (
                 ""
               )}
