@@ -12,7 +12,6 @@ const validator = require("./validators")
 const SALT_FACTOR = 10
 let dbo = undefined
 let sessions = {}
-const assert = require("assert")
 
 
 
@@ -26,8 +25,9 @@ app.use("/", express.static("uploads"))
 
 
 MongoClient.connect(
-    // process.env.DB_URI,
-    "mongodb://localhost:27017/Comedy-hub", {
+    process.env.DB_URI,
+    // "mongodb://localhost:27017/Comedy-hub", 
+    {
         useNewUrlParser: true,
         useUnifiedTopology: true
     }).then(client => {
@@ -109,15 +109,6 @@ GET
 ====================*/
 
 
-// app.get("/events", async (req, res) => {
-//     dbo.collection("events").find({}).toArray((err, evt) => {
-//         if (err) {
-//             console.log(err)
-//             return res.send("fail")
-//         }
-//         return res.json(evt)
-//     })
-
 app.get(["/events", "/profile"], async (req, res) => {
     dbo.collection("events").find({}).toArray((err, evt) => {
         if (err) {
@@ -159,6 +150,15 @@ app.get(["/events", "/profile"], async (req, res) => {
 //     })
 // })
 
+app.get("/confirmation", async (req, res) => {
+    dbo.collection("purchases").find({}).toArray((err, evt) => {
+        if (err) {
+            console.log(err)
+            return res.send("fail")
+        }
+        return res.json(evt)
+    })
+})
 
 
 
@@ -318,26 +318,37 @@ app.post("/delete", upload.single("image"), async (req, res) => {
 
 
 
-
-
-
 app.post("/checkout", upload.none(), (req, res) => {
     const {
         firstName,
         lastName,
+        address,
         email,
-        itemsBought,
-        total
+        city,
+        total,
+        cardName,
+        cardNumber,
+        exp,
+        cvv,
+        itemsBought
     } = req.body
 
     dbo.collection("purchases").insertOne({
         firstName: firstName,
         lastName: lastName,
+        address: address,
         email: email,
-        itemsBought: itemsBought,
-        total: total
+        city: city,
+        total: total,
+        cardName: cardName,
+        cardNumber: cardNumber,
+        exp: exp,
+        cvv: cvv,
+        itemsBought: itemsBought
+        
     
     })
+    return res.status(200).json({success: true})
 })
 
 // app.post("/userevent", upload.none(), (req, res) => {

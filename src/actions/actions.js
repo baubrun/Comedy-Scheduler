@@ -5,9 +5,11 @@ import {
     ADDED_TO_CART,
     DELETED_FROM_CART,
     GOT_CART,
-    GOT_ITEMS_BOUGHT
+    GOT_ITEMS_BOUGHT,
+    CONFIRMED_CHECKOUT,
+    EMPTIED_CART,
+    RESET_CHECKOUT
 } from "./actionTypes"
-
 
 
 
@@ -15,8 +17,6 @@ export const getEventsAction = events => ({
     type: GOT_EVENTS,
     payload: events
 })
-
-
 
 export const logInAction = hostId => ({
     type: LOGGED_IN,
@@ -26,7 +26,6 @@ export const logInAction = hostId => ({
     }
 })
 
-
 export const logOutAction = () => ({
     type: LOGGED_OUT,
     payload: {
@@ -34,7 +33,6 @@ export const logOutAction = () => ({
         hostId: ""    
     }
 })
-
 
 export const getCartAction = items => ({
     type: GOT_CART,
@@ -47,7 +45,6 @@ export const getItemsBoughtAction = items => ({
 })
 
 
-
 export const addToCartAction = item => ({
     type: ADDED_TO_CART,
     payload: item
@@ -57,3 +54,21 @@ export const deleteFromCartAction = itemIdx => ({
     type: DELETED_FROM_CART,
     payload: itemIdx
 })
+
+export const emptyCartAction = () => ({
+    type: EMPTIED_CART,
+    payload: []
+})
+
+export const confirmCheckoutAction = () => ({
+    type: CONFIRMED_CHECKOUT,
+    payload: true
+})
+
+
+export const resetCheckoutAction = () => ({
+    type: RESET_CHECKOUT,
+    payload: false
+})
+
+

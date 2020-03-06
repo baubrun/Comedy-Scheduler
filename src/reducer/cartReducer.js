@@ -1,6 +1,7 @@
 import {ADDED_TO_CART} from "../actions/actionTypes"
 import {DELETED_FROM_CART} from "../actions/actionTypes"
 import {GOT_CART} from "../actions/actionTypes"
+import {EMPTIED_CART} from "../actions/actionTypes"
 
 
 const cartReducer = (state = [], action) => {
@@ -14,7 +15,8 @@ const cartReducer = (state = [], action) => {
                 ...state.slice(0, action.payload),
                 ...state.slice(action.payload + 1)
         ]
-        // return [...state]
+        case EMPTIED_CART:
+            return action.payload
         default:
             return state
     }

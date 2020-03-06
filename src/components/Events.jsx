@@ -24,7 +24,6 @@ export const Event = props => {
           <Link to={`/event/${title}`}>{title}</Link>
         </li>
         <li>Start: {moment(`${startDate} ${startTime}`).format("DD-MM-YYYY HH:mm")}h</li>
-        {/* <li>Venue: {venue}</li> */}
         <li>Performer: {performer}</li>
         <li className="seatsAvail">
           Seats Available:{" "}
@@ -155,4 +154,3 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Events);
-// export default connect(mapStateToProps, null)(Events);

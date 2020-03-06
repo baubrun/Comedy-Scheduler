@@ -45,7 +45,18 @@
 .cc {
     flex: 1 1 120px;
     /* margin-right: 50px; */
+}
 
+.confirm tbody td {
+    border-bottom: 1px solid  rgb(224, 151, 33);
+    padding: 10px;
+    text-align: center;
+}
+
+
+.confirm-num{
+    color: #663A2B;
+    font-size: 1.2em;
 }
 
 .exp-cvv {

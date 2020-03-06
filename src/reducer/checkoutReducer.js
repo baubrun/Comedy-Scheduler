@@ -4,10 +4,14 @@ import {
 
 
 const checkoutReducer = (state = [], action) => {
-    if (action.type === GOT_ITEMS_BOUGHT){
-        return action.payload
+    switch (action.type) {
+        case GOT_ITEMS_BOUGHT:
+            return action.payload
+        default:
+            return state
     }
-    return state
 }
+
+
 
 export default checkoutReducer

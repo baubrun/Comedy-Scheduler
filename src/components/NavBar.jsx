@@ -43,6 +43,7 @@ class NavBar extends Component {
           </div>
         )}
         {
+          
           <div className="cart">
             <Link to="/cart">
               <img src="ticket-blk-white.png" alt=""></img>
@@ -64,7 +65,8 @@ const mapStateToProps = state => {
   return {
     loggedIn: state.auth.loggedIn,
     hostId: state.auth.hostId,
-    cart: state.cart
+    cart: state.cart,
+    checkedOut: state.checkedOut
   };
 };
 

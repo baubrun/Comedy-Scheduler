@@ -1,23 +1,65 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
+import { confirmCheckoutAction } from "../actions/actions";
 
-const Confirmation = props => {
-  return (
-    <div className="confirmation body">
-      {this.props.checkout.map((item, idx) => (
-        <ul className="items-summary" key={idx}>
-          <li>{item.title}</li>
-          <li>{item.performer}</li>
-          <li>{item.venue}</li>
-          <li>{item.date}</li>
-        </ul>
-      ))}
-    </div>
-  );
-};
+class Confirmation extends Component {
+  generateConfirmId = () => {
+    return "CB3" + Math.floor(Math.random() * 1000);
+  };
+
+  render() {
+    return (
+      <div>
+        {this.props.checkout.length > 0 ? (
+          <table className="confirm">
+            <thead>
+              <tr>
+                <th>Event</th>
+                <th>Performer</th>
+                <th>Venue</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th># of tickets</th>
+              </tr>
+            </thead>
+            <tfoot className="confirm-num">
+              <tr>
+                <td>Confirmation #: {this.generateConfirmId()}</td>
+              </tr>
+            </tfoot>
+            <tbody>
+              {this.props.checkout.map((item, idx) => {
+                return (
+                  <tr key={idx}>
+                    <td>{item.title}</td>
+                    <td>{item.performer}</td>
+                    <td>{item.venue}</td>
+                    <td>{item.startDate}</td>
+                    <td>{item.startTime}</td>
+                    <td>{item.qty}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        ) : (
+          <h1>Purchase a ticket!</h1>
+        )}
+      </div>
+    );
+  }
+}
 
 const mapStateToProps = state => {
-  return { checkout: state.checkout };
+  return {
+    checkout: state.checkout
+  };
 };
 
-export default connect(mapStateToProps)(Confirmation);
+const mapDispatchToProps = dispatch => {
+  return {
+    confirmCheckout: () => dispatch(confirmCheckoutAction())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Confirmation);

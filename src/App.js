@@ -11,26 +11,10 @@ import NavBar from "./components/NavBar"
 import Checkout from "./components/Checkout"
 import Confirmation from "./components/Confirmation"
 import RenderCart from "./components/RenderCart"
-// import { getEventsAction } from "./actions/actions";
-// import { connect } from "react-redux";
 
 
 class App extends Component {
 
-  // handleGetEvents = events => {
-  //   this.props.getEvents(events);
-  // };
-
-  // fetchData = async () => {
-  //   const response = await fetch("/events");
-  //   const body = await response.text();
-  //   const parsed = JSON.parse(body);
-  //   this.handleGetEvents(parsed);
-  // };
-
-  // componentDidMount() {
-  //   this.fetchData();
-  // }
 
 
   render() {
@@ -46,7 +30,7 @@ class App extends Component {
         <Route exact={true} path="/event/:title" component={RenderEvent} />
         <Route exact={true} path="/profile" component={Profile} />
         <Route exact={true} path="/checkout" component={Checkout} />
-        <Route exact={true} path="/confirm" component={Confirmation} />
+        <Route exact={true} path="/confirmation" component={Confirmation} />
         <Route exact={true} path="/cart" component={RenderCart} />
         </BrowserRouter>
       </div>
@@ -54,17 +38,6 @@ class App extends Component {
   }
 }
 
-// const mapStateToProps = state => {
-//   return { events: state.events };
-// };
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     getEvents: events => dispatch(getEventsAction(events))
-//   };
-// };
-
-// export default connect(mapStateToProps, mapDispatchToProps)(App);
 
 export default App;
 
