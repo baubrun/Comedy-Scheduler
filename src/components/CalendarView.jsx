@@ -3,7 +3,6 @@ import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { connect } from "react-redux";
-import Host from "./Host"
 import 'moment/locale/en-gb';
 
 const allViews = Object.keys(Views).map(k => Views[k]);
@@ -85,7 +84,7 @@ class CalendarView extends Component {
     }
   };
 
-  /* try to pass location and title for Host component below */
+  /* try to pass location and title for AddEvent component below */
   //   handleSelect = ({start, end}) => {
   //       this.setState({
   //     events: [...this.state.events, { start, end}]

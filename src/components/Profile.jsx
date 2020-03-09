@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import EventsHistory from "./EventsHistory";
 import { getEventsAction } from "../actions/actions";
-import Host from "./Host";
-
-
+import AddEvent from "./AddEvent";
+import { SeatsAvailable } from "./SeatsAvailable";
+import UpdateEvent from "./UpdateEvent";
 
 class Profile extends Component {
   constructor(props) {
@@ -13,8 +13,11 @@ class Profile extends Component {
     this.state = {
       showHistory: false,
       showAddEventForm: false,
+      showUpdateEvent: false,
       userEvents: null,
-      selectedEvent: null
+      selectedEvent: [],
+      // updatedCheckedId: "",
+      selectedOption: ""
     };
   }
 
@@ -23,16 +26,25 @@ class Profile extends Component {
   };
 
   getUserEvents = () => {
-    return this.props.events
-      .filter(
-        event =>
-          event.hostId
-            .toLowerCase()
-            .indexOf(this.props.hostId.toLowerCase()) !== -1
-      )
-      .map(
-        event => Object.assign(event, { isChecked: false })
-      );
+    return this.props.events.filter(
+      event =>
+        event.hostId.toLowerCase().indexOf(this.props.hostId.toLowerCase()) !==
+        -1
+    );
+  };
+
+  getSelectedEvent = () => {
+    const event = this.state.userEvents.find(
+      evt => evt._id === this.state.selectedOption
+    );
+
+    return event;
+  };
+
+  handleOptionChange = event => {
+    this.setState({
+      selectedOption: event.target.value
+    });
   };
 
   showEventHistory = async () => {
@@ -43,53 +55,44 @@ class Profile extends Component {
     this.setState({
       showHistory: true,
       showAddEvent: false,
+      showUpdateEvent: false,
       userEvents: this.getUserEvents()
     });
   };
 
-  changeCheckState = (id, events) => {
-    const ans = events.find(evt => evt._id === id);
-    ans.isChecked = !ans.isChecked;
-    return ans;
-  };
-  
-
-  handleCheckedInput = event => {
-    const selValue = event.target.value;
-    const events = this.state.userEvents;
-    this.setState({
-      selectedEvent: this.changeCheckState(selValue, events)
-    });
-  };
-
-  getCheckedEvents = () => {
-    const checked = this.state.userEvents.filter(
-      event => event.isChecked === true
-    ).map(e => e._id)
-    return checked
-  };
-
   deleteEvent = async () => {
     // window.confirm("Delete event(s) ?")
-    // this.getCheckedEvents();
+    // this.getSelectedEvent();
 
     const data = new FormData();
-    data.append("ids", this.getCheckedEvents());
-    const response = await fetch("/delete", { method: "POST", body: data });
+    data.append("id", this.state.selectedOption);
+    const response = await fetch("/deleteEvents", {
+      method: "POST",
+      body: data
+    });
     const body = await response.text();
     const parser = JSON.parse(body);
     if (parser.success) {
-      this.showEventHistory()
+      this.showEventHistory();
+    }
   };
-  }
 
   showAddEventForm = () => {
     this.setState({
       showHistory: false,
-      showAddEvent: true
+      showAddEvent: true,
+      showUpdateEvent: false
     });
   };
 
+  showUpdateEventForm = () => {
+    this.setState({
+      selectedEvent: this.getSelectedEvent(),
+      showHistory: false,
+      showAddEvent: false,
+      showUpdateEvent: true
+    });
+  };
 
   render() {
     return (
@@ -108,24 +111,34 @@ class Profile extends Component {
               </div>
             </li>
             <li>
-              <div onClick={this.deleteEvent} id="delete-event-btn">
+              <div id="delete-event-btn" onClick={this.deleteEvent}>
                 Delete Event
               </div>
             </li>
             <li>
-              <div id="update-event-btn">Update Event</div>
+              <div id="update-event-btn" onClick={this.showUpdateEventForm}>
+                Update Event
+              </div>
             </li>
           </ul>
         </div>
         <div className="profile-body">
+          <SeatsAvailable />
           {this.state.showHistory && (
             <EventsHistory
-              handleCheckedInput={this.handleCheckedInput}
               userEvents={this.state.userEvents}
               hostId={this.props.hostId}
+              handleOptionChange={this.handleOptionChange}
+              selectedOption={this.state.selectedOption}
             />
           )}
-          {this.state.showAddEvent && <Host />}
+          {this.state.showAddEvent && <AddEvent />}
+          {this.state.showUpdateEvent && (
+            <UpdateEvent
+              event={this.state.selectedEvent}
+              id={this.state.selectedOption}
+            />
+          )}
         </div>
       </div>
     );

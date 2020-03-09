@@ -19,9 +19,9 @@ class Dropdown extends Component {
                 <div className="dropdown-content">
                     <ul>
                         <li><Link to="/" >Home</Link></li>
-                        <li><Link to="profile" >Profile</Link></li>
-                        <li><Link to="reserve" >Reserve tickets</Link></li>
-                        <li><Link to="host" >Host an event</Link></li>
+                        <li><Link to="/profile" >Profile</Link></li>
+                        <li><Link to="/reserve" >Reserve tickets</Link></li>
+                        {/* <li><Link to="host" >Add event</Link></li> */}
                     </ul>
                 </div>
             </div>

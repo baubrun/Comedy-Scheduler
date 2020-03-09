@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 const EventDetail = props => {
 
 
-
   const dispatchAddToCart = () => {
     props.addToCart(props.event);
   };

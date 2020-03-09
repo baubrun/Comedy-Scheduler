@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 
-
 const timeSelector = () => {
   let selectTimes = [];
   let hour = 20;
@@ -29,7 +28,7 @@ const timeSelector = () => {
   }
 };
 
-class Host extends Component {
+class AddEvent extends Component {
   constructor(props) {
     super(props);
 
@@ -47,10 +46,15 @@ class Host extends Component {
     };
   }
 
-  handleSubmit = async event => {
-    event.preventDefault();
-    // this.props.handleSelect();
+  resetOptionInputFields = () => {
+    const docFile = document.getElementById("upload")
+    docFile.value = ""
+    const docOption = document.getElementsByClassName("default-option")
+    docOption.selected = true
+  };
 
+
+  handleSubmit = async event => {
     event.preventDefault();
     const data = new FormData();
     data.append("title", this.state.title);
@@ -62,7 +66,9 @@ class Host extends Component {
     data.append("performer", this.state.performer);
     data.append("image", this.state.image);
     data.append("price", this.state.price);
-    data.append("hostId", this.state.hostId);
+    data.append("hostId", this.state.hostId);  
+    
+  
     this.setState({
       title: "",
       startDate: "",
@@ -73,7 +79,12 @@ class Host extends Component {
       performer: "",
       price: ""
     });
-    await fetch("/profile", { method: "POST", body: data });
+
+    Promise.all([
+      fetch("/profile", { method: "POST", body: data }),
+      fetch("/setVenueSeating", { method: "POST", body: data })
+    ])
+    this.resetOptionInputFields()
   };
 
 
@@ -99,14 +110,13 @@ class Host extends Component {
   };
 
 
-  /* input not needed as start and end will be onSelect */
   render() {
     return (
       <>
-        <div className="host-header">
-          <h2>Add an event</h2>
+        <div className="add-event-header">
+          <h2>ADD EVENT</h2>
         </div>
-        <div className="host body">
+        <div className="host-body">
           <form className="host-flex-container" onSubmit={this.handleSubmit}>
             <ul className="host-form-container">
               <li>
@@ -132,9 +142,9 @@ class Host extends Component {
               <li>
                 <label htmlFor="start-time">Start time</label>
                 <select id="start-time" onChange={this.handleStartTime}>
-                <option value=""></option>
-                  {timeSelector().map((t, idx) => {
-                    return <option key={idx} value={t}>{t}</option>;
+                <option className="default-option" value=""></option>
+                  {timeSelector().map((time, idx) => {
+                    return <option key={idx} value={time}>{time}</option>;
                   })}
                 </select>
               </li>
@@ -152,9 +162,9 @@ class Host extends Component {
               <li>
                 <label htmlFor="end-time">End time</label>
                 <select id="end-time" onChange={this.handleEndTime}>
-                <option value=""></option>
-                  {timeSelector().map((t, idx) => {
-                    return <option key={idx} value={t}>{t}</option>;
+                <option className="default-option" value=""></option>
+                  {timeSelector().map((time, idx) => {
+                    return <option key={idx} value={time}>{time}</option>;
                   })}
                 </select>
               </li>
@@ -165,10 +175,10 @@ class Host extends Component {
                   name="venue"
                   onChange={this.handleVenueChange}
                 >
-                  <option value=""></option>
-                  <option value="LE FOU FOU">LE FOU FOU</option>
-                  <option value="JOKES BLAGUES">JOKES BLAGUES</option>
-                  <option value="RIRE NOW">RIRE NOW</option>
+                  <option className="default-option" value=""></option>
+                  <option value="LE_FOU_FOU">LE FOU FOU</option>
+                  <option value="JOKES_BLAGUES">JOKES BLAGUES</option>
+                  <option value="RIRE_NOW">RIRE NOW</option>
                 </select>
               </li>
               <li>
@@ -191,15 +201,6 @@ class Host extends Component {
                   value={this.state.price}
                 />
               </li>
-              {/* <li>
-                <label htmlFor="seats">Seats</label>
-                <input
-                  id="seats"
-                  type="number"
-                  name="seats"
-                  onChange={this.handleChange}
-                />
-              </li> */}
               <li>
                 <label htmlFor="upload">Image</label>
                 <input
@@ -229,6 +230,6 @@ const mapStateToProps = state => {
 };
 
 
-export default connect(mapStateToProps)(Host);
+export default connect(mapStateToProps)(AddEvent);
 
 

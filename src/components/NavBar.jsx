@@ -31,7 +31,7 @@ class NavBar extends Component {
                   <Link to="/events">Tickets</Link>
                 </li>
                 <li>
-                  <Link to="/host">Host an event</Link>
+                  <Link to="/profile">Add event</Link>
                 </li>
                 <li>
                   <Link to="/" onClick={this.dispatchLogout}>

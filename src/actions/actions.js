@@ -8,7 +8,8 @@ import {
     GOT_ITEMS_BOUGHT,
     CONFIRMED_CHECKOUT,
     EMPTIED_CART,
-    RESET_CHECKOUT
+    RESET_CHECKOUT,
+    GOT_SEATS_AVAIL
 } from "./actionTypes"
 
 
@@ -16,6 +17,11 @@ import {
 export const getEventsAction = events => ({
     type: GOT_EVENTS,
     payload: events
+})
+
+export const getSeatsAvail = seats => ({
+    type: GOT_SEATS_AVAIL,
+    payload: seats
 })
 
 export const logInAction = hostId => ({

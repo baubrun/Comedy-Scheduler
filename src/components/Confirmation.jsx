@@ -7,6 +7,12 @@ class Confirmation extends Component {
     return "CB3" + Math.floor(Math.random() * 1000);
   };
 
+  
+
+  // async componentDidMount(){
+
+  // }
+
   render() {
     return (
       <div>

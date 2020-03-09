@@ -71,19 +71,19 @@ const upload = multer({
     }
 })
 
-const seatsByVenue = {}
-seatsByVenue["LE FOU FOU"] = 100
-seatsByVenue["JOKES BLAGUES"] = 90
-seatsByVenue["RIRE NOW"] = 80
+const seatsPerVenue = {}
+seatsPerVenue.LE_FOU_FOU = 100
+seatsPerVenue.JOKES_BLAGUES = 90
+seatsPerVenue.RIRE_NOW = 80
 
 const venueSeating = reqBody => {
     switch (reqBody) {
-        case "LE FOU FOU":
-            return seatsByVenue["LE FOU FOU"]
-        case "JOKES BLAGUES":
-            return seatsByVenue["JOKES BLAGUES"]
-        case "RIRE NOW":
-            return seatsByVenue["RIRE NOW"]
+        case "LE_FOU_FOU":
+            return seatsPerVenue.LE_FOU_FOU
+        case "JOKES_BLAGUES":
+            return seatsPerVenue.JOKES_BLAGUES  
+        case "RIRE_NOW":
+            return seatsPerVenue.RIRE_NOW 
         default:
             return 0
     }
@@ -99,9 +99,6 @@ const generateSeats = () => {
 const generateTicketPrices = () => {
     return "" + Math.floor(Math.random() * (20 - 15) + 15)
 }
-
-
-
 
 
 /* ==================
@@ -120,36 +117,6 @@ app.get(["/events", "/profile"], async (req, res) => {
 })
 
 
-
-// app.get("/hostevents", (req, res) => {
-//     dbo.collection("events").find({
-//         host: req.host
-//     }).toArray((err, evt) => {
-//         if (err) {
-//             console.log(err)
-//         }
-//         return res.json({
-//             success: true,
-//             events: evt
-//         })
-
-//     })
-// })
-
-// app.get("/userevents", (req, res) => {
-//     dbo.collection("user").find({
-//         username: req.username
-//     }).toArray((err, evt) => {
-//         if (err) {
-//             console.log(err)
-//         }
-//         return res.json({
-//             success: true,
-//             events: evt
-//         })
-//     })
-// })
-
 app.get("/confirmation", async (req, res) => {
     dbo.collection("purchases").find({}).toArray((err, evt) => {
         if (err) {
@@ -165,6 +132,213 @@ app.get("/confirmation", async (req, res) => {
 /* =====================
 POST 
 ========================*/
+app.post("/profile", upload.single("image"), async (req, res) => {
+    const {
+        title,
+        startDate,
+        startTime,
+        endDate,
+        endTime,
+        venue,
+        performer,
+        price,
+        hostId,
+        // seatsAvail
+
+    } = req.body
+    // const image = req.file.originalname ? req.file.originalname : ""
+    //works for finding slots taken
+    await dbo.collection("events").findOne({
+        "startDate": startDate,
+        "venue": venue,
+        "startTime": "21:00"
+
+    }, (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(400).json({
+                success: false
+            })
+        }
+        if (result) {
+            return res.status(400).json({
+                success: false,
+                msg: "Time slot taken",
+
+            })
+        } else {
+                dbo.collection("events").insertOne({
+                    title: title,
+                    startDate: startDate,
+                    startTime: startTime,
+                    endDate: endDate,
+                    endTime: endTime,
+                    venue: venue,
+                    performer: performer,
+                    image: req.file.originalname,
+                    price: price,
+                    hostId: hostId,
+                    seatsAvail: venueSeating(venue),
+                    allDay: "false",
+                    dateAdded: new Date()
+                })
+                return res.json({
+                    success: true
+                })
+        }
+    })
+
+})
+
+
+
+app.post("/checkout", upload.none(), (req, res) => {
+    const {
+        firstName,
+        lastName,
+        address,
+        email,
+        city,
+        total,
+        cardName,
+        cardNumber,
+        exp,
+        cvv,
+        itemsBought
+    } = req.body
+
+    dbo.collection("purchases").insertOne({
+        firstName: firstName,
+        lastName: lastName,
+        address: address,
+        email: email,
+        city: city,
+        total: total,
+        cardName: cardName,
+        cardNumber: cardNumber,
+        exp: exp,
+        cvv: cvv,
+        itemsBought: itemsBought
+    })
+    return res.status(200).json({
+        success: true
+    })
+})
+
+app.post("/deleteEvents", upload.single("image"), async (req, res) => {
+
+    const id = req.body.id
+
+    await dbo.collection("events")
+        .findOneAndDelete({
+            _id: ObjectID(id)
+        }, (err, r) => {
+            if (err) {
+                console.log(err)
+            }
+        })
+    return res.json({
+        success: true
+    })
+})
+
+
+
+
+/* use to render image of venue avail for hosting and events page */
+app.post("/getSeatsAvail", upload.none(), async (req, res) => {
+    const {
+        startDate,
+        venue
+    } = req.body
+
+    await dbo.collection("seating").findOne({
+        "startDate": startDate,
+        [`venue.${venue}`]: {
+            $exists: 1
+        }
+
+    }, (err, result) => {
+        // }).toArray((err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(400).json({
+                success: false
+            })
+        }
+        // if (!result) {
+        //     return res.status(400).json({
+        //         success: false,
+        //         msg: "Not found."
+        //     })
+        if (result) {
+            return res.status(200).json({
+                success: true,
+                result: result
+            })
+        } else {
+            return res.status(400).json({
+                success: false,
+                msg: "Not found."
+            })
+            // return res.status(200).json({
+            //     success: true,
+            //     result: result
+            //     // ans: ans
+            // })
+        }
+    })
+
+})
+
+app.post("/login", upload.none(), async (req, res) => {
+    const givenPassword = req.body.password
+    const givenUsername = req.body.username
+
+    await dbo.collection("user").findOne({
+        username: givenUsername
+    }, async (err, user) => {
+        if (err) {
+            console.log(err)
+            return res.json({
+                success: false
+            })
+        }
+        if (!user) {
+            return res.json({
+                success: false
+            })
+        }
+
+        try {
+            if (await bcrypt.compare(givenPassword, user.password)) {
+                const sessionId = generateId()
+                sessions[sessionId] = givenUsername
+                res.cookie("sid", sessionId)
+
+                const hostId = user.hostId
+
+                return res.json({
+                    success: true,
+                    hostId: hostId
+                })
+
+            } else {
+                return res.json({
+                    success: false,
+                    msg: "Invalid username or password."
+                })
+            }
+        } catch (err) {
+            console.log(err)
+            return res.json({
+                success: false
+            })
+        }
+    })
+})
+
+
 app.post("/register", upload.none(), async (req, res) => {
     const {
         username,
@@ -214,55 +388,84 @@ app.post("/register", upload.none(), async (req, res) => {
 })
 
 
+app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
+    const {
+        startDate,
+        venue
+    } = req.body
 
-app.post("/login", upload.none(), async (req, res) => {
-    const givenPassword = req.body.password
-    const givenUsername = req.body.username
+    await dbo.collection("seating").findOne({
+        "startDate": startDate,
+        [`venue.${venue}`]: {
+            $exists: 1
+        }
 
-    await dbo.collection("user").findOne({
-        username: givenUsername
-    }, async (err, user) => {
+    }, (err, result) => {
         if (err) {
             console.log(err)
-            return res.json({
+            return res.status(400).json({
                 success: false
             })
         }
-        if (!user) {
-            return res.json({
-                success: false
-            })
-        }
+        if (result) {
+            return res.status(400).json({
+                success: false,
+                msg: "Venue seating established.",
 
+            })
+        } 
         try {
-            if (await bcrypt.compare(givenPassword, user.password)) {
-                const sessionId = generateId()
-                sessions[sessionId] = givenUsername
-                res.cookie("sid", sessionId)
-
-                const hostId = user.hostId
-
-                return res.json({
-                    success: true,
-                    hostId: hostId
-                })
-
-            } else {
-                return res.json({
-                    success: false,
-                    msg: "Invalid username or password."
-                })
-            }
-        } catch (err) {
+            dbo.collection("seating").updateOne({
+                "startDate": startDate},
+                {$set: {[`venue.${venue}`]: venueSeating(venue)}},
+                {upsert: true}
+            )
+            return res.json({
+                success: true
+            })
+        } catch (error) {
             console.log(err)
             return res.json({
                 success: false
-            })
+            })   
         }
     })
 })
 
-app.post("/profile", upload.single("image"), async (req, res) => {
+
+
+app.post("/updateSeatsAvail", upload.none(), async (req, res) => {
+    const {
+        venue,
+        seatsAvail,
+        startDate,
+
+    } = req.body
+
+    await dbo.collection("seating").findOneAndUpdate({
+            "startDate": startDate,
+        }, {
+            $inc: {
+                [venue]: -seatsAvail,
+            }
+        },
+        (err) => {
+            if (err) {
+                console.log(err)
+                return res.status(400).json({
+                    success: false
+                })
+            }
+            return res.status(200).json({
+                success: true
+            })
+        }
+    )
+})
+
+
+
+app.post("/updateevent", upload.single("image"), async (req, res) => {
     const {
         title,
         startDate,
@@ -272,96 +475,29 @@ app.post("/profile", upload.single("image"), async (req, res) => {
         venue,
         performer,
         price,
-        hostId,
+        id
     } = req.body
-
-
-    dbo.collection("events").insertOne({
-        title: title,
-        startDate: startDate,
-        startTime: startTime,
-        endDate: endDate,
-        endTime: endTime,
-        venue: venue,
-        performer: performer,
-        image: req.file.originalname,
-        price: price,
-        hostId: hostId,
-        seatsAvail: venueSeating(venue),
-        allDay: "false",
-        dateAdded: new Date()
-    })
-
-    return res.json({
-        success: true
-    })
-})
-
-app.post("/delete", upload.single("image"), async (req, res) => {
-
-    const id = req.body.ids
-
-
-    await dbo.collection("events")
-        .findOneAndDelete({
-            _id: ObjectID(id)
-        }, (err, r) => {
+    
+    await dbo.collection("events").updateOne(
+        {_id : ObjectID(id)},
+        {$set: {title: title}},
+        {$set: {startDate: startDate}},
+        {$set: {startTime: startTime}},
+        {$set: {endDate: endDate}},
+        {$set: {endTime: endTime}},
+        {$set: {venue: venue}},
+        {$set: {performer: performer}},
+        {$set: {price: price}}, 
+        (err) => {
             if (err) {
                 console.log(err)
+                return res.status(400).json({success: false})
             }
-        })
-    return res.json({
-        success: true
-    })
-})
-
-
-
-
-app.post("/checkout", upload.none(), (req, res) => {
-    const {
-        firstName,
-        lastName,
-        address,
-        email,
-        city,
-        total,
-        cardName,
-        cardNumber,
-        exp,
-        cvv,
-        itemsBought
-    } = req.body
-
-    dbo.collection("purchases").insertOne({
-        firstName: firstName,
-        lastName: lastName,
-        address: address,
-        email: email,
-        city: city,
-        total: total,
-        cardName: cardName,
-        cardNumber: cardNumber,
-        exp: exp,
-        cvv: cvv,
-        itemsBought: itemsBought
-        
-    
-    })
+        }
+    )
     return res.status(200).json({success: true})
 })
 
-// app.post("/userevent", upload.none(), (req, res) => {
-//     const username = req.body.username.toString()
-//     const event = req.body.event
-//     dbo.collection("user").updateOne({
-//         "username": username
-//     }, {
-//         $set: {
-//             event: event
-//         }
-//     })
-// })
 
 
 
@@ -375,7 +511,17 @@ app.post("/checkout", upload.none(), (req, res) => {
 
 
 
+
+
+
+/*================
+Port
+===================*/
 
 app.listen(port, () => {
     console.log("Server running on port:", port)
 })
+
+
+
+

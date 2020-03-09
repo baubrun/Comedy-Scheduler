@@ -30,7 +30,7 @@
 
 
 #events-history-title {
-    background-color: rgb(224, 151, 33) ;
+    background-color: #020202;
     color: white;
     margin-top: 5px;
     text-align: center;
@@ -127,6 +127,21 @@ Events history
 }
 
 .checkbox-input:checked + #custom-checkbox {
-   background-color: rgb(224, 151, 33);
-
+    background-color: rgb(224, 151, 33);
 } 
+
+
+.seats-avail {
+    border: 1px solid  #663A2B;
+    display: flex;
+    /* flex-flow: row wrap; */
+    justify-content: space-evenly;
+}
+
+
+.update-event-header {
+        background-color: rgb(224, 151, 33);
+        color: white;
+        margin-top: 5px;
+        text-align: center;
+}

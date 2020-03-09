@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-
 class HomePage extends Component {
-
 
   render() {
     return (
@@ -14,18 +12,16 @@ class HomePage extends Component {
             <div>Rire Now</div>
             <div>Jokes Blagues</div>
           </div>
-
         </div>
         <div className="home-body">
           <div className="portal-links">
-            <div className="reserve-btn">
-              <Link id="reserve-btn" to="/events">EVENTS</Link>
-            </div>
-            <div className="host-btn" >
-            <Link 
-            id="host-btn" 
-            to="/login">HOST AN EVENT</Link>
-            </div>
+            <Link className="reserve-btn" id="reserve-btn" to="/events">
+              EVENTS
+            </Link>
+
+            <Link  className="add-event-btn" id="add-event-btn" to="/login">
+              ADD EVENT
+            </Link>
           </div>
         </div>
       </>

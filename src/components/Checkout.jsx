@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { currencyFormat } from "./RenderCart";
-import Confirmation from "./Confirmation";
 import { confirmCheckoutAction } from "../actions/actions";
 import { emptyCartAction } from "../actions/actions";
 import { resetCheckoutAction } from "../actions/actions";
@@ -35,9 +34,23 @@ class Checkout extends Component {
     return subTotal;
   };
 
+  filterItemsBought = () => {
+    return this.props.checkout.map(i => {
+      return {
+        title:  i.title,
+        venue: i.venue,
+        startDate: i.startDate,
+        startTime: i.startTime,
+        performer: i.performer,
+        price: i.price,
+        qty: i.qty
+      }
+    })
+  }
+
   componentDidMount() {
     this.setState({
-      itemsBought: this.props.checkout,
+      itemsBought: this.filterItemsBought(),
       subTotal: this.calcSubtotal(),
       tps: this.tps(),
       tvq: this.tvq(),
@@ -252,8 +265,6 @@ class Checkout extends Component {
               </div>
             </>
           )
-          //  :
-          //  <Confirmation tickets={this.state.itemsBought} /> }
           }
         </div>
       </>

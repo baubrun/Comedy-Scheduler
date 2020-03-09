@@ -9,7 +9,6 @@ import moment from "moment";
 export const Event = props => {
   const {
     title,
-    venue,
     startDate,
     performer,
     startTime,
@@ -57,10 +56,6 @@ class Events extends Component {
   }
 
 
-  addEvent = (event) => {
-    return 
-  }
-
   handleGetEvents = events => {
     this.props.getEvents(events);
   };
@@ -107,9 +102,12 @@ class Events extends Component {
             <h2>{this.state.venue ? this.state.venue : "CHOOSE A VENUE"}</h2>
             <select onChange={this.handleVenueChange} name="venue">
               <option value="">CHOOSE A VENUE</option>
-              <option value="LE FOU FOU">LE FOU FOU</option>
-              <option value="JOKES BLAGUES">JOKES BLAGUES</option>
-              <option value="RIRE NOW">RIRE NOW</option>
+              <option value="LE_FOU_FOU">LE FOU FOU</option>
+              <option value="JOKES_BLAGUES">JOKES BLAGUES</option>
+              <option value="RIRE_NOW">RIRE NOW</option>
+              {/* <option value="LE FOU FOU">LE FOU FOU</option> */}
+              {/* <option value="JOKES BLAGUES">JOKES BLAGUES</option> */}
+              {/* <option value="RIRE NOW">RIRE NOW</option> */}
             </select>
           </div>
           <div className="events-header-img">

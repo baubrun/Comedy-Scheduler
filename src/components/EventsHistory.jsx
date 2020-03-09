@@ -28,8 +28,9 @@ const EventsHistory = props => {
                 <input
                   className="checkbox-input"
                   id={`checkbox${event._id}`}
-                  type="checkbox"
-                  onChange={props.handleCheckedInput}
+                  checked={props.selectedOption === event._id}
+                  type="radio"
+                  onChange={props.handleOptionChange}
                   value={event._id}
                 />
                 <div id="custom-checkbox"></div>
