@@ -16,10 +16,18 @@ class Profile extends Component {
       showUpdateEvent: false,
       userEvents: null,
       selectedEvent: [],
-      // updatedCheckedId: "",
       selectedOption: ""
     };
   }
+
+  enableButtonsOnChecked = condition => {
+    const updateBtn = document.getElementById("update-event-btn");
+    updateBtn.style.pointerEvents = condition;
+    const deleteBtn = document.getElementById("delete-event-btn");
+    deleteBtn.style.pointerEvents = condition;
+  };
+
+  componentDidMount() {}
 
   getEventsHistory = events => {
     this.props.getEventsHistory(events);
@@ -56,24 +64,32 @@ class Profile extends Component {
       showHistory: true,
       showAddEvent: false,
       showUpdateEvent: false,
+      selectedOption: "",
       userEvents: this.getUserEvents()
     });
   };
 
   deleteEvent = async () => {
-    // window.confirm("Delete event(s) ?")
-    // this.getSelectedEvent();
-
-    const data = new FormData();
-    data.append("id", this.state.selectedOption);
-    const response = await fetch("/deleteEvents", {
-      method: "POST",
-      body: data
-    });
-    const body = await response.text();
-    const parser = JSON.parse(body);
-    if (parser.success) {
-      this.showEventHistory();
+    if (this.state.selectedOption === "") {
+      window.alert("Please select an event.");
+      return;
+    } else {
+      const confirm = window.confirm("Delete event(s) ?");
+      if (confirm) {
+        const data = new FormData();
+        data.append("id", this.state.selectedOption);
+        const response = await fetch("/deleteEvents", {
+          method: "POST",
+          body: data
+        });
+        const body = await response.text();
+        const parser = JSON.parse(body);
+        if (parser.success) {
+          this.showEventHistory();
+        }
+      } else {
+        return;
+      }
     }
   };
 
@@ -85,13 +101,21 @@ class Profile extends Component {
     });
   };
 
+  verifyEventSelected = () => {};
+
   showUpdateEventForm = () => {
-    this.setState({
-      selectedEvent: this.getSelectedEvent(),
-      showHistory: false,
-      showAddEvent: false,
-      showUpdateEvent: true
-    });
+    if (this.state.selectedOption === "") {
+      window.alert("Please select an event.");
+      return;
+    } else {
+      this.verifyEventSelected();
+      this.setState({
+        selectedEvent: this.getSelectedEvent(),
+        showHistory: false,
+        showAddEvent: false,
+        showUpdateEvent: true
+      });
+    }
   };
 
   render() {
@@ -137,6 +161,7 @@ class Profile extends Component {
             <UpdateEvent
               event={this.state.selectedEvent}
               id={this.state.selectedOption}
+              showEventHistory={this.showEventHistory}
             />
           )}
         </div>

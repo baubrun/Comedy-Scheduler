@@ -81,9 +81,9 @@ const venueSeating = reqBody => {
         case "LE_FOU_FOU":
             return seatsPerVenue.LE_FOU_FOU
         case "JOKES_BLAGUES":
-            return seatsPerVenue.JOKES_BLAGUES  
+            return seatsPerVenue.JOKES_BLAGUES
         case "RIRE_NOW":
-            return seatsPerVenue.RIRE_NOW 
+            return seatsPerVenue.RIRE_NOW
         default:
             return 0
     }
@@ -121,12 +121,11 @@ app.get("/confirmation", async (req, res) => {
     dbo.collection("purchases").find({}).toArray((err, evt) => {
         if (err) {
             console.log(err)
-            return res.send("fail")
+            return res.json({success: false})
         }
         return res.json(evt)
     })
 })
-
 
 
 /* =====================
@@ -143,15 +142,12 @@ app.post("/profile", upload.single("image"), async (req, res) => {
         performer,
         price,
         hostId,
-        // seatsAvail
-
     } = req.body
-    // const image = req.file.originalname ? req.file.originalname : ""
-    //works for finding slots taken
+
     await dbo.collection("events").findOne({
         "startDate": startDate,
         "venue": venue,
-        "startTime": "21:00"
+        "startTime": startTime
 
     }, (err, result) => {
         if (err) {
@@ -167,29 +163,28 @@ app.post("/profile", upload.single("image"), async (req, res) => {
 
             })
         } else {
-                dbo.collection("events").insertOne({
-                    title: title,
-                    startDate: startDate,
-                    startTime: startTime,
-                    endDate: endDate,
-                    endTime: endTime,
-                    venue: venue,
-                    performer: performer,
-                    image: req.file.originalname,
-                    price: price,
-                    hostId: hostId,
-                    seatsAvail: venueSeating(venue),
-                    allDay: "false",
-                    dateAdded: new Date()
-                })
-                return res.json({
-                    success: true
-                })
+            dbo.collection("events").insertOne({
+                title: title,
+                startDate: startDate,
+                startTime: startTime,
+                endDate: endDate,
+                endTime: endTime,
+                venue: venue,
+                performer: performer,
+                image: req.file.originalname,
+                price: price,
+                hostId: hostId,
+                seatsAvail: venueSeating(venue),
+                allDay: "false",
+                dateAdded: new Date()
+            })
+            return res.json({
+                success: true
+            })
         }
     })
 
 })
-
 
 
 app.post("/checkout", upload.none(), (req, res) => {
@@ -218,7 +213,8 @@ app.post("/checkout", upload.none(), (req, res) => {
         cardNumber: cardNumber,
         exp: exp,
         cvv: cvv,
-        itemsBought: itemsBought
+        itemsBought: itemsBought,
+        dateAdded: new Date()
     })
     return res.status(200).json({
         success: true
@@ -243,34 +239,20 @@ app.post("/deleteEvents", upload.single("image"), async (req, res) => {
 })
 
 
-
-
-/* use to render image of venue avail for hosting and events page */
 app.post("/getSeatsAvail", upload.none(), async (req, res) => {
     const {
         startDate,
-        venue
     } = req.body
-
+    
     await dbo.collection("seating").findOne({
-        "startDate": startDate,
-        [`venue.${venue}`]: {
-            $exists: 1
-        }
-
+        "startDate": startDate
     }, (err, result) => {
-        // }).toArray((err, result) => {
         if (err) {
             console.log(err)
             return res.status(400).json({
                 success: false
             })
         }
-        // if (!result) {
-        //     return res.status(400).json({
-        //         success: false,
-        //         msg: "Not found."
-        //     })
         if (result) {
             return res.status(200).json({
                 success: true,
@@ -281,11 +263,42 @@ app.post("/getSeatsAvail", upload.none(), async (req, res) => {
                 success: false,
                 msg: "Not found."
             })
-            // return res.status(200).json({
-            //     success: true,
-            //     result: result
-            //     // ans: ans
-            // })
+        }
+    })
+
+})
+
+/* use to render venue avail for hosting and events page */
+app.post("/getVenueAvail", upload.none(), async (req, res) => {
+    const {
+        startDate,
+        venue
+    } = req.body
+    
+
+    await dbo.collection("seating").findOne({
+        "startDate": startDate,
+        [`venue.${venue}`]: {
+            $exists: 1
+        }
+
+    }, (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(400).json({
+                success: false
+            })
+        }
+        if (result) {
+            return res.status(200).json({
+                success: true,
+                result: result
+            })
+        } else {
+            return res.status(400).json({
+                success: false,
+                msg: "Not found."
+            })
         }
     })
 
@@ -370,7 +383,8 @@ app.post("/register", upload.none(), async (req, res) => {
                     password: hashedPassword,
                     email: email,
                     hostId: hostId,
-                    events: ""
+                    events: "",
+                    dateAdded: new Date()
                 })
                 return res.status(200).json({
                     success: true,
@@ -413,13 +427,17 @@ app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
                 msg: "Venue seating established.",
 
             })
-        } 
+        }
         try {
             dbo.collection("seating").updateOne({
-                "startDate": startDate},
-                {$set: {[`venue.${venue}`]: venueSeating(venue)}},
-                {upsert: true}
-            )
+                "startDate": startDate
+            }, {
+                $set: {
+                    [`venue.${venue}`]: venueSeating(venue)
+                }
+            }, {
+                upsert: true
+            })
             return res.json({
                 success: true
             })
@@ -427,7 +445,7 @@ app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
             console.log(err)
             return res.json({
                 success: false
-            })   
+            })
         }
     })
 })
@@ -435,18 +453,19 @@ app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
 
 
 app.post("/updateSeatsAvail", upload.none(), async (req, res) => {
+
+    const parsedRequest = JSON.parse(req.body)
     const {
         venue,
-        seatsAvail,
-        startDate,
-
-    } = req.body
+        qty,
+        startDate
+    } = parsedRequest
 
     await dbo.collection("seating").findOneAndUpdate({
             "startDate": startDate,
         }, {
             $inc: {
-                [venue]: -seatsAvail,
+                [venue]: -qty,
             }
         },
         (err) => {
@@ -465,7 +484,7 @@ app.post("/updateSeatsAvail", upload.none(), async (req, res) => {
 
 
 
-app.post("/updateevent", upload.single("image"), async (req, res) => {
+app.post("/updateEvent", upload.single("image"), async (req, res) => {
     const {
         title,
         startDate,
@@ -477,25 +496,34 @@ app.post("/updateevent", upload.single("image"), async (req, res) => {
         price,
         id
     } = req.body
-    
-    await dbo.collection("events").updateOne(
-        {_id : ObjectID(id)},
-        {$set: {title: title}},
-        {$set: {startDate: startDate}},
-        {$set: {startTime: startTime}},
-        {$set: {endDate: endDate}},
-        {$set: {endTime: endTime}},
-        {$set: {venue: venue}},
-        {$set: {performer: performer}},
-        {$set: {price: price}}, 
+
+    await dbo.collection("events").updateOne({
+            _id: ObjectID(id)
+        }, {
+            $set: {
+                title: title,
+                startDate: startDate,
+                startTime: startTime,
+                endDate: endDate,
+                endTime: endTime,
+                venue: venue,
+                performer: performer,
+                price: price,
+                image: req.file.originalname
+            }
+        },
         (err) => {
             if (err) {
                 console.log(err)
-                return res.status(400).json({success: false})
+                return res.status(400).json({
+                    success: false
+                })
             }
         }
     )
-    return res.status(200).json({success: true})
+    return res.status(200).json({
+        success: true
+    })
 })
 
 
@@ -521,7 +549,3 @@ Port
 app.listen(port, () => {
     console.log("Server running on port:", port)
 })
-
-
-
-

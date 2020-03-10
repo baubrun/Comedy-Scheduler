@@ -19,7 +19,7 @@ export const getEventsAction = events => ({
     payload: events
 })
 
-export const getSeatsAvail = seats => ({
+export const getSeatsAvailAction = seats => ({
     type: GOT_SEATS_AVAIL,
     payload: seats
 })

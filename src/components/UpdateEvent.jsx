@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 
 const timeSelector = () => {
   let selectTimes = [];
@@ -76,6 +75,9 @@ class UpdateEvent extends Component {
     this.preFillFields()
   }
 
+
+
+
   handleSubmit = async event => {
     event.preventDefault();
     const data = new FormData();
@@ -100,7 +102,12 @@ class UpdateEvent extends Component {
       performer: "",
       price: ""
     });
-    await fetch("/updateevent");
+     
+    Promise.all([
+      fetch("/setVenueSeating", { method: "POST", body: data }),
+      fetch("/updateEvent", {method: "POST", body: data})
+    ])
+    // this.props.showEventHistory()
   };
 
   handleImage = event => {
@@ -127,9 +134,8 @@ class UpdateEvent extends Component {
   preFillFields = () => {
     const docOption = document.getElementById(this.props.event.venue);
     docOption.selected = true;
-    const docFile = document.getElementById("upload")
-    docFile.value = this.props.image
   };
+
 
   render() {
 
@@ -164,7 +170,7 @@ class UpdateEvent extends Component {
               <li>
                 <label htmlFor="start-time">Start time</label>
                 <select  id="start-time" onChange={this.handleStartTime}>
-                  <option id="default-option" value="">{this.state.startTime}</option>
+                  <option value="">{this.state.startTime}</option>
                   {timeSelector().map((time, idx) => {
                     return (
                       <option key={idx} value={time}>
@@ -188,7 +194,7 @@ class UpdateEvent extends Component {
               <li>
                 <label htmlFor="end-time">End time</label>
                 <select id="end-time" onChange={this.handleEndTime}>
-                  <option id="default-option" value="">{this.state.endTime}</option>
+                  <option  value="">{this.state.endTime}</option>
                   {timeSelector().map((t, idx) => {
                     return (
                       <option key={idx} value={t}>
@@ -205,7 +211,7 @@ class UpdateEvent extends Component {
                   name="venue"
                   onChange={this.handleVenueChange}
                 >
-                  <option id="default-option" value=""></option>
+                  <option  value=""></option>
                   <option id="LE_FOU_FOU" value="LE_FOU_FOU">LE FOU FOU</option>
                   <option id="JOKES_BLAGUES" value="JOKES_BLAGUES">JOKES BLAGUES</option>
                   <option id="RIRE_NOW" value="RIRE_NOW">RIRE NOW</option>

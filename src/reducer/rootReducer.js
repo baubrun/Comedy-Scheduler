@@ -3,7 +3,8 @@ import eventsReducer from "./eventsReducer"
 import authReducer from "./authReducer"
 import cartReducer from "./cartReducer"
 import checkoutReducer from "./checkoutReducer"
-import confirmCheckout from "./confirmCheckoutReducer"
+import confirmCheckoutReducer from "./confirmCheckoutReducer"
+import seatingReducer from "./seatingReducer"
 
 
  const rootReducer = combineReducers({
@@ -11,7 +12,8 @@ import confirmCheckout from "./confirmCheckoutReducer"
     auth: authReducer,
     cart: cartReducer,
     checkout: checkoutReducer,
-    checkedOut: confirmCheckout
+    checkedOut: confirmCheckoutReducer,
+    seating: seatingReducer
 })
 
 

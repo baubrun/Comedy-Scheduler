@@ -3,10 +3,16 @@ import {
 } from "../actions/actionTypes"
 
 
-const initSeating = {}
+const initSeatsAvail = {
+    venue: {
+        LE_FOU_FOU: 0,
+        JOKES_BLAGUES: 0,
+        RIRE_NOW: 0
+    }
+}
 
 
-const seatingReducer = (state = initSeating, action) => {
+const seatingReducer = (state = initSeatsAvail, action) => {
     switch (action.type) {
         case GOT_SEATS_AVAIL:
             return action.payload

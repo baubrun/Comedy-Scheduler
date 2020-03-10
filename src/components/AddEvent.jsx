@@ -67,8 +67,6 @@ class AddEvent extends Component {
     data.append("image", this.state.image);
     data.append("price", this.state.price);
     data.append("hostId", this.state.hostId);  
-    
-  
     this.setState({
       title: "",
       startDate: "",

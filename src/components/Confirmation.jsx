@@ -7,11 +7,32 @@ class Confirmation extends Component {
     return "CB3" + Math.floor(Math.random() * 1000);
   };
 
-  
+  seatsTaken = () => {
+    return this.props.checkout.map(i => {
+      return {
+        venue: i.venue,
+        qty: i.qty,
+        startDate: i.startDate
+      };
+    });
+  };
 
-  // async componentDidMount(){
+  updateSeating = async () => {
+    const data = new FormData();
+    data.append("seatsTaken", JSON.stringify(this.seatsTaken()));
+    await fetch("/updateSeatsAvail", {
+      method: "POST",
+      body: data
+    });
+    // const body = await response.text();
+    // const parser = JSON.parse(body);
+    // if (parser.success) {
+    // }
+  };
 
-  // }
+  componentDidMount(){
+    this.updateSeating()
+  }
 
   render() {
     return (
