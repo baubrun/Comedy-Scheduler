@@ -22,33 +22,12 @@
     text-transform: uppercase;
 }
 
-.event li {
-     /* display: inline-block; */
-     display: block;
-
+.event div {
     padding: 5px 60px;
-    /* width: 20%; */
-    /* text-align: center; */
-
 }
 
 
 
-
-.seatsAvail{
-    position: relative;
-    text-align: center;
-    /* width: 100%; */
-}
-
-#seatsAvail-img {
-    
-    /* position: absolute;
-    top: 3px;
-    margin-left: 3px; */
-        /* justify-content: right; */
-
-}
 #performer-img {
     height: 50px;
     width: 50px;
@@ -61,7 +40,16 @@
     justify-content: space-around;
     
 }
+.events-header h2 {
+    background-color: #020202;
+    color: white;
+    text-align: center;
+    width: 100%;
+}
 
+.events-history {
+    border-bottom: 1px dotted #663A2B ;
+}
 
 #calendar-view {
     opacity: 0.5;
@@ -133,3 +121,43 @@ tfoot {
     font-size: 0.7em;
     font-style: italic;
 }
+
+
+
+
+/*==================
+
+new layout
+
+======================*/
+
+
+.event-title-info {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    position: relative;
+    text-align: center;
+    width: 25%;
+    
+}
+
+.event-title-info a 
+{
+    width: 100%;
+}
+
+.event-title-info a, 
+.event-title-info img, 
+.event-title-info div 
+{
+    text-align: center;
+}
+
+
+#seats-avail-img {
+    height: 15px;
+    margin-left: 3px;
+    width: 15px;
+}
+

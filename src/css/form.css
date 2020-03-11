@@ -105,7 +105,7 @@ AddEvent
 }
 
 
-.host-flex-container, 
+.add-event-flex-container, 
 .update-event-flex-container
 {
   display: flex;
@@ -114,14 +114,14 @@ AddEvent
   width: 60%;
 }
 
-.host-form-container,
+.add-event-form-container,
 .update-event-form-container {
-  border: 1px solid gray;
+  /* border: 1px solid gray; */
   padding: 20px 5px;
   width: 100%;
 }
 
-.host-form-container  li {
+.add-event-form-container  li {
   display: flex;
   flex-flow: row wrap;
   margin-right: 50px;
@@ -129,11 +129,11 @@ AddEvent
 }
 
 
-.host-form-container  label {
+.add-event-form-container  label {
   flex: 1 1 120px;
   /* text-align: center; */
 }
-.host-form-container input {
+.add-event-form-container input {
   flex: 3 1 261px;
   margin: 10px 0 10px 0 ;
 }

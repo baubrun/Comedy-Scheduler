@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import EventsHistory from "./EventsHistory";
 import { getEventsAction } from "../actions/actions";
 import AddEvent from "./AddEvent";
-import { SeatsAvailable } from "./SeatsAvailable";
 import UpdateEvent from "./UpdateEvent";
 
 class Profile extends Component {
@@ -147,7 +146,6 @@ class Profile extends Component {
           </ul>
         </div>
         <div className="profile-body">
-          <SeatsAvailable />
           {this.state.showHistory && (
             <EventsHistory
               userEvents={this.state.userEvents}
@@ -173,7 +171,8 @@ class Profile extends Component {
 const mapStateToProps = state => {
   return {
     events: state.events,
-    hostId: state.auth.hostId
+    hostId: state.auth.hostId,
+
   };
 };
 

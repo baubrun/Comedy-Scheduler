@@ -8,7 +8,7 @@ const EventsHistory = props => {
       <h1 id="events-history-title">EVENTS HISTORY</h1>
       {props.userEvents.length > 0 ? (
         props.userEvents.map((event, idx) => (
-          <ul className="event" key={idx}>
+          <ul className="events-history" key={idx}>
             <li>{event.title}</li>
             <li>
               Start:{" "}

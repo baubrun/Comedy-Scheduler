@@ -13,7 +13,7 @@ import seatingReducer from "./seatingReducer"
     cart: cartReducer,
     checkout: checkoutReducer,
     checkedOut: confirmCheckoutReducer,
-    seating: seatingReducer
+    seatsAvail: seatingReducer
 })
 
 

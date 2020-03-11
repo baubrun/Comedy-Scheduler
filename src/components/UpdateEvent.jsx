@@ -144,9 +144,9 @@ class UpdateEvent extends Component {
         <div className="update-event-header">
           <h2>UPDATE EVENT</h2>
         </div>
-        <div className="host-body">
-          <form className="host-flex-container" onSubmit={this.handleSubmit}>
-            <ul className="host-form-container">
+        <div className="update-body">
+          <form className="add-event-flex-container" onSubmit={this.handleSubmit}>
+            <ul className="add-event-form-container">
               <li>
                 <label htmlFor="title">Title</label>
                 <input

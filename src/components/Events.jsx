@@ -11,37 +11,42 @@ export const Event = props => {
     startDate,
     performer,
     startTime,
-    image
-    // seatsAvail,
+    image,
+    seatsAvail
   } = props.events;
 
   return (
     <div>
-      <ul className="event">
-        <li>
+      <div className="event">
+        <div className="event-title-info">
           <Link to={`/event/${title}`}>{title}</Link>
-        </li>
-        <li>
-          Start:{" "}
-          {moment(`${startDate} ${startTime}`).format("DD-MM-YYYY HH:mm")}h
-        </li>
-        <li>Performer: {performer}</li>
-        <li className="seatsAvail">
-          Seats Available: {/* {seatsAvail > 0 ? ( */}
-          {this.props.seatsAvail > 0 ? (
-            <img
-              id="seatsAvail-img"
-              src="green-check-grn-wht-15px.png"
-              alt=""
-            />
-          ) : (
-            <img id="seatsAvail-img" src="red-x-red-wht-15px.png" alt="" />
-          )}
-        </li>
-        <li>
           <img id="performer-img" src={`../../${image}`} alt="" />
-        </li>
-      </ul>
+        </div>
+        <div>Performer: {performer}</div>
+
+        <div className="event-title-info">
+          {moment(`${startDate}`).format("DD-MM-YYYY")}
+          
+          <br/>
+          <br/>
+          {startTime}
+        </div>
+        {/* <div className="seatsAvail "> */}
+        <div className="event-title-info ">
+          {/* <div id="seats-avail-title"> */}
+              Seats Available:{" "}
+              {seatsAvail > 0 ? (
+                // {this.props.seatsAvail > 0 ? (
+                <img
+                  id="seats-avail-img"
+                  src="green-check-grn-wht-15px.png"
+                  alt=""
+                />
+              ) : (
+                <img id="seats-avail-img" src="red-x-red-wht-15px.png" alt="" />
+              )}{" "}
+        </div>
+      </div>
     </div>
   );
 };
@@ -73,22 +78,22 @@ class Events extends Component {
     this.dispatchGetEvents(parsed);
   };
 
-  /* complete dispatch action to get start date
-maybe set it to state... get from user 
+//   /* complete dispatch action to get start date
+// maybe set it to state... get from user 
 
-*/
+// */
 
-  fetchSeatsAvail = async () => {
-    const data = new FormData();
-    data.append("startDate", this.state.startDate);
-    const response = await fetch("/getSeatsAvail", {
-      method: "POST",
-      body: data
-    });
-    const body = await response.text();
-    const parsed = JSON.parse(body);
-    this.dispatchGetSeatsAvail(parsed);
-  };
+//   fetchSeatsAvail = async () => {
+//     const data = new FormData();
+//     data.append("startDate", this.state.startDate);
+//     const response = await fetch("/getSeatsAvail", {
+//       method: "POST",
+//       body: data
+//     });
+//     const body = await response.text();
+//     const parsed = JSON.parse(body);
+//     this.dispatchGetSeatsAvail(parsed);
+//   };
 
   componentDidMount() {
     this.fetchEvents();
@@ -120,6 +125,7 @@ maybe set it to state... get from user
     return (
       <>
         <div className="events-header">
+          <h2>EVENTS</h2>
           <div className="venue-select">
             <h2>{this.state.venue ? this.state.venue : "CHOOSE A VENUE"}</h2>
             <select onChange={this.handleVenueChange} name="venue">
@@ -169,14 +175,14 @@ maybe set it to state... get from user
 const mapStateToProps = state => {
   return {
     events: state.events,
-    seatsAvail: state.seating
+    // seatsAvail: state.seating
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     getEvents: events => dispatch(getEventsAction(events)),
-    getSeatsAvail: seats => dispatch(getSeatsAvailAction(seats))
+    // getSeatsAvail: seats => dispatch(getSeatsAvailAction(seats))
   };
 };
 

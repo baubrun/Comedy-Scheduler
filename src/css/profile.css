@@ -15,10 +15,14 @@
 }
 
 
-#events-history-btn {
-    background-color: #020202;
-    color: white;
+
+
+.profile-body{
+    /* display: flex; */
+    /* flex-flow: row wrap; */
+    width: 100%;
 }
+
 
 .profile-buttons  {
     display: flex;
@@ -27,6 +31,15 @@
     width: 100%;
 }
 
+.events-history {
+    text-align: center;
+    width: 100%;
+}
+
+#events-history-btn {
+    background-color: #020202;
+    color: white;
+}
 
 
 #events-history-title {
@@ -34,7 +47,9 @@
     color: white;
     margin-top: 5px;
     text-align: center;
+    width: 100%;
 }
+
 
 
 
@@ -61,6 +76,7 @@
     flex-flow: row wrap;
    /* border-bottom: 1px solid black; */
 }
+
 
 
 .profile-header h1{
@@ -130,14 +146,14 @@ Events history
     background-color: rgb(224, 151, 33);
 } 
 
-
-.seats-avail {
+.venues-avail {
     border: 1px solid  #663A2B;
     display: flex;
-    /* flex-flow: row wrap; */
+    flex-flow: row wrap;
     justify-content: space-evenly;
+    margin-top: 10px;
+    width: 100%;
 }
-
 
 .update-event-header {
         background-color: rgb(224, 151, 33);

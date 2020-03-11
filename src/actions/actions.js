@@ -9,7 +9,8 @@ import {
     CONFIRMED_CHECKOUT,
     EMPTIED_CART,
     RESET_CHECKOUT,
-    GOT_SEATS_AVAIL
+    GOT_SEATS_AVAIL,
+    GOT_ALL_SEATS_AVAIL
 } from "./actionTypes"
 
 
@@ -21,7 +22,13 @@ export const getEventsAction = events => ({
 
 export const getSeatsAvailAction = seats => ({
     type: GOT_SEATS_AVAIL,
-    payload: seats
+    payload: {
+        venue: seats
+    }
+})
+
+export const getAllSeatsAvailAction = () => ({
+    type: GOT_ALL_SEATS_AVAIL
 })
 
 export const logInAction = hostId => ({
@@ -36,7 +43,7 @@ export const logOutAction = () => ({
     type: LOGGED_OUT,
     payload: {
         loggedIn: false,
-        hostId: ""    
+        hostId: ""
     }
 })
 
@@ -76,5 +83,3 @@ export const resetCheckoutAction = () => ({
     type: RESET_CHECKOUT,
     payload: false
 })
-
-

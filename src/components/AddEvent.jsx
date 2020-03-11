@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
+import { VenuesAvailable } from "./VenuesAvailable";
+import { getSeatsAvailAction, getAllSeatsAvailAction } from "../actions/actions";
 
 const timeSelector = () => {
   let selectTimes = [];
@@ -46,13 +47,36 @@ class AddEvent extends Component {
     };
   }
 
-  resetOptionInputFields = () => {
-    const docFile = document.getElementById("upload")
-    docFile.value = ""
-    const docOption = document.getElementsByClassName("default-option")
-    docOption.selected = true
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.startDate !== this.state.startDate) {
+      this.fetchAvailVenue();
+    }
+  }
+
+  dispatchGetSeatsAvail = seats => {
+    this.props.getSeatsAvail(seats);
   };
 
+  dispatchGetAllSeatsAvail = () => {
+    this.props.getAllSeatsAvail();
+  };
+
+  fetchAvailVenue = async () => {
+    const data = new FormData();
+    data.append("startDate", this.state.startDate);
+    const response = await fetch("/getSeatsAvail", {
+      method: "POST",
+      body: data
+    });
+    const body = await response.text();
+    const parser = JSON.parse(body);
+    if (parser.success) {
+      this.dispatchGetSeatsAvail(parser.result.venue);
+    }
+    else{
+      this.dispatchGetSeatsAvail();
+    }
+  };
 
   handleSubmit = async event => {
     event.preventDefault();
@@ -66,7 +90,7 @@ class AddEvent extends Component {
     data.append("performer", this.state.performer);
     data.append("image", this.state.image);
     data.append("price", this.state.price);
-    data.append("hostId", this.state.hostId);  
+    data.append("hostId", this.state.hostId);
     this.setState({
       title: "",
       startDate: "",
@@ -81,14 +105,13 @@ class AddEvent extends Component {
     Promise.all([
       fetch("/profile", { method: "POST", body: data }),
       fetch("/setVenueSeating", { method: "POST", body: data })
-    ])
-    this.resetOptionInputFields()
+    ]);
+    this.resetOptionInputFields();
   };
 
-
-  handleImage = event => {
-    this.setState({image: event.target.files[0]})
-  }
+  handleEndTime = event => {
+    this.setState({ endTime: event.target.value });
+  };
 
   handleChange = event => {
     const name = event.target.name;
@@ -96,17 +119,28 @@ class AddEvent extends Component {
     this.setState({ [name]: value });
   };
 
-  handleVenueChange = event => {
-    this.setState({ venue: event.target.value });
+  handleImage = event => {
+    this.setState({ image: event.target.files[0] });
+  };
+
+  handleStartDate = event => {
+    this.setState({ startDate: event.target.value });
   };
 
   handleStartTime = event => {
     this.setState({ startTime: event.target.value });
   };
-  handleEndTime = event => {
-    this.setState({ endTime: event.target.value });
+
+  handleVenueChange = event => {
+    this.setState({ venue: event.target.value });
   };
 
+  resetOptionInputFields = () => {
+    const docFile = document.getElementById("upload");
+    docFile.value = "";
+    const docOption = document.getElementsByClassName("default-option");
+    docOption.selected = true;
+  };
 
   render() {
     return (
@@ -114,9 +148,16 @@ class AddEvent extends Component {
         <div className="add-event-header">
           <h2>ADD EVENT</h2>
         </div>
-        <div className="host-body">
-          <form className="host-flex-container" onSubmit={this.handleSubmit}>
-            <ul className="host-form-container">
+        <div className="add-event-body">
+          <VenuesAvailable
+          seatsAvail={this.props.seatsAvail}
+          />
+
+          <form
+            className="add-event-flex-container"
+            onSubmit={this.handleSubmit}
+          >
+            <ul className="add-event-form-container">
               <li>
                 <label htmlFor="title">Title</label>
                 <input
@@ -133,16 +174,20 @@ class AddEvent extends Component {
                   id="start-date"
                   type="date"
                   name="startDate"
-                  onChange={this.handleChange}
+                  onChange={this.handleStartDate}
                   value={this.state.startDate}
                 />
               </li>
               <li>
                 <label htmlFor="start-time">Start time</label>
                 <select id="start-time" onChange={this.handleStartTime}>
-                <option className="default-option" value=""></option>
+                  <option className="default-option" value=""></option>
                   {timeSelector().map((time, idx) => {
-                    return <option key={idx} value={time}>{time}</option>;
+                    return (
+                      <option key={idx} value={time}>
+                        {time}
+                      </option>
+                    );
                   })}
                 </select>
               </li>
@@ -160,9 +205,13 @@ class AddEvent extends Component {
               <li>
                 <label htmlFor="end-time">End time</label>
                 <select id="end-time" onChange={this.handleEndTime}>
-                <option className="default-option" value=""></option>
+                  <option className="default-option" value=""></option>
                   {timeSelector().map((time, idx) => {
-                    return <option key={idx} value={time}>{time}</option>;
+                    return (
+                      <option key={idx} value={time}>
+                        {time}
+                      </option>
+                    );
                   })}
                 </select>
               </li>
@@ -219,15 +268,19 @@ class AddEvent extends Component {
   }
 }
 
-
 const mapStateToProps = state => {
   return {
     loggedIn: state.auth.loggedIn,
-    hostId: state.auth.hostId
+    hostId: state.auth.hostId,
+    seatsAvail: state.seatsAvail.venue
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    getSeatsAvail: seats => dispatch(getSeatsAvailAction(seats)),
+    getAllSeatsAvail: () => dispatch(getAllSeatsAvailAction())
+  };
+};
 
-export default connect(mapStateToProps)(AddEvent);
-
-
+export default connect(mapStateToProps, mapDispatchToProps)(AddEvent);
