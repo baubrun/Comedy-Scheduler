@@ -402,8 +402,8 @@ app.post("/register", upload.none(), async (req, res) => {
 })
 
 
-// app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
-app.post("/setVenueSeating", upload.none(), async (req, res) => {
+app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
+// app.post("/setVenueSeating", upload.none("image"), async (req, res) => {
     const {
         startDate,
         venue

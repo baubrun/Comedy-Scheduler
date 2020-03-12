@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { VenuesAvailable } from "./VenuesAvailable";
-import { getSeatsAvailAction, getAllSeatsAvailAction } from "../actions/actions";
+import {
+  getSeatsAvailAction,
+  getAllSeatsAvailAction
+} from "../actions/actions";
+
+const venueNames = ["LE FOU FOU", "JOKES BLAGUES", "RIRE NOW"];
 
 const timeSelector = () => {
   let selectTimes = [];
@@ -43,8 +48,14 @@ class AddEvent extends Component {
       performer: "",
       image: "",
       price: "",
-      hostId: this.props.hostId
+      hostId: this.props.hostId,
+      defaultVenues: [],
+      noVenues: false
     };
+  }
+
+  componentDidMount() {
+    this.setState({ defaultVenues: Object.keys(this.props.seatsAvail) });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -72,10 +83,18 @@ class AddEvent extends Component {
     const parser = JSON.parse(body);
     if (parser.success) {
       this.dispatchGetSeatsAvail(parser.result.venue);
-    }
-    else{
+    } else {
       this.dispatchGetSeatsAvail();
     }
+  };
+
+  findAvailVenues = () => {
+    const defaultVenues = this.state.defaultVenues
+    if (!this.props.seatsAvail) return defaultVenues;
+    const selectedVenues = Object.keys(this.props.seatsAvail);
+    const availVenues = defaultVenues.filter(v => !selectedVenues.includes(v));
+    console.log("availVenues :", availVenues);
+    return availVenues.length < 1 ? "NONE"  : availVenues;
   };
 
   handleSubmit = async event => {
@@ -102,10 +121,11 @@ class AddEvent extends Component {
       price: ""
     });
 
-    Promise.all([
+     await Promise.all([
       fetch("/profile", { method: "POST", body: data }),
       fetch("/setVenueSeating", { method: "POST", body: data })
-    ]);
+    ]).catch(err => console.log(err));
+
     this.resetOptionInputFields();
   };
 
@@ -142,7 +162,16 @@ class AddEvent extends Component {
     docOption.selected = true;
   };
 
+  disableSubmit = () => {
+    const submitBtn = document.getElementById("add-submit-btn")
+    submitBtn.disabled = true
+
+  }
+
+
   render() {
+
+
     return (
       <>
         <div className="add-event-header">
@@ -150,7 +179,8 @@ class AddEvent extends Component {
         </div>
         <div className="add-event-body">
           <VenuesAvailable
-          seatsAvail={this.props.seatsAvail}
+            findAvailVenues={this.findAvailVenues}
+            defaultVenues={this.state.defaultVenues}
           />
 
           <form
@@ -223,9 +253,25 @@ class AddEvent extends Component {
                   onChange={this.handleVenueChange}
                 >
                   <option className="default-option" value=""></option>
-                  <option value="LE_FOU_FOU">LE FOU FOU</option>
+                  {
+
+                  this.findAvailVenues() === "NONE" ? 
+                   <option value=""></option> 
+                  :
+                  this.findAvailVenues().map(v => (
+                    <option value={v}>{v.split("_").join(" ")}</option>
+
+                  ))
+                  
+                  }
+
+
+
+
+
+                  {/* <option value="LE_FOU_FOU">LE FOU FOU</option>
                   <option value="JOKES_BLAGUES">JOKES BLAGUES</option>
-                  <option value="RIRE_NOW">RIRE NOW</option>
+                  <option value="RIRE_NOW">RIRE NOW</option> */}
                 </select>
               </li>
               <li>
@@ -258,7 +304,7 @@ class AddEvent extends Component {
                 />
               </li>
               <li>
-                <button type="submit">Submit</button>
+                <button id="add-submit-btn" type="submit">Submit</button>
               </li>
             </ul>
           </form>
