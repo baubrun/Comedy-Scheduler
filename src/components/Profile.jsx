@@ -26,7 +26,11 @@ class Profile extends Component {
     deleteBtn.style.pointerEvents = condition;
   };
 
-  componentDidMount() {}
+  componentDidMount(){
+    this.setState({
+      userEvents: this.getUserEvents()
+    });
+  }
 
   getEventsHistory = events => {
     this.props.getEventsHistory(events);
@@ -154,7 +158,9 @@ class Profile extends Component {
               selectedOption={this.state.selectedOption}
             />
           )}
-          {this.state.showAddEvent && <AddEvent />}
+          {this.state.showAddEvent && (
+            <AddEvent userEvents={this.state.userEvents} />
+          )}
           {this.state.showUpdateEvent && (
             <UpdateEvent
               event={this.state.selectedEvent}
@@ -171,8 +177,7 @@ class Profile extends Component {
 const mapStateToProps = state => {
   return {
     events: state.events,
-    hostId: state.auth.hostId,
-
+    hostId: state.auth.hostId
   };
 };
 

@@ -58,8 +58,8 @@ class CalendarView extends Component {
     console.log('this.props.events :', this.props.events);
 
     const filterEventProps = this.props.events.map(event => {
-      console.log("DateTimeFormatter", DateTimeFormatter(event.startDate, event.startTime))
-      console.log("DateTimeFormatter", DateTimeFormatter(event.endDate, event.endTime))
+      // console.log("DateTimeFormatter", DateTimeFormatter(event.startDate, event.startTime))
+      // console.log("DateTimeFormatter", DateTimeFormatter(event.endDate, event.endTime))
       return {
         // works for non overnight events
         title: event.title,
@@ -67,12 +67,13 @@ class CalendarView extends Component {
         end: new Date(DateTimeFormatter(event.endDate, event.endTime)),
       };
     });
-    console.log('filterEventProps :', filterEventProps);
+    // console.log('filterEventProps :', filterEventProps);
     return filterEventProps
   };
 
   componentDidMount() {
     this.setState({events: this.formattedEvents()})
+    // this.setState({events: this.props.events})
   }
 
   handleSelect = ({ start, end }) => {
@@ -94,7 +95,7 @@ class CalendarView extends Component {
 
 
   render() {
-    console.log('this.state.events :', this.state.events);
+    // console.log('this.state.events :', this.state.events);
 
     return (
       <div>
@@ -110,7 +111,7 @@ class CalendarView extends Component {
           views={allViews}
           eventPropGetter={eventStyleGetter}
           onSelectEvent={event => alert(event.title)}
-          onSelectSlot={this.handleSelect}
+          onSelectSlot={this.props.loggedIn ? this.handleSelect : ""}
           culture={this.state.culture}
         />
       </div>
@@ -120,8 +121,9 @@ class CalendarView extends Component {
 
 const mapStateToProps = state => {
   return {
-    events: state.events
+    loggedIn: state.auth.loggedIn,
   };
 };
 
 export default connect(mapStateToProps)(CalendarView);
+// export default CalendarView;

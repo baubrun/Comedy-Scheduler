@@ -5,8 +5,26 @@ import {
   getSeatsAvailAction,
   getAllSeatsAvailAction
 } from "../actions/actions";
+import CalendarView from "./CalendarView";
+import moment from "moment";
+
+
+
+const DateTimeFormatter = (date, time) => {
+  return moment(`${date} ${time}`).format()
+
+}
+
+
 
 const venueNames = ["LE FOU FOU", "JOKES BLAGUES", "RIRE NOW"];
+
+const calcOverlappedEvents = (start, end, newStart) => {
+  const a = parseInt(start.split(":").join(""));
+  const b = parseInt(end.split(":").join(""));
+  const c = parseInt(newStart.split(":").join(""));
+  return c > a && c < b;
+};
 
 const timeSelector = () => {
   let selectTimes = [];
@@ -50,7 +68,10 @@ class AddEvent extends Component {
       price: "",
       hostId: this.props.hostId,
       defaultVenues: [],
-      noVenues: false
+      noVenues: false,
+      calendarViewShow: false,
+      listViewShow: true,
+
     };
   }
 
@@ -59,9 +80,12 @@ class AddEvent extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.startDate !== this.state.startDate) {
-      this.fetchAvailVenue();
-    }
+    // if (prevState.startDate !== this.state.startDate) {
+    //   this.fetchAvailVenue();
+    // }
+    // if (prevState.startTime !== this.state.startTime) {
+    //   this.fetchOverlapped();
+    // }
   }
 
   dispatchGetSeatsAvail = seats => {
@@ -88,14 +112,58 @@ class AddEvent extends Component {
     }
   };
 
+  fetchOverlapped = async () => {
+    const data = new FormData();
+    data.append("startDate", this.state.startDate);
+    data.append("venue", this.state.venue);
+    // data.append("endTime", this.state.endTime);
+    const response = await fetch("/slotsTaken", {
+      method: "POST",
+      body: data
+    });
+    const body = await response.text();
+    const parser = JSON.parse(body);
+    if (parser.success) {
+      // const start = parser.result.startTime
+      // const end = parser.result.endTime
+      // const expectedStart = this.state.startTime
+      // const ole = calcOverlappedEvents(
+      //   start,
+      //   end,
+      //   expectedStart
+      // )
+      // console.log('ole :', ole);
+      console.log("result", parser.result);
+    }
+  };
+
   findAvailVenues = () => {
-    const defaultVenues = this.state.defaultVenues
+    const defaultVenues = this.state.defaultVenues;
     if (!this.props.seatsAvail) return defaultVenues;
     const selectedVenues = Object.keys(this.props.seatsAvail);
     const availVenues = defaultVenues.filter(v => !selectedVenues.includes(v));
-    console.log("availVenues :", availVenues);
-    return availVenues.length < 1 ? "NONE"  : availVenues;
+    // console.log("availVenues :", availVenues);
+    return availVenues.length < 1 ? "NONE" : availVenues;
   };
+
+
+  formattedEvents = () => {
+    // console.log('this.props.events :', this.props.events);
+
+    const filterEventProps = this.props.events.map(event => {
+      console.log("DateTimeFormatter", DateTimeFormatter(event.startDate, event.startTime))
+      console.log("DateTimeFormatter", DateTimeFormatter(event.endDate, event.endTime))
+      return {
+        // works for non overnight events
+        title: event.title,
+        start: new Date(DateTimeFormatter(event.startDate, event.startTime)),
+        end: new Date(DateTimeFormatter(event.endDate, event.endTime)),
+      };
+    });
+    console.log('filterEventProps :', filterEventProps);
+    return filterEventProps
+  };
+
 
   handleSubmit = async event => {
     event.preventDefault();
@@ -121,7 +189,7 @@ class AddEvent extends Component {
       price: ""
     });
 
-     await Promise.all([
+    await Promise.all([
       fetch("/profile", { method: "POST", body: data }),
       fetch("/setVenueSeating", { method: "POST", body: data })
     ]).catch(err => console.log(err));
@@ -162,28 +230,58 @@ class AddEvent extends Component {
     docOption.selected = true;
   };
 
-  disableSubmit = () => {
-    const submitBtn = document.getElementById("add-submit-btn")
-    submitBtn.disabled = true
 
-  }
+  toggleCalendarView = () => {
+    this.setState({
+      calendarViewShow: true,
+      listViewShow: false
+    });
+  };
 
+
+
+
+
+  // disableSubmit = () => {
+  //   const submitBtn = document.getElementById("add-submit-btn")
+  //   submitBtn.disabled = true
+
+  // }
 
   render() {
-
-
     return (
       <>
         <div className="add-event-header">
           <h2>ADD EVENT</h2>
         </div>
         <div className="add-event-body">
-          <VenuesAvailable
+          {/* <VenuesAvailable
             findAvailVenues={this.findAvailVenues}
             defaultVenues={this.state.defaultVenues}
-          />
+          /> */}
 
-          <form
+          <div className="add-events-header-img">
+            <img
+              id="list-view"
+              onClick={this.toggleListView}
+              src="list-view-30px.png"
+              alt=""
+            />
+            <img
+              id="calendar-view"
+              onClick={this.toggleCalendarView}
+              src="calendar2-view-30px.png"
+              alt=""
+            />
+          </div>
+          {this.state.calendarViewShow && (
+          <CalendarView 
+          events={this.props.userEvents}
+          />
+          
+          )}
+
+          {/* <form
             className="add-event-flex-container"
             onSubmit={this.handleSubmit}
           >
@@ -253,25 +351,13 @@ class AddEvent extends Component {
                   onChange={this.handleVenueChange}
                 >
                   <option className="default-option" value=""></option>
-                  {
-
-                  this.findAvailVenues() === "NONE" ? 
-                   <option value=""></option> 
-                  :
-                  this.findAvailVenues().map(v => (
-                    <option value={v}>{v.split("_").join(" ")}</option>
-
-                  ))
-                  
-                  }
-
-
-
-
-
-                  {/* <option value="LE_FOU_FOU">LE FOU FOU</option>
-                  <option value="JOKES_BLAGUES">JOKES BLAGUES</option>
-                  <option value="RIRE_NOW">RIRE NOW</option> */}
+                  {this.findAvailVenues() === "NONE" ? (
+                    <option value=""></option>
+                  ) : (
+                    this.findAvailVenues().map(v => (
+                      <option value={v}>{v.split("_").join(" ")}</option>
+                    ))
+                  )}
                 </select>
               </li>
               <li>
@@ -304,10 +390,12 @@ class AddEvent extends Component {
                 />
               </li>
               <li>
-                <button id="add-submit-btn" type="submit">Submit</button>
+                <button id="add-submit-btn" type="submit">
+                  Submit
+                </button>
               </li>
             </ul>
-          </form>
+          </form> */}
         </div>
       </>
     );

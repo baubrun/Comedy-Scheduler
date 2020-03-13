@@ -165,7 +165,12 @@ class Events extends Component {
                   seatsAvail={this.props.seatsAvail}
                 />
               ))}
-          {this.state.calendarViewShow && <CalendarView />}
+          {this.state.calendarViewShow && (
+          <CalendarView
+          events={this.props.events}
+          
+          />
+          )}
         </div>
       </>
     );

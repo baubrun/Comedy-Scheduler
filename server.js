@@ -121,7 +121,9 @@ app.get("/confirmation", async (req, res) => {
     dbo.collection("purchases").find({}).toArray((err, evt) => {
         if (err) {
             console.log(err)
-            return res.json({success: false})
+            return res.json({
+                success: false
+            })
         }
         return res.json(evt)
     })
@@ -147,7 +149,7 @@ app.post("/profile", upload.single("image"), async (req, res) => {
     await dbo.collection("events").findOne({
         "startDate": startDate,
         "venue": venue,
-        "startTime": startTime
+        "startTime": startTime,
 
     }, (err, result) => {
         if (err) {
@@ -239,11 +241,13 @@ app.post("/deleteEvents", upload.single("image"), async (req, res) => {
 })
 
 
+
+
 app.post("/getSeatsAvail", upload.none(), async (req, res) => {
     const {
         startDate,
     } = req.body
-    
+
     await dbo.collection("seating").findOne({
         "startDate": startDate
     }, (err, result) => {
@@ -274,7 +278,7 @@ app.post("/getVenueAvail", upload.none(), async (req, res) => {
         startDate,
         venue
     } = req.body
-    
+
 
     await dbo.collection("seating").findOne({
         "startDate": startDate,
@@ -403,7 +407,7 @@ app.post("/register", upload.none(), async (req, res) => {
 
 
 app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
-// app.post("/setVenueSeating", upload.none("image"), async (req, res) => {
+    // app.post("/setVenueSeating", upload.none("image"), async (req, res) => {
     const {
         startDate,
         venue
@@ -450,6 +454,75 @@ app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
         }
     })
 })
+
+app.post("/slotsTaken", upload.single("image"), async (req, res) => {
+    const {
+        title,
+        startDate,
+        startTime,
+        endDate,
+        endTime,
+        venue,
+        performer,
+        price,
+        hostId,
+    } = req.body
+
+    await dbo.collection("events").findOne({
+        "startDate": startDate,
+        "venue": venue,
+        // "startTime": {
+        //     $gte: {
+        //         startTime
+        //     }
+        // },
+        // "endTime": {
+        //     $lte: {
+        //         endTime
+        //     }
+        // },
+
+    }, (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(400).json({
+                success: false
+            })
+        }
+        if (result) {
+            // return res.status(400).json({
+            return res.json({
+                success: true,
+                msg: "Found date match",
+                result: result
+
+            })
+        } else {
+            dbo.collection("events").insertOne({
+                title: title,
+                startDate: startDate,
+                startTime: startTime,
+                endDate: endDate,
+                endTime: endTime,
+                venue: venue,
+                performer: performer,
+                // image: !req.file.originalname ? "" : req.file.originalname,
+                price: price,
+                hostId: hostId,
+                seatsAvail: venueSeating(venue),
+                allDay: "false",
+                dateAdded: new Date()
+            })
+            return res.json({
+                success: true,
+                msg: "Event added.",
+
+            })
+        }
+    })
+
+})
+
 
 
 

@@ -162,3 +162,9 @@ Events history
         text-align: center;
 }
 
+.add-events-header-img {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
