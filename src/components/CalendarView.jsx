@@ -3,7 +3,8 @@ import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { connect } from "react-redux";
-import 'moment/locale/en-gb';
+import "moment/locale/en-gb";
+
 
 const allViews = Object.keys(Views).map(k => Views[k]);
 const localizer = momentLocalizer(moment);
@@ -18,85 +19,136 @@ const eventStyleGetter = (event, start, end, isSelected) => {
   };
 };
 
-
 const formats = {
-  // eventTimeRangeStartFormat: "",
-  // eventTimeRangeFormat: ""
-  eventTimeRangeStartFormat: ({ start}, culture, localizer) => ( 
-  localizer.format(start, { date: 'short' }, culture)
-),
-  eventTimeRangeEndFormat: ({ end}, culture, localizer) => (
-  localizer.format(end, { date: 'short' }, culture)
-  )
-
-}
-
-
+  eventTimeRangeStartFormat: ({ start }, culture, localizer) =>
+    localizer.format(start, { date: "short" }, culture),
+  eventTimeRangeEndFormat: ({ end }, culture, localizer) =>
+    localizer.format(end, { date: "short" }, culture)
+};
 
 const DateTimeFormatter = (date, time) => {
-  return moment(`${date} ${time}`).format()
-
-}
+  return moment(`${date} ${time}`).format();
+};
 class CalendarView extends Component {
   constructor(...args) {
     super(...args);
 
     this.state = {
+      culture: "en-gb",
       events: [],
       title: "",
       start: null,
       end: null,
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: "",
       venue: "",
       performer: "",
-      price: "",
-      hostId: "",
-      culture: "en-gb",
+      image: "",
+      price: ""
     };
   }
 
-  formattedEvents = () => {
-    console.log('this.props.events :', this.props.events);
+  componentDidMount() {
+    this.setState({ events: this.formattedEventsFromDB() });
+  }
 
-    const filterEventProps = this.props.events.map(event => {
-      // console.log("DateTimeFormatter", DateTimeFormatter(event.startDate, event.startTime))
-      // console.log("DateTimeFormatter", DateTimeFormatter(event.endDate, event.endTime))
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.userEvents !== this.props.userEvents) {
+      this.setState({
+        events: this.formattedEventsFromDB(),
+        venue:
+          this.props.userEvents[0] === undefined
+            ? this.props.selectedVenue
+            : this.props.userEvents[0].venue
+      });
+    }
+  }
+  
+  eventsByVenueHostId = () => {
+    const filter = {
+      hostId: this.props.hostId,
+      venue: this.state.venue
+    };
+    const userEvents = this.props.userEvents.filter(item => {
+      for (const key in filter) {
+        if (item[key] !== filter[key] || !item[key]) return false;
+      }
+      return true;
+    });
+    this.setState({ events: userEvents });
+  };
+
+  formattedEventsFromDB = () => {
+    const filterEventProps = this.props.userEvents.map(event => {
       return {
         // works for non overnight events
         title: event.title,
         start: new Date(DateTimeFormatter(event.startDate, event.startTime)),
-        end: new Date(DateTimeFormatter(event.endDate, event.endTime)),
+        end: new Date(DateTimeFormatter(event.endDate, event.endTime))
       };
     });
-    // console.log('filterEventProps :', filterEventProps);
-    return filterEventProps
+    return filterEventProps;
   };
 
-  componentDidMount() {
-    this.setState({events: this.formattedEvents()})
-    // this.setState({events: this.props.events})
-  }
+  convertAddedEvents = (startStr, endStr, title) => {
+    const [monthSt, dateSt, yearSt, timeSt] = startStr
+      .toString()
+      .split(" ")
+      .slice(1, 5);
+    const [monthEnd, dateEnd, yearEnd, timeEnd] = endStr
+      .toString()
+      .split(" ")
+      .slice(1, 5);
+    const regexTime = time =>
+      time
+        .split(/[d+:]/)
+        .slice(0, 2)
+        .join(":");
+    const formatMonth = month =>
+      moment()
+        .month(month)
+        .format("MM");
+    this.setState({
+      startDate: `${yearSt}-${formatMonth(monthSt)}-${dateSt}`,
+      startTime: regexTime(timeSt),
+      endDate: `${yearEnd}-${formatMonth(monthEnd)}-${dateEnd}`,
+      endTime: regexTime(timeEnd),
+      title: title
+    });
+  };
+
+  storeCalendarEvent = async () => {
+    const data = new FormData();
+    data.append("title", this.state.title);
+    data.append("startDate", this.state.startDate);
+    data.append("startTime", this.state.startTime);
+    data.append("endDate", this.state.endDate);
+    data.append("endTime", this.state.endTime);
+    data.append("hostId", this.props.hostId);
+    data.append("venue", this.state.venue);
+    await fetch("/profile", { method: "POST", body: data });
+  };
+
 
   handleSelect = ({ start, end }) => {
-    const title = window.prompt("new event name");
+    if (this.state.venue === ""){
+      return
+    }
+    const title = window.prompt("New event title?");
     if (title) {
       this.setState({
         events: [...this.state.events, { start, end, title }]
       });
+      //   console.log('start :', typeof(start.toString()));
+      //   console.log('end :', typeof(end.toString()))
+      this.convertAddedEvents(start, end, title);
+      this.storeCalendarEvent();
     }
   };
 
-  /* try to pass location and title for AddEvent component below */
-  //   handleSelect = ({start, end}) => {
-  //       this.setState({
-  //     events: [...this.state.events, { start, end}]
-  //   });
-  // }
-
-
-
   render() {
-    // console.log('this.state.events :', this.state.events);
-
     return (
       <div>
         <Calendar
@@ -111,7 +163,8 @@ class CalendarView extends Component {
           views={allViews}
           eventPropGetter={eventStyleGetter}
           onSelectEvent={event => alert(event.title)}
-          onSelectSlot={this.props.loggedIn ? this.handleSelect : ""}
+          // onSelectSlot={this.props.loggedIn ? this.handleSelect : ""}
+          onSelectSlot={this.handleSelect}
           culture={this.state.culture}
         />
       </div>
@@ -122,6 +175,7 @@ class CalendarView extends Component {
 const mapStateToProps = state => {
   return {
     loggedIn: state.auth.loggedIn,
+    hostId: state.auth.hostId
   };
 };
 

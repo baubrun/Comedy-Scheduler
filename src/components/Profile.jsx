@@ -13,64 +13,17 @@ class Profile extends Component {
       showHistory: false,
       showAddEventForm: false,
       showUpdateEvent: false,
-      userEvents: null,
       selectedEvent: [],
-      selectedOption: ""
+      selectedOption: "",
+      userEvents: []
     };
   }
 
-  enableButtonsOnChecked = condition => {
-    const updateBtn = document.getElementById("update-event-btn");
-    updateBtn.style.pointerEvents = condition;
-    const deleteBtn = document.getElementById("delete-event-btn");
-    deleteBtn.style.pointerEvents = condition;
+  dispatchGetEvents = events => {
+    this.props.getEvents(events);
   };
 
-  componentDidMount(){
-    this.setState({
-      userEvents: this.getUserEvents()
-    });
-  }
 
-  getEventsHistory = events => {
-    this.props.getEventsHistory(events);
-  };
-
-  getUserEvents = () => {
-    return this.props.events.filter(
-      event =>
-        event.hostId.toLowerCase().indexOf(this.props.hostId.toLowerCase()) !==
-        -1
-    );
-  };
-
-  getSelectedEvent = () => {
-    const event = this.state.userEvents.find(
-      evt => evt._id === this.state.selectedOption
-    );
-
-    return event;
-  };
-
-  handleOptionChange = event => {
-    this.setState({
-      selectedOption: event.target.value
-    });
-  };
-
-  showEventHistory = async () => {
-    const response = await fetch("/profile");
-    const body = await response.text();
-    const parser = JSON.parse(body);
-    this.getEventsHistory(parser);
-    this.setState({
-      showHistory: true,
-      showAddEvent: false,
-      showUpdateEvent: false,
-      selectedOption: "",
-      userEvents: this.getUserEvents()
-    });
-  };
 
   deleteEvent = async () => {
     if (this.state.selectedOption === "") {
@@ -88,7 +41,8 @@ class Profile extends Component {
         const body = await response.text();
         const parser = JSON.parse(body);
         if (parser.success) {
-          this.showEventHistory();
+          console.log(parser.success);
+          this.LoadEvents();
         }
       } else {
         return;
@@ -96,22 +50,64 @@ class Profile extends Component {
     }
   };
 
+  enableButtonsOnChecked = condition => {
+    const updateBtn = document.getElementById("update-event-btn");
+    updateBtn.style.pointerEvents = condition;
+    const deleteBtn = document.getElementById("delete-event-btn");
+    deleteBtn.style.pointerEvents = condition;
+  };
+
+
+  getHostEvents = () => {
+    return this.props.events.filter(
+      event =>
+        event.hostId.toLowerCase().indexOf(this.props.hostId.toLowerCase()) !==
+        -1
+    );
+  };
+
+  getSelectedEvent = () => {
+    const event = this.state.userEvents.find(
+      evt => evt._id === this.state.selectedOption
+    );
+    return event;
+  };
+
+  handleOptionChange = event => {
+    this.setState({
+      selectedOption: event.target.value
+    });
+  };
+
   showAddEventForm = () => {
     this.setState({
       showHistory: false,
       showAddEvent: true,
-      showUpdateEvent: false
+      showUpdateEvent: false,
+      userEvents: this.getHostEvents()
     });
   };
 
-  verifyEventSelected = () => {};
+  LoadEvents = async () => {
+    const response = await fetch("/events");
+    const body = await response.text();
+    const parser = JSON.parse(body);
+    this.dispatchGetEvents(parser);
+    this.setState({
+      showHistory: true,
+      showAddEvent: false,
+      showUpdateEvent: false,
+      selectedOption: "",
+      userEvents: this.getHostEvents()
+    });
+  };
 
   showUpdateEventForm = () => {
     if (this.state.selectedOption === "") {
       window.alert("Please select an event.");
       return;
     } else {
-      this.verifyEventSelected();
+      // this.verifyEventSelected();
       this.setState({
         selectedEvent: this.getSelectedEvent(),
         showHistory: false,
@@ -128,11 +124,12 @@ class Profile extends Component {
           <h1>PROFILE</h1>
           <ul className="profile-buttons">
             <li>
-              <div id="events-history-btn" onClick={this.showEventHistory}>
-                Show history
+              <div id="events-history-btn" onClick={this.LoadEvents}>
+                Load Events
               </div>
             </li>
             <li>
+              {/* <div id="add-event-btn" onClick={this.showAddEventForm}> */}
               <div id="add-event-btn" onClick={this.showAddEventForm}>
                 Add Event
               </div>
@@ -153,6 +150,7 @@ class Profile extends Component {
           {this.state.showHistory && (
             <EventsHistory
               userEvents={this.state.userEvents}
+              // userEvents={this.props.events}
               hostId={this.props.hostId}
               handleOptionChange={this.handleOptionChange}
               selectedOption={this.state.selectedOption}
@@ -165,7 +163,7 @@ class Profile extends Component {
             <UpdateEvent
               event={this.state.selectedEvent}
               id={this.state.selectedOption}
-              showEventHistory={this.showEventHistory}
+              LoadEvents={this.LoadEvents}
             />
           )}
         </div>
@@ -183,7 +181,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getEventsHistory: events => dispatch(getEventsAction(events))
+    getEvents: events => dispatch(getEventsAction(events))
   };
 };
 

@@ -78,22 +78,18 @@ class Events extends Component {
     this.dispatchGetEvents(parsed);
   };
 
-//   /* complete dispatch action to get start date
-// maybe set it to state... get from user 
 
-// */
-
-//   fetchSeatsAvail = async () => {
-//     const data = new FormData();
-//     data.append("startDate", this.state.startDate);
-//     const response = await fetch("/getSeatsAvail", {
-//       method: "POST",
-//       body: data
-//     });
-//     const body = await response.text();
-//     const parsed = JSON.parse(body);
-//     this.dispatchGetSeatsAvail(parsed);
-//   };
+  // fetchSeatsAvail = async () => {
+  //   const data = new FormData();
+  //   data.append("startDate", this.state.startDate);
+  //   const response = await fetch("/getSeatsAvail", {
+  //     method: "POST",
+  //     body: data
+  //   });
+  //   const body = await response.text();
+  //   const parsed = JSON.parse(body);
+  //   this.dispatchGetSeatsAvail(parsed);
+  // };
 
   componentDidMount() {
     this.fetchEvents();
@@ -168,7 +164,6 @@ class Events extends Component {
           {this.state.calendarViewShow && (
           <CalendarView
           events={this.props.events}
-          
           />
           )}
         </div>

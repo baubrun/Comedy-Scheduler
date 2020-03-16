@@ -173,7 +173,7 @@ app.post("/profile", upload.single("image"), async (req, res) => {
                 endTime: endTime,
                 venue: venue,
                 performer: performer,
-                image: req.file.originalname,
+                image: !req.file ? "" : req.file.originalname,
                 price: price,
                 hostId: hostId,
                 seatsAvail: venueSeating(venue),
@@ -233,6 +233,9 @@ app.post("/deleteEvents", upload.single("image"), async (req, res) => {
         }, (err, r) => {
             if (err) {
                 console.log(err)
+                return res.json({
+                    success: false
+                })
             }
         })
     return res.json({
@@ -506,7 +509,7 @@ app.post("/slotsTaken", upload.single("image"), async (req, res) => {
                 endTime: endTime,
                 venue: venue,
                 performer: performer,
-                // image: !req.file.originalname ? "" : req.file.originalname,
+                // image: !req.file ? "": req.file.originalname ,
                 price: price,
                 hostId: hostId,
                 seatsAvail: venueSeating(venue),
