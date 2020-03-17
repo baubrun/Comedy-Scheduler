@@ -27,6 +27,7 @@ Home Header
 .home-header
 {
   border-bottom: 1px solid black;
+  display:flex;
   padding: 2px;
   width: 100%;
   height: auto;
@@ -53,13 +54,18 @@ Home Header
 }
 
 .home-body {
-  background-image: url("./images/club-2.jpg");
-  background-size: 100%;
-  height: 100vh;
+  display: flex;
+  flex-flow: row wrap;
+  position: relative;
   width: 100%;
 }
 
 
+.home-body img {
+  background-size: cover;
+  order: 100;;
+  width: 100%;
+}
 
 .add-event-btn{
   background-color: #663A2B;
@@ -67,6 +73,24 @@ Home Header
   color: whitesmoke;
   cursor: pointer;
   padding: 5px;
+}
+
+.events-btn {
+  background-color: rgb(224, 151, 33);
+  border: none;
+  border-radius: 5px;
+  color: whitesmoke;
+  cursor: pointer;
+  padding: 5px;
+
+}
+
+.portal-links {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  width: 100%;
+
 }
 
 
@@ -190,6 +214,7 @@ color: black}
 
 .dropdown-content a {
   color: white;
+  width: 100%;
 }
 
 .dropdown-content li:hover {

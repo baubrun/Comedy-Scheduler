@@ -70,25 +70,33 @@
     opacity: 1;
 }
 
-.remove-btn {
-    cursor: pointer;
-}
 
 
-.reserve-btn {
-    background-color: rgb(224, 151, 33);
-    border: none;
-    border-radius: 5px;
-    color: whitesmoke;
-    cursor: pointer;
-    padding: 5px;
-}
-
-#reserve-btn,
+#events-btn,
 #add-event-btn {
     justify-content: center;
     color: whitesmoke;
 }
+
+
+
+.event li {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    padding: 10px;
+    width: 100%;
+}
+
+.performer-img-detail {
+    height: 150px;
+    width: 150px;
+}
+
+.remove-btn {
+    cursor: pointer;
+}
+
 
 .total {
     display: flex;

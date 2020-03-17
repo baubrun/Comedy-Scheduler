@@ -5,8 +5,6 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 
 const EventDetail = props => {
-
-
   const dispatchAddToCart = () => {
     props.addToCart(props.event);
   };
@@ -18,35 +16,32 @@ const EventDetail = props => {
     performer,
     startTime,
     image,
-    price
+    price,
+    _id
   } = props.event;
 
   return (
     <div>
       <div className="event-detail-header">
-      <Link to="/events">RETURN TO EVENTS</Link>
-        <div></div>{title}
+        <Link to="/events">RETURN TO EVENTS</Link>
       </div>
       <div className="event-detail-body">
-        <ul className="event" key={title}>
-          <li>Title: {title}</li>
-          <li>
-            Start:{" "}
-            {moment(`${startDate} ${startTime}`).format("DD-MM-YYYY HH:mm")}h
+        <ul className="event" key={_id}>
+        <li>
+            <Link to="/cart">
+              <button className="events-btn" onClick={dispatchAddToCart}>
+                RESERVE
+              </button>
+            </Link>
           </li>
+          <li>Title: {title}</li>
+          <li> Date:{moment(`${startDate}`).format("DD-MM-YYYY")}</li>
+          <li>Time: {startTime}</li>
           <li>Venue: {venue}</li>
           <li>Performer: {performer}</li>
           <li>Price: ${price}</li>
           <li>
-            <img id="performer-img" src={`../../${image}`} alt="" />
-          </li>
-
-          <li>
-            <Link to="/cart">
-            <button className="reserve-btn" onClick={dispatchAddToCart}>
-              Reserve
-            </button>
-            </Link>
+            <img className="performer-img-detail" src={`../../${image}`} alt="" />
           </li>
         </ul>
       </div>

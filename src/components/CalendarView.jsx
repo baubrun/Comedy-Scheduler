@@ -55,13 +55,13 @@ class CalendarView extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.userEvents !== this.props.userEvents) {
+    if (prevProps.events !== this.props.events) {
       this.setState({
         events: this.formattedEventsFromDB(),
         venue:
-          this.props.userEvents[0] === undefined
+          this.props.events[0] === undefined
             ? this.props.selectedVenue
-            : this.props.userEvents[0].venue
+            : this.props.events[0].venue
       });
     }
   }
@@ -81,7 +81,7 @@ class CalendarView extends Component {
   };
 
   formattedEventsFromDB = () => {
-    const filterEventProps = this.props.userEvents.map(event => {
+    const filterEventProps = this.props.events.map(event => {
       return {
         // works for non overnight events
         title: event.title,
@@ -180,4 +180,3 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps)(CalendarView);
-// export default CalendarView;

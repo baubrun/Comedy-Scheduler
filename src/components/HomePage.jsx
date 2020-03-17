@@ -14,11 +14,11 @@ class HomePage extends Component {
           </div>
         </div>
         <div className="home-body">
+          <img src="club-2.jpg" alt=""/>
           <div className="portal-links">
-            <Link className="reserve-btn" id="reserve-btn" to="/events">
+            <Link className="events-btn" id="events-btn" to="/events">
               EVENTS
             </Link>
-
             <Link  className="add-event-btn" id="add-event-btn" to="/login">
               ADD EVENT
             </Link>

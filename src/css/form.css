@@ -54,11 +54,6 @@ Form
   width: 100%;
 }
 
-.portal-links {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
 
 #register {
   background-color: rgb(142, 245, 222);
@@ -82,7 +77,7 @@ Form
 }
 
 
-.reserve-btn {
+.events-btn {
   color: white
 }
 

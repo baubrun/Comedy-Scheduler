@@ -17,36 +17,39 @@ export const Event = props => {
 
   return (
     <div>
-      <div className="event">
-        <div className="event-title-info">
-          <Link to={`/event/${title}`}>{title}</Link>
-          <img id="performer-img" src={`../../${image}`} alt="" />
-        </div>
-        <div>Performer: {performer}</div>
+    {props.events === [] ? (
+        "NO EVENTS"
+      ) : ( 
+        <div className="event">
+          <div className="event-title-info">
+            <Link to={`/event/${title}`}>{title}</Link>
+            <img id="performer-img" src={`../../${image}`} alt="" />
+          </div>
+          <div className="event-title-info ">{performer}</div>
 
-        <div className="event-title-info">
-          {moment(`${startDate}`).format("DD-MM-YYYY")}
-          
-          <br/>
-          <br/>
-          {startTime}
+          <div className="event-title-info">
+            {moment(`${startDate}`).format("DD-MM-YYYY")}
+            <br />
+            <br />
+            {startTime}
+          </div>
+          {/* <div className="seatsAvail "> */}
+          <div className="event-title-info ">
+            {/* <div id="seats-avail-title"> */}
+            Seats Available:{" "}
+            {seatsAvail > 0 ? (
+              // {this.props.seatsAvail > 0 ? (
+              <img
+                id="seats-avail-img"
+                src="green-check-grn-wht-15px.png"
+                alt=""
+              />
+            ) : (
+              <img id="seats-avail-img" src="red-x-red-wht-15px.png" alt="" />
+            )}{" "}
+          </div>
         </div>
-        {/* <div className="seatsAvail "> */}
-        <div className="event-title-info ">
-          {/* <div id="seats-avail-title"> */}
-              Seats Available:{" "}
-              {seatsAvail > 0 ? (
-                // {this.props.seatsAvail > 0 ? (
-                <img
-                  id="seats-avail-img"
-                  src="green-check-grn-wht-15px.png"
-                  alt=""
-                />
-              ) : (
-                <img id="seats-avail-img" src="red-x-red-wht-15px.png" alt="" />
-              )}{" "}
-        </div>
-      </div>
+       )} 
     </div>
   );
 };
@@ -59,8 +62,20 @@ class Events extends Component {
       calendarViewShow: false,
       listViewShow: true,
       venue: "",
-      startDate: ""
+      startDate: "",
+      events: []
     };
+  }
+
+  componentDidMount() {
+    this.fetchEvents();
+    this.eventsByVenue();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.venue !== this.state.venue) {
+      this.eventsByVenue();
+    }
   }
 
   dispatchGetEvents = events => {
@@ -78,32 +93,19 @@ class Events extends Component {
     this.dispatchGetEvents(parsed);
   };
 
-
-  // fetchSeatsAvail = async () => {
-  //   const data = new FormData();
-  //   data.append("startDate", this.state.startDate);
-  //   const response = await fetch("/getSeatsAvail", {
-  //     method: "POST",
-  //     body: data
-  //   });
-  //   const body = await response.text();
-  //   const parsed = JSON.parse(body);
-  //   this.dispatchGetSeatsAvail(parsed);
-  // };
-
-  componentDidMount() {
-    this.fetchEvents();
-  }
+  eventsByVenue = () => {
+    const events = this.props.events.filter(
+      event => event.venue.indexOf(this.state.venue) !== -1
+    );
+    this.setState({ events: events });
+  };
 
   handleSearchInput = event => {
     this.setState({ searchInput: event.target.value });
   };
 
-  toggleListView = () => {
-    this.setState({
-      listViewShow: true,
-      calendarViewShow: false
-    });
+  handleVenueChange = event => {
+    this.setState({ venue: event.target.value });
   };
 
   toggleCalendarView = () => {
@@ -113,8 +115,11 @@ class Events extends Component {
     });
   };
 
-  handleVenueChange = event => {
-    this.setState({ venue: event.target.value });
+  toggleListView = () => {
+    this.setState({
+      listViewShow: true,
+      calendarViewShow: false
+    });
   };
 
   render() {
@@ -162,9 +167,7 @@ class Events extends Component {
                 />
               ))}
           {this.state.calendarViewShow && (
-          <CalendarView
-          events={this.props.events}
-          />
+            <CalendarView events={this.state.events} />
           )}
         </div>
       </>
@@ -174,16 +177,28 @@ class Events extends Component {
 
 const mapStateToProps = state => {
   return {
-    events: state.events,
+    events: state.events
     // seatsAvail: state.seating
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getEvents: events => dispatch(getEventsAction(events)),
+    getEvents: events => dispatch(getEventsAction(events))
     // getSeatsAvail: seats => dispatch(getSeatsAvailAction(seats))
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Events);
+
+// fetchSeatsAvail = async () => {
+//   const data = new FormData();
+//   data.append("startDate", this.state.startDate);
+//   const response = await fetch("/getSeatsAvail", {
+//     method: "POST",
+//     body: data
+//   });
+//   const body = await response.text();
+//   const parsed = JSON.parse(body);
+//   this.dispatchGetSeatsAvail(parsed);
+// };

@@ -23,11 +23,9 @@ class AddEvent extends Component {
       image: "",
       price: "",
       hostId: this.props.hostId,
-      // defaultVenues: [],
       noVenues: false,
       calendarViewShow: false,
       listViewShow: true,
-      // userEvents: []
       userEvents: this.props.userEvents
     };
   }
@@ -259,15 +257,9 @@ class AddEvent extends Component {
               alt=""
             />
           </div>
-          {/* {this.state.calendarViewShow && (
-            // <CalendarView events={this.props.userEvents} />
-            <CalendarView events={this.state.userEvents} />
-          )} */}
-          {/* <CalendarView userEvents={this.props.userEvents} /> */}
           <CalendarView 
           selectedVenue={this.state.venue}
-          userEvents={this.state.userEvents} 
-          
+          events={this.state.userEvents} 
           />
 
         </div>

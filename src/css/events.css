@@ -8,7 +8,7 @@
 
 
 .event {
-    border: 1px dotted #663A2B;
+    border-top: 1px dotted #663A2B;
 
     display: flex;
 

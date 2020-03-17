@@ -24,26 +24,17 @@ class NavBar extends Component {
             <img id="dropdown-img" src="menu-grid.png" alt="" />
             <div className="dropdown-content">
               <ul>
-                <li>
-                  <Link to="/profile">Profile</Link>
-                </li>
-                <li>
-                  <Link to="/events">Tickets</Link>
-                </li>
-                <li>
-                  <Link to="/profile">Add event</Link>
-                </li>
-                <li>
+                <Link to="/profile"><li>Profile</li> </Link>
+                  <Link to="/events"><li>Tickets</li> </Link>
+                  <Link to="/profile"><li>Add event</li> </Link>
                   <Link to="/" onClick={this.dispatchLogout}>
-                    Logout
+                   <li>Logout</li>
                   </Link>
-                </li>
               </ul>
             </div>
           </div>
         )}
         {
-          
           <div className="cart">
             <Link to="/cart">
               <img src="ticket-blk-white.png" alt=""></img>
