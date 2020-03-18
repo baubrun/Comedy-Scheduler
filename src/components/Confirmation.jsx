@@ -22,12 +22,8 @@ class Confirmation extends Component {
     data.append("seatsTaken", JSON.stringify(this.seatsTaken()));
     await fetch("/updateSeatsAvail", {
       method: "POST",
-      body: data
+      body: data,
     });
-    // const body = await response.text();
-    // const parser = JSON.parse(body);
-    // if (parser.success) {
-    // }
   };
 
   componentDidMount(){

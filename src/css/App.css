@@ -63,9 +63,10 @@ Home Header
 
 .home-body img {
   background-size: cover;
-  order: 100;;
+  order: 100;
   width: 100%;
 }
+
 
 .add-event-btn{
   background-color: #663A2B;
@@ -75,15 +76,6 @@ Home Header
   padding: 5px;
 }
 
-.events-btn {
-  background-color: rgb(224, 151, 33);
-  border: none;
-  border-radius: 5px;
-  color: whitesmoke;
-  cursor: pointer;
-  padding: 5px;
-
-}
 
 .portal-links {
   display: flex;
@@ -100,16 +92,6 @@ Home Header
   padding: 0 5px;
   width: 100%;
 
-}
-
-.venue-links > div > a{
-  background-color: white;
-  border-image : url("./images/paper-border.png") 50 repeat;
-  border-style: solid;
-}
-
-.venue-links > div {
-  margin-top: 5px;
 }
 
 

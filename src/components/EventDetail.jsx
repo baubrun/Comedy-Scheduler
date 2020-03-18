@@ -26,11 +26,11 @@ const EventDetail = props => {
         <Link to="/events">RETURN TO EVENTS</Link>
       </div>
       <div className="event-detail-body">
-        <ul className="event" key={_id}>
+        <ul className="event-detail" key={_id}>
         <li>
             <Link to="/cart">
-              <button className="events-btn" onClick={dispatchAddToCart}>
-                RESERVE
+              <button className="reserve-btn" onClick={dispatchAddToCart}>
+                PURCHASE
               </button>
             </Link>
           </li>

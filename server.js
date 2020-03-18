@@ -528,35 +528,47 @@ app.post("/slotsTaken", upload.single("image"), async (req, res) => {
 
 
 
-
+/* works but loop resets headers -- fix this */
 app.post("/updateSeatsAvail", upload.none(), async (req, res) => {
 
-    const parsedRequest = JSON.parse(req.body)
-    const {
-        venue,
-        qty,
-        startDate
-    } = parsedRequest
+    const parsedRequest = JSON.parse(req.body.seatsTaken)
+    // const {
+    //     venue,
+    //     qty,
+    //     startDate
+    // } = parsedRequest
+    // } = req.body.seatsTaken
+    // console.log('venue', venue)
+    // console.log('qty', qty)
+    // console.log('startDate', startDate)
 
-    await dbo.collection("seating").findOneAndUpdate({
-            "startDate": startDate,
-        }, {
-            $inc: {
-                [venue]: -qty,
+    await parsedRequest.forEach(e =>
+
+        dbo.collection("seating").findOneAndUpdate({
+                // await dbo.collection("seating").findOneAndUpdate({
+                "startDate": e.startDate,
+            }, {
+                $inc: {
+                    [`venue.${e.venue}`]: -e.qty,
+                }
+            },
+            (err) => {
+                if (err) {
+                    console.log(err)
+                    return res.status(400).json({
+                        success: false
+                    })
+                }
+                // return res.status(200).json({
+                //     success: true
+                // })
             }
-        },
-        (err) => {
-            if (err) {
-                console.log(err)
-                return res.status(400).json({
-                    success: false
-                })
-            }
-            return res.status(200).json({
-                success: true
-            })
-        }
+        )
     )
+    return res.status(200).json({
+        success: true
+    })
+
 })
 
 
