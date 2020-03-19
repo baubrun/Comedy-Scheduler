@@ -67,7 +67,6 @@ Home Header
   width: 100%;
 }
 
-
 .add-event-btn{
   background-color: #663A2B;
   border-radius: 5px;
@@ -99,18 +98,6 @@ Home Header
 /* =====================
 Modal 
 ====================*/
-.cancel-btn {
-  display: flex;
-
-}
-#cancel-btn{
-  background-color: rgb(197, 23, 23);
-  color: white;
-  margin-top: 10px;
-  text-align: center;
-  width: 100%;
-}
-
 
 
 

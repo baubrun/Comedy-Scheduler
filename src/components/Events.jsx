@@ -5,6 +5,12 @@ import { getEventsAction, getSeatsAvailAction } from "../actions/actions";
 import CalendarView from "./CalendarView";
 import moment from "moment";
 
+export const comp = (a, b) => {
+  let dateA = new Date(a.startDate)
+  let dateB = new Date(b.startDate)
+  return dateA - dateB
+}
+
 export const Event = props => {
   const {
     title,
@@ -17,9 +23,7 @@ export const Event = props => {
 
   return (
     <div>
-    {props.events === [] ? (
-        "NO EVENTS"
-      ) : ( 
+    {
         <div className="event">
           <div className="event-title-info">
             <Link to={`/event/${title}`}>{title}</Link>
@@ -49,7 +53,7 @@ export const Event = props => {
             )}{" "}
           </div>
         </div>
-       )} 
+       } 
     </div>
   );
 };
@@ -97,7 +101,8 @@ class Events extends Component {
     const events = this.props.events.filter(
       event => event.venue.indexOf(this.state.venue) !== -1
     );
-    this.setState({ events: events });
+    const eventsSorted = events.sort(comp)
+    this.setState({ events: eventsSorted });
   };
 
   handleSearchInput = event => {
@@ -153,7 +158,11 @@ class Events extends Component {
         </div>
         <div className="events-body">
           {this.state.listViewShow &&
-            this.props.events
+            // this.props.events
+            this.state.events.length < 1
+            ? <h1>NO EVENTS</h1>
+            : 
+            this.state.events
               .filter(event =>
                 event.venue
                   .toLowerCase()

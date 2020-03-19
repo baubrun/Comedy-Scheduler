@@ -26,6 +26,10 @@ class Register extends Component {
     this.setState({ [name]: value });
   };
 
+  handleCancel = () => {
+    this.props.history.push("/")
+  }
+
   handleSubmit = async event => {
     event.preventDefault();
     const data = new FormData();
@@ -51,7 +55,7 @@ class Register extends Component {
 
   render() {
     return (
-      <div className="modal">
+      <div className="modal register">
         <form className="modal-content animate" onSubmit={this.handleSubmit}>
           <div className="home-header">
             <div className="home-title">
@@ -107,12 +111,13 @@ class Register extends Component {
               onChange={this.handleChange}
             />
 
-            <button type="submit">Register</button>
-            <div className="cancel-btn">
-              <Link id="cancel-btn" to="/">
-                Cancel
-              </Link>
-            </div>
+            <button className="register-btn" type="submit">REGISTER</button>
+            <button className="cancel-btn" type="submit" onClick={this.handleCancel}>CANCEL</button>
+            {/* <div className="cancel-btn"> */}
+              {/* <Link id="cancel-btn" to="/"> */}
+                {/* CANCEL */}
+              {/* </Link> */}
+            {/* </div> */}
           </div>
         </form>
       </div>

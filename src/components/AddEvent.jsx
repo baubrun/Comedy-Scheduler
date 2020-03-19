@@ -250,12 +250,12 @@ class AddEvent extends Component {
             </div>
           {/* )} */}
           <div className="add-events-header-img">
-            <img
+            {/* <img
               id="calendar-view"
               onClick={this.toggleCalendarView}
               src="calendar2-view-30px.png"
               alt=""
-            />
+            /> */}
           </div>
           <CalendarView 
           selectedVenue={this.state.venue}

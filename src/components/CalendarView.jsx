@@ -92,7 +92,7 @@ class CalendarView extends Component {
     return filterEventProps;
   };
 
-  convertAddedEvents = (startStr, endStr, title) => {
+  formatAddedEvents = (startStr, endStr, title) => {
     const [monthSt, dateSt, yearSt, timeSt] = startStr
       .toString()
       .split(" ")
@@ -143,7 +143,7 @@ class CalendarView extends Component {
       });
       //   console.log('start :', typeof(start.toString()));
       //   console.log('end :', typeof(end.toString()))
-      this.convertAddedEvents(start, end, title);
+      this.formatAddedEvents(start, end, title);
       this.storeCalendarEvent();
     }
   };

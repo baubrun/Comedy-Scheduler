@@ -3,8 +3,6 @@ Form
 ===============*/
 
 
-
-
 .modal {
   overflow: auto;
   position: fixed;
@@ -17,7 +15,7 @@ Form
   border-radius: 5px;
   display: flex;
   flex-flow: row wrap;
-  margin: 2% auto 15% auto;
+  margin: 1% auto 15% auto;
   padding: 5px;
   width: 80%;
 }
@@ -53,26 +51,70 @@ Form
   width: 100%;
 }
 
-
-#register {
-  background-color: rgb(142, 245, 222);
-  border: 1px solid gray;
-  margin-top: 5px;
-  width: auto;
-  cursor: pointer;
-}
-
-.register-btn {
+.cancel-btn {
   display: flex;
-}
 
-#register-btn {
-  background-color: rgb(23, 157, 197);
-  color: black;
+}
+.cancel-btn{
+  background-color: rgb(197, 23, 23);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
   font-weight: bold;
+  letter-spacing: 1px;
+  justify-content: center;
   margin-top: 10px;
+  padding: 5px 0;
   text-align: center;
   width: 100%;
+}
+
+.register {
+  background-image: url("./images/clay-brick-wall.jpg");
+}
+
+
+.not-registered-btn
+ {
+  background-color:  rgb(224, 151, 33);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  font-weight: bold;
+  font-size: 1.1em;
+  justify-content: center;
+  letter-spacing: 1px;
+  margin-top: 5px;
+  padding: 5px 0;
+
+}
+
+.register-btn,
+.login-btn {
+  background-color:  #663A2B;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  font-weight: bold;
+  font-size: 1.1em;
+  justify-content: center;
+  letter-spacing: 1px;
+  margin: 10px 0;
+  padding: 5px 0;
+
+}
+
+
+
+.login {
+  /* background-image: url("./images/gold-lock-resized.jpg") ; */
+  background-image: url("./images/door-lock.jpg") ;
+  background-size: cover;
 }
 
 

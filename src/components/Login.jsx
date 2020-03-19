@@ -27,6 +27,9 @@ class Login extends Component {
     this.setState({ [name]: value });
   };
 
+  handleRegister = () => {
+    this.props.history.push("/register")
+  }
   handleSubmit = async event => {
     event.preventDefault();
     const data = new FormData();
@@ -49,7 +52,7 @@ class Login extends Component {
 
   render() {
     return (
-      <div className="modal">
+      <div className="modal login">
         <form className="modal-content animate" onSubmit={this.handleSubmit}>
           <div className="modal-img-container">
             <div>
@@ -78,12 +81,14 @@ class Login extends Component {
               value={this.state.password}
               onChange={this.handleChange}
             />
-            <button type="submit">Login</button>
-            <div className="register-btn">
-              <Link id="register-btn" to="/register">
-                Not registered? Register here!
-              </Link>
-            </div>
+            <button className="login-btn" type="submit">Login</button>
+            {/* <div className="register-btn"> */}
+            <button className="not-registered-btn" type="submit" onClick={this.handleRegister}>Not registered? Register here!</button>
+
+              {/* <Link id="register-btn" to="/register"> */}
+                {/* Not registered? Register here! */}
+              {/* </Link> */}
+            {/* </div> */}
           </div>
         </form>
       </div>

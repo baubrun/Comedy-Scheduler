@@ -107,12 +107,20 @@ GET
 
 
 app.get(["/events", "/profile"], async (req, res) => {
+
+    const comp = (a, b) => {
+        let dateA = new Date(a)
+        let dateB = new Date(b)
+        return dateA - dateB
+    }
+    
     dbo.collection("events").find({}).toArray((err, evt) => {
         if (err) {
             console.log(err)
             return res.send("fail")
         }
         return res.json(evt)
+        // return res.json(evt.sort(comp))
     })
 })
 
@@ -532,20 +540,11 @@ app.post("/slotsTaken", upload.single("image"), async (req, res) => {
 app.post("/updateSeatsAvail", upload.none(), async (req, res) => {
 
     const parsedRequest = JSON.parse(req.body.seatsTaken)
-    // const {
-    //     venue,
-    //     qty,
-    //     startDate
-    // } = parsedRequest
-    // } = req.body.seatsTaken
-    // console.log('venue', venue)
-    // console.log('qty', qty)
-    // console.log('startDate', startDate)
 
+    let errors = []
     await parsedRequest.forEach(e =>
 
         dbo.collection("seating").findOneAndUpdate({
-                // await dbo.collection("seating").findOneAndUpdate({
                 "startDate": e.startDate,
             }, {
                 $inc: {
@@ -554,21 +553,20 @@ app.post("/updateSeatsAvail", upload.none(), async (req, res) => {
             },
             (err) => {
                 if (err) {
-                    console.log(err)
-                    return res.status(400).json({
-                        success: false
-                    })
+                    errors.push(err)
                 }
-                // return res.status(200).json({
-                //     success: true
-                // })
             }
         )
     )
-    return res.status(200).json({
-        success: true
-    })
-
+    if (errors.length > 0) {
+        return res.status(400).json({
+            success: false
+        })
+    } else {
+        return res.status(200).json({
+            success: true
+        })
+    }
 })
 
 

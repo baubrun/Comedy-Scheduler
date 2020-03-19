@@ -4,6 +4,7 @@ import EventsHistory from "./EventsHistory";
 import { getEventsAction } from "../actions/actions";
 import AddEvent from "./AddEvent";
 import UpdateEvent from "./UpdateEvent";
+import {comp} from "./Events"
 
 class Profile extends Component {
   constructor(props) {
@@ -22,8 +23,6 @@ class Profile extends Component {
   dispatchGetEvents = events => {
     this.props.getEvents(events);
   };
-
-
 
   deleteEvent = async () => {
     if (this.state.selectedOption === "") {
@@ -57,13 +56,13 @@ class Profile extends Component {
     deleteBtn.style.pointerEvents = condition;
   };
 
-
   getHostEvents = () => {
-    return this.props.events.filter(
+    const events = this.props.events.filter(
       event =>
         event.hostId.toLowerCase().indexOf(this.props.hostId.toLowerCase()) !==
         -1
     );
+    return events.sort(comp)
   };
 
   getSelectedEvent = () => {
