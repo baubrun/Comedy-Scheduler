@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import EventsHistory from "./EventsHistory";
-import { getEventsAction } from "../actions/actions";
+import { getEventsAction, getSeatsAvailAction } from "../actions/actions";
 import AddEvent from "./AddEvent";
 import UpdateEvent from "./UpdateEvent";
-import {comp} from "./Events"
+import { comp } from "./Events";
 
 class Profile extends Component {
   constructor(props) {
@@ -20,8 +20,16 @@ class Profile extends Component {
     };
   }
 
+  async componentDidMount() {
+    this.dispatchGetSeatsAvail(await this.fetchData("/getSeatsAvail"));
+  }
+
   dispatchGetEvents = events => {
     this.props.getEvents(events);
+  };
+
+  dispatchGetSeatsAvail = seats => {
+    this.props.getSeatsAvail(seats);
   };
 
   deleteEvent = async () => {
@@ -41,7 +49,7 @@ class Profile extends Component {
         const parser = JSON.parse(body);
         if (parser.success) {
           console.log(parser.success);
-          this.LoadEvents();
+          this.showEvents();
         }
       } else {
         return;
@@ -56,13 +64,47 @@ class Profile extends Component {
     deleteBtn.style.pointerEvents = condition;
   };
 
+  fetchData = async url => {
+    const response = await fetch(url);
+    const body = await response.text();
+    const parser = JSON.parse(body);
+    if (Array.isArray(parser)) {
+      return parser;
+    }
+  };
+
+  // confirmOverlapped = async () => {
+  //   const data = new FormData();
+  //   data.append("startDate", this.state.startDate);
+  //   data.append("venue", this.state.venue);
+  //   // data.append("endTime", this.state.endTime);
+  //   const response = await fetch("/slotsTaken", {
+  //     method: "POST",
+  //     body: data
+  //   });
+  //   const body = await response.text();
+  //   const parser = JSON.parse(body);
+  //   if (parser.success) {
+  //     // const start = parser.result.startTime
+  //     // const end = parser.result.endTime
+  //     // const expectedStart = this.state.startTime
+  //     // const ole = calcOverlappedEvents(
+  //     //   start,
+  //     //   end,
+  //     //   expectedStart
+  //     // )
+  //     // console.log('ole :', ole);
+  //     console.log("result", parser.result);
+  //   }
+  // };
+
   getHostEvents = () => {
     const events = this.props.events.filter(
       event =>
         event.hostId.toLowerCase().indexOf(this.props.hostId.toLowerCase()) !==
         -1
     );
-    return events.sort(comp)
+    return events.sort(comp);
   };
 
   getSelectedEvent = () => {
@@ -78,6 +120,22 @@ class Profile extends Component {
     });
   };
 
+  showEvents = async () => {
+    this.dispatchGetEvents(await this.fetchData("/events"));
+    this.showEvents()
+  };
+
+  showEvents = () => {
+    this.setState({
+      showHistory: true,
+      showAddEvent: false,
+      showUpdateEvent: false,
+      selectedOption: "",
+      userEvents: this.getHostEvents()
+    });
+
+  }
+
   showAddEventForm = () => {
     this.setState({
       showHistory: false,
@@ -87,26 +145,11 @@ class Profile extends Component {
     });
   };
 
-  LoadEvents = async () => {
-    const response = await fetch("/events");
-    const body = await response.text();
-    const parser = JSON.parse(body);
-    this.dispatchGetEvents(parser);
-    this.setState({
-      showHistory: true,
-      showAddEvent: false,
-      showUpdateEvent: false,
-      selectedOption: "",
-      userEvents: this.getHostEvents()
-    });
-  };
-
   showUpdateEventForm = () => {
     if (this.state.selectedOption === "") {
       window.alert("Please select an event.");
       return;
     } else {
-      // this.verifyEventSelected();
       this.setState({
         selectedEvent: this.getSelectedEvent(),
         showHistory: false,
@@ -123,8 +166,8 @@ class Profile extends Component {
           <h1>PROFILE</h1>
           <ul className="profile-buttons">
             <li>
-              <div id="events-history-btn" onClick={this.LoadEvents}>
-                Load Events
+              <div id="events-history-btn" onClick={this.showEvents}>
+                Show Events
               </div>
             </li>
             <li>
@@ -149,10 +192,10 @@ class Profile extends Component {
           {this.state.showHistory && (
             <EventsHistory
               userEvents={this.state.userEvents}
-              // userEvents={this.props.events}
               hostId={this.props.hostId}
               handleOptionChange={this.handleOptionChange}
               selectedOption={this.state.selectedOption}
+              seatsAvail={this.props.seatsAvail}
             />
           )}
           {this.state.showAddEvent && (
@@ -162,7 +205,7 @@ class Profile extends Component {
             <UpdateEvent
               event={this.state.selectedEvent}
               id={this.state.selectedOption}
-              LoadEvents={this.LoadEvents}
+              showEvents={this.showEvents}
             />
           )}
         </div>
@@ -174,15 +217,16 @@ class Profile extends Component {
 const mapStateToProps = state => {
   return {
     events: state.events,
-    hostId: state.auth.hostId
+    hostId: state.auth.hostId,
+    seatsAvail: state.seatsAvail.venue
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getEvents: events => dispatch(getEventsAction(events))
+    getEvents: events => dispatch(getEventsAction(events)),
+    getSeatsAvail: seats => dispatch(getSeatsAvailAction(seats))
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
-// export default connect(mapStateToProps)(Profile);

@@ -103,7 +103,7 @@ class UpdateEvent extends Component {
       price: ""
     });
      
-    Promise.all([
+    await Promise.all([
       fetch("/setVenueSeating", { method: "POST", body: data }),
       fetch("/updateEvent", {method: "POST", body: data})
     ])

@@ -38,55 +38,6 @@ class AddEvent extends Component {
   }
 
 
-  // fetchAvailVenue = async () => {
-  //   const data = new FormData();
-  //   data.append("startDate", this.state.startDate);
-  //   const response = await fetch("/getSeatsAvail", {
-  //     method: "POST",
-  //     body: data
-  //   });
-  //   const body = await response.text();
-  //   const parser = JSON.parse(body);
-  //   if (parser.success) {
-  //     this.dispatchGetSeatsAvail(parser.result.venue);
-  //   } else {
-  //     this.dispatchGetSeatsAvail();
-  //   }
-  // };
-
-  // fetchOverlapped = async () => {
-  //   const data = new FormData();
-  //   data.append("startDate", this.state.startDate);
-  //   data.append("venue", this.state.venue);
-  //   // data.append("endTime", this.state.endTime);
-  //   const response = await fetch("/slotsTaken", {
-  //     method: "POST",
-  //     body: data
-  //   });
-  //   const body = await response.text();
-  //   const parser = JSON.parse(body);
-  //   if (parser.success) {
-  //     // const start = parser.result.startTime
-  //     // const end = parser.result.endTime
-  //     // const expectedStart = this.state.startTime
-  //     // const ole = calcOverlappedEvents(
-  //     //   start,
-  //     //   end,
-  //     //   expectedStart
-  //     // )
-  //     // console.log('ole :', ole);
-  //     console.log("result", parser.result);
-  //   }
-  // };
-
-  // findAvailVenues = () => {
-  //   const defaultVenues = this.state.defaultVenues;
-  //   if (!this.props.seatsAvail) return defaultVenues;
-  //   const selectedVenues = Object.keys(this.props.seatsAvail);
-  //   const availVenues = defaultVenues.filter(v => !selectedVenues.includes(v));
-  //   // console.log("availVenues :", availVenues);
-  //   return availVenues.length < 1 ? "NONE" : availVenues;
-  // };
 
   eventsByVenueHostId = () => {
     const filter = {
@@ -102,20 +53,8 @@ class AddEvent extends Component {
     this.setState({userEvents: userEvents})
   };
 
-  // formattedEvents = () => {
-  //   const filterEventProps = this.eventsByVenueHostId().map(event => {
-  //     // const filterEventProps = this.props.events.map(event => {
-  //     return {
-  //       // works for non overnight events
-  //       title: event.title,
-  //       start: new Date(DateTimeFormatter(event.startDate, event.startTime)),
-  //       end: new Date(DateTimeFormatter(event.endDate, event.endTime))
-  //     };
-  //   });
-  //   return filterEventProps;
-  // };
 
-  convertAddedEventFormat = (startStr, endStr) => {
+  formatAddedEvents = (startStr, endStr) => {
     const [monthSt, dateSt, yearSt, timeSt] = startStr
       .toString()
       .split(" ")
@@ -174,12 +113,13 @@ class AddEvent extends Component {
       price: ""
     });
 
-    await Promise.all([
-      fetch("/profile", { method: "POST", body: data }),
-      fetch("/setVenueSeating", { method: "POST", body: data })
-    ]).catch(err => console.log(err));
 
-    this.resetOptionInputFields();
+    // await Promise.all([
+    //   fetch("/setVenueSeating", { method: "POST", body: data }),
+    //   fetch("/profile", { method: "POST", body: data }),
+    // ]).catch(err => console.log(err));
+
+    // this.resetOptionInputFields();
   };
 
   handleEndTime = event => {

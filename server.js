@@ -76,8 +76,8 @@ seatsPerVenue.LE_FOU_FOU = 100
 seatsPerVenue.JOKES_BLAGUES = 90
 seatsPerVenue.RIRE_NOW = 80
 
-const venueSeating = reqBody => {
-    switch (reqBody) {
+const venueSeatingInit = venue => {
+    switch (venue) {
         case "LE_FOU_FOU":
             return seatsPerVenue.LE_FOU_FOU
         case "JOKES_BLAGUES":
@@ -92,12 +92,29 @@ const venueSeating = reqBody => {
 const generateId = () => {
     return "" + Math.floor(Math.random() * 1000000)
 }
-const generateSeats = () => {
-    return "" + Math.floor(Math.random() * 50)
-}
 
-const generateTicketPrices = () => {
-    return "" + Math.floor(Math.random() * (20 - 15) + 15)
+// const generateTicketPrices = () => {
+//     return "" + Math.floor(Math.random() * (20 - 15) + 15)
+// }
+
+
+const isOverlap = (start, end, result) => {
+    const [h1, m1] = start.split(":")
+    const [h2, m2] = end.split(":")
+    const [eventSt1H, eventSt1M] = result.startTime.split(":")
+    const [eventEnd1H, eventEnd1M] = result.endTime.split(":")
+    const givenStart = new Date(0, 0, 0, h1, m1, 0)
+    const givenEnd = new Date(0, 0, 0, h2, m2, 0)
+    const eventStart = new Date(0, 0, 0, eventSt1H, eventSt1M, 0)
+    const eventEnd = new Date(0, 0, 0, eventEnd1H, eventEnd1M, 0)
+    if ((givenStart >= eventStart && givenStart <= eventEnd) ||
+        (givenStart < eventStart && givenEnd <= eventEnd) ||
+        (givenEnd <= eventEnd && givenEnd >= eventStart)
+    ) {
+        return true
+    } else {
+        return false
+    }
 }
 
 
@@ -108,25 +125,36 @@ GET
 
 app.get(["/events", "/profile"], async (req, res) => {
 
-    const comp = (a, b) => {
-        let dateA = new Date(a)
-        let dateB = new Date(b)
-        return dateA - dateB
-    }
-    
+
     dbo.collection("events").find({}).toArray((err, evt) => {
         if (err) {
             console.log(err)
-            return res.send("fail")
+            return res.json({
+                success: false
+            })
         }
         return res.json(evt)
-        // return res.json(evt.sort(comp))
     })
 })
 
 
 app.get("/confirmation", async (req, res) => {
     dbo.collection("purchases").find({}).toArray((err, evt) => {
+        if (err) {
+            console.log(err)
+            return res.json({
+                success: false
+            })
+        }
+        return res.json(evt)
+    })
+})
+
+
+
+app.get("/getSeatsAvail", async (req, res) => {
+
+    dbo.collection("seating").find({}).toArray((err, evt) => {
         if (err) {
             console.log(err)
             return res.json({
@@ -156,8 +184,7 @@ app.post("/profile", upload.single("image"), async (req, res) => {
 
     await dbo.collection("events").findOne({
         "startDate": startDate,
-        "venue": venue,
-        "startTime": startTime,
+        "venue": venue
 
     }, (err, result) => {
         if (err) {
@@ -170,7 +197,6 @@ app.post("/profile", upload.single("image"), async (req, res) => {
             return res.status(400).json({
                 success: false,
                 msg: "Time slot taken",
-
             })
         } else {
             dbo.collection("events").insertOne({
@@ -184,7 +210,6 @@ app.post("/profile", upload.single("image"), async (req, res) => {
                 image: !req.file ? "" : req.file.originalname,
                 price: price,
                 hostId: hostId,
-                seatsAvail: venueSeating(venue),
                 allDay: "false",
                 dateAdded: new Date()
             })
@@ -193,7 +218,6 @@ app.post("/profile", upload.single("image"), async (req, res) => {
             })
         }
     })
-
 })
 
 
@@ -254,34 +278,7 @@ app.post("/deleteEvents", upload.single("image"), async (req, res) => {
 
 
 
-app.post("/getSeatsAvail", upload.none(), async (req, res) => {
-    const {
-        startDate,
-    } = req.body
 
-    await dbo.collection("seating").findOne({
-        "startDate": startDate
-    }, (err, result) => {
-        if (err) {
-            console.log(err)
-            return res.status(400).json({
-                success: false
-            })
-        }
-        if (result) {
-            return res.status(200).json({
-                success: true,
-                result: result
-            })
-        } else {
-            return res.status(400).json({
-                success: false,
-                msg: "Not found."
-            })
-        }
-    })
-
-})
 
 /* use to render venue avail for hosting and events page */
 app.post("/getVenueAvail", upload.none(), async (req, res) => {
@@ -418,18 +415,20 @@ app.post("/register", upload.none(), async (req, res) => {
 
 
 app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
-    // app.post("/setVenueSeating", upload.none("image"), async (req, res) => {
     const {
         startDate,
         venue
     } = req.body
+
+    console.log('startDate', startDate)
+    console.log('venue', venue)
+    console.log("seating end point")
 
     await dbo.collection("seating").findOne({
         "startDate": startDate,
         [`venue.${venue}`]: {
             $exists: 1
         }
-
     }, (err, result) => {
         if (err) {
             console.log(err)
@@ -441,7 +440,6 @@ app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
             return res.status(400).json({
                 success: false,
                 msg: "Venue seating established.",
-
             })
         }
         try {
@@ -449,7 +447,7 @@ app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
                 "startDate": startDate
             }, {
                 $set: {
-                    [`venue.${venue}`]: venueSeating(venue)
+                    [`venue.${venue}`]: venueSeatingInit(venue)
                 }
             }, {
                 upsert: true
@@ -458,7 +456,7 @@ app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
                 success: true
             })
         } catch (error) {
-            console.log(err)
+            console.log(error)
             return res.json({
                 success: false
             })
@@ -468,32 +466,16 @@ app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
 
 app.post("/slotsTaken", upload.single("image"), async (req, res) => {
     const {
-        title,
         startDate,
         startTime,
-        endDate,
         endTime,
         venue,
-        performer,
-        price,
-        hostId,
     } = req.body
 
-    await dbo.collection("events").findOne({
+    await dbo.collection("events").find({
         "startDate": startDate,
         "venue": venue,
-        // "startTime": {
-        //     $gte: {
-        //         startTime
-        //     }
-        // },
-        // "endTime": {
-        //     $lte: {
-        //         endTime
-        //     }
-        // },
-
-    }, (err, result) => {
+    }).toArray((err, result) => {
         if (err) {
             console.log(err)
             return res.status(400).json({
@@ -501,42 +483,29 @@ app.post("/slotsTaken", upload.single("image"), async (req, res) => {
             })
         }
         if (result) {
-            // return res.status(400).json({
+            const overlaps = []
+            const eventTimes = result.map(i => {
+                return {
+                    startDate: i.startDate,
+                    startTime: i.startTime,
+                    endTime: i.endTime
+                }
+            })
+            eventTimes.forEach(
+                event =>
+                overlaps.push(isOverlap(
+                    startTime, endTime, event)))
+
             return res.json({
                 success: true,
                 msg: "Found date match",
-                result: result
-
-            })
-        } else {
-            dbo.collection("events").insertOne({
-                title: title,
-                startDate: startDate,
-                startTime: startTime,
-                endDate: endDate,
-                endTime: endTime,
-                venue: venue,
-                performer: performer,
-                // image: !req.file ? "": req.file.originalname ,
-                price: price,
-                hostId: hostId,
-                seatsAvail: venueSeating(venue),
-                allDay: "false",
-                dateAdded: new Date()
-            })
-            return res.json({
-                success: true,
-                msg: "Event added.",
-
+                overlaps: overlaps,
+                eventTimes: eventTimes
             })
         }
     })
-
 })
 
-
-
-/* works but loop resets headers -- fix this */
 app.post("/updateSeatsAvail", upload.none(), async (req, res) => {
 
     const parsedRequest = JSON.parse(req.body.seatsTaken)

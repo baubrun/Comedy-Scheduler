@@ -1,8 +1,11 @@
 import React from "react";
 import moment from "moment";
+import {seatingLeft} from "./Events"
+
 
 
 const EventsHistory = props => {
+  console.log( props.seatsAvail);
   return (
     <>
       <h1 id="events-history-title">EVENTS HISTORY</h1>
@@ -19,7 +22,14 @@ const EventsHistory = props => {
             </li>
             <li>Venue: {event.venue}</li>
             <li>Performer: {event.performer}</li>
-            <li className="seatsAvail">Seats Available: {event.seatsAvail}</li>
+            {/* <li className="seatsAvail">Seats Available: {event.seatsAvail}</li> */}
+            
+            <li className="seatsAvail">Seats Available: {
+            seatingLeft(event.startDate, props.seatsAvail, event.venue)
+            }
+            </li>
+
+
             <li>
               <img id="performer-img" src={`../../${event.image}`} alt="" />
             </li>
@@ -45,5 +55,8 @@ const EventsHistory = props => {
     </>
   );
 };
+
+
+
 
 export default EventsHistory;

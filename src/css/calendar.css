@@ -5,7 +5,7 @@
 }
 
 .rbc-calendar,
-.rbc-btn-group button,
+/* .rbc-btn-group button, */
 .rbc-btn-group,
 .rbc-toolbar,
 .rbc-date-cell.rbc-off-range a
@@ -24,3 +24,11 @@ color: white;
    background-color: #663A2B;
 }
  */
+ .rbc-show-more {
+   color: #663A2B;
+
+ }
+
+.rbc-btn-group > button {
+   color: white;
+}

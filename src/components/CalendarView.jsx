@@ -5,7 +5,6 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { connect } from "react-redux";
 import "moment/locale/en-gb";
 
-
 const allViews = Object.keys(Views).map(k => Views[k]);
 const localizer = momentLocalizer(moment);
 
@@ -46,7 +45,8 @@ class CalendarView extends Component {
       venue: "",
       performer: "",
       image: "",
-      price: ""
+      price: "",
+      dayLayoutAlgorithm: "no-overlap"
     };
   }
 
@@ -65,7 +65,7 @@ class CalendarView extends Component {
       });
     }
   }
-  
+
   eventsByVenueHostId = () => {
     const filter = {
       hostId: this.props.hostId,
@@ -128,21 +128,22 @@ class CalendarView extends Component {
     data.append("endTime", this.state.endTime);
     data.append("hostId", this.props.hostId);
     data.append("venue", this.state.venue);
-    await fetch("/profile", { method: "POST", body: data });
+
+    await Promise.all([
+      fetch("/profile", { method: "POST", body: data }),
+      fetch("/setVenueSeating", { method: "POST", body: data })
+    ]).catch(err => console.log(err));
   };
 
-
   handleSelect = ({ start, end }) => {
-    if (this.state.venue === ""){
-      return
+    if (this.state.venue === "") {
+      return;
     }
     const title = window.prompt("New event title?");
     if (title) {
       this.setState({
         events: [...this.state.events, { start, end, title }]
       });
-      //   console.log('start :', typeof(start.toString()));
-      //   console.log('end :', typeof(end.toString()))
       this.formatAddedEvents(start, end, title);
       this.storeCalendarEvent();
     }
@@ -152,20 +153,22 @@ class CalendarView extends Component {
     return (
       <div>
         <Calendar
+          culture={this.state.culture}
+          dayLayoutAlgorithm={this.state.dayLayoutAlgorithm}
           endAccessor="end"
-          formats={formats}
+          eventPropGetter={eventStyleGetter}
           events={this.state.events}
-          selectable
+          formats={formats}
           localizer={localizer}
+          // min={new Date(0, 0, 0, 21, 0, 0)}
+          // max={new Date(0, 0, 0, 6, 0, 0)}
+          onSelectEvent={event => alert(event.title)}
+          onSelectSlot={this.props.loggedIn ? this.handleSelect : ""}
+          selectable
           startAccessor="start"
           step={30}
           style={{ height: 500 }}
           views={allViews}
-          eventPropGetter={eventStyleGetter}
-          onSelectEvent={event => alert(event.title)}
-          // onSelectSlot={this.props.loggedIn ? this.handleSelect : ""}
-          onSelectSlot={this.handleSelect}
-          culture={this.state.culture}
         />
       </div>
     );

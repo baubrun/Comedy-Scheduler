@@ -10,7 +10,9 @@ import {
     EMPTIED_CART,
     RESET_CHECKOUT,
     GOT_SEATS_AVAIL,
-    GOT_ALL_SEATS_AVAIL
+    GOT_ALL_SEATS_AVAIL,
+    RESET_EVENTS,
+    RESET_SEATS_AVAIL
 } from "./actionTypes"
 
 
@@ -71,6 +73,14 @@ export const deleteFromCartAction = itemIdx => ({
 export const emptyCartAction = () => ({
     type: EMPTIED_CART,
     payload: []
+})
+
+export const resetEvents = () => ({
+    type: RESET_EVENTS
+})
+
+export const resetSeatsAvail = () => ({
+    type: RESET_SEATS_AVAIL,
 })
 
 export const confirmCheckoutAction = () => ({

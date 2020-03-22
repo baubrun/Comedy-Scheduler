@@ -6,10 +6,16 @@ import CalendarView from "./CalendarView";
 import moment from "moment";
 
 export const comp = (a, b) => {
-  let dateA = new Date(a.startDate)
-  let dateB = new Date(b.startDate)
-  return dateA - dateB
-}
+  let dateA = new Date(a.startDate);
+  let dateB = new Date(b.startDate);
+  return dateA - dateB;
+};
+
+export const seatingLeft = (eventDate, seats, venue) => {
+  const seat = seats.find(i => i.startDate === eventDate);
+  console.log("seats :", seat.venue[venue]);
+  return seat.venue[venue];
+};
 
 export const Event = props => {
   const {
@@ -17,13 +23,12 @@ export const Event = props => {
     startDate,
     performer,
     startTime,
-    image,
-    seatsAvail
+    image
   } = props.events;
 
   return (
     <div>
-    {
+      {
         <div className="event">
           <div className="event-title-info">
             <Link to={`/event/${title}`}>{title}</Link>
@@ -37,12 +42,9 @@ export const Event = props => {
             <br />
             {startTime}
           </div>
-          {/* <div className="seatsAvail "> */}
           <div className="event-title-info ">
-            {/* <div id="seats-avail-title"> */}
             Seats Available:{" "}
-            {seatsAvail > 0 ? (
-              // {this.props.seatsAvail > 0 ? (
+            {seatingLeft(startDate, props.seatsAvail, props.venue) > 0 ? (
               <img
                 id="seats-avail-img"
                 src="green-check-grn-wht-15px.png"
@@ -53,7 +55,7 @@ export const Event = props => {
             )}{" "}
           </div>
         </div>
-       } 
+      }
     </div>
   );
 };
@@ -71,9 +73,11 @@ class Events extends Component {
     };
   }
 
-  componentDidMount() {
-    this.fetchEvents();
+  async componentDidMount() {
+    this.dispatchGetSeatsAvail(await this.fetchData("/getSeatsAvail"))
+    this.dispatchGetEvents(await this.fetchData("/events"))
     this.eventsByVenue();
+
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -90,19 +94,44 @@ class Events extends Component {
     this.props.getSeatsAvail(seats);
   };
 
+  fetchData = async url =>{
+    const response = await fetch(url)
+    const body = await response.text()
+    const parser = JSON.parse(body)
+    if (Array.isArray(parser)){
+      return parser
+    }
+  }
+
+
   fetchEvents = async () => {
     const response = await fetch("/events");
     const body = await response.text();
     const parsed = JSON.parse(body);
-    this.dispatchGetEvents(parsed);
+    if (parsed) {
+      this.dispatchGetEvents(parsed);
+    }
+  };
+
+  fetchSeatsAvail = async () => {
+    const response = await fetch("/getSeatsAvail");
+    const body = await response.text();
+    const parsed = JSON.parse(body);
+    if (parsed) {
+      this.dispatchGetSeatsAvail(parsed);
+    }
   };
 
   eventsByVenue = () => {
     const events = this.props.events.filter(
       event => event.venue.indexOf(this.state.venue) !== -1
     );
-    const eventsSorted = events.sort(comp)
+    const eventsSorted = events.sort(comp);
     this.setState({ events: eventsSorted });
+  };
+
+  seatsAvail = () => {
+    this.setState({ seatsAvail: this.props.seatsAvail });
   };
 
   handleSearchInput = event => {
@@ -112,6 +141,7 @@ class Events extends Component {
   handleVenueChange = event => {
     this.setState({ venue: event.target.value });
   };
+
 
   toggleCalendarView = () => {
     this.setState({
@@ -125,6 +155,34 @@ class Events extends Component {
       listViewShow: true,
       calendarViewShow: false
     });
+  };
+
+  showEvents = () => {
+    if (
+      (!this.state.listViewShow && this.state.events.length < 1) ||
+      !this.state.venue
+    ) {
+      return <h1>NO EVENTS</h1>;
+    }
+    if (this.state.listViewShow && this.state.events.length > 0) {
+      return this.state.events
+        .filter(event =>
+          event.venue.toLowerCase().includes(this.state.venue.toLowerCase())
+        )
+        .map((event, idx) => (
+          <Event
+            events={event}
+            key={idx}
+            seatsAvail={this.props.seatsAvail}
+            venue={this.state.venue}
+          />
+        ));
+    }
+    if (this.state.calendarViewShow)
+      return <CalendarView events={this.state.events} />;
+    else {
+      return <h1>NO EVENTS</h1>;
+    }
   };
 
   render() {
@@ -157,27 +215,7 @@ class Events extends Component {
           </div>
         </div>
         <div className="events-body">
-          {this.state.listViewShow &&
-            // this.props.events
-            this.state.events.length < 1
-            ? <h1>NO EVENTS</h1>
-            : 
-            this.state.events
-              .filter(event =>
-                event.venue
-                  .toLowerCase()
-                  .includes(this.state.venue.toLowerCase())
-              )
-              .map((event, idx) => (
-                <Event
-                  events={event}
-                  key={idx}
-                  seatsAvail={this.props.seatsAvail}
-                />
-              ))}
-          {this.state.calendarViewShow && (
-            <CalendarView events={this.state.events} />
-          )}
+          {this.showEvents()}
         </div>
       </>
     );
@@ -186,28 +224,17 @@ class Events extends Component {
 
 const mapStateToProps = state => {
   return {
-    events: state.events
-    // seatsAvail: state.seating
+    events: state.events,
+    seatsAvail: state.seatsAvail.venue
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getEvents: events => dispatch(getEventsAction(events))
-    // getSeatsAvail: seats => dispatch(getSeatsAvailAction(seats))
+    getEvents: events => dispatch(getEventsAction(events)),
+    getSeatsAvail: seats => dispatch(getSeatsAvailAction(seats))
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Events);
 
-// fetchSeatsAvail = async () => {
-//   const data = new FormData();
-//   data.append("startDate", this.state.startDate);
-//   const response = await fetch("/getSeatsAvail", {
-//     method: "POST",
-//     body: data
-//   });
-//   const body = await response.text();
-//   const parsed = JSON.parse(body);
-//   this.dispatchGetSeatsAvail(parsed);
-// };
