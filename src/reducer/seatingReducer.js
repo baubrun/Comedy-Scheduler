@@ -5,14 +5,6 @@ import {
 } from "../actions/actionTypes"
 
 
-// const initSeatsAvail = {
-//     venue: {
-//         LE_FOU_FOU: 0,
-//         JOKES_BLAGUES: 0,
-//         RIRE_NOW: 0
-//     }
-// }
-
 const initSeatsAvail = []
 
 const seatingReducer = (state = initSeatsAvail, action) => {
@@ -22,7 +14,7 @@ const seatingReducer = (state = initSeatsAvail, action) => {
         case GOT_ALL_SEATS_AVAIL:
             return state
         case RESET_SEATS_AVAIL:
-            return state
+            return action.payload
         default:
             return state
     }

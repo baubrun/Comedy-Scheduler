@@ -13,7 +13,6 @@ export const comp = (a, b) => {
 
 export const seatingLeft = (eventDate, seats, venue) => {
   const seat = seats.find(i => i.startDate === eventDate);
-  console.log("seats :", seat.venue[venue]);
   return seat.venue[venue];
 };
 
@@ -73,11 +72,10 @@ class Events extends Component {
     };
   }
 
-  async componentDidMount() {
-    this.dispatchGetSeatsAvail(await this.fetchData("/getSeatsAvail"))
-    this.dispatchGetEvents(await this.fetchData("/events"))
+  componentDidMount() {
+    this.fetchEvents()
+    this.fetchSeatsAvail()
     this.eventsByVenue();
-
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -94,32 +92,22 @@ class Events extends Component {
     this.props.getSeatsAvail(seats);
   };
 
-  fetchData = async url =>{
-    const response = await fetch(url)
-    const body = await response.text()
-    const parser = JSON.parse(body)
-    if (Array.isArray(parser)){
-      return parser
-    }
-  }
-
-
   fetchEvents = async () => {
     const response = await fetch("/events");
     const body = await response.text();
     const parsed = JSON.parse(body);
-    if (parsed) {
+    // if (parsed) {
       this.dispatchGetEvents(parsed);
-    }
+    // }
   };
 
   fetchSeatsAvail = async () => {
     const response = await fetch("/getSeatsAvail");
     const body = await response.text();
     const parsed = JSON.parse(body);
-    if (parsed) {
+    // if (parsed) {
       this.dispatchGetSeatsAvail(parsed);
-    }
+    // }
   };
 
   eventsByVenue = () => {

@@ -1,11 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { logOutAction } from "../actions/actions";
+import {
+  logOutAction,
+  resetSeatsAvailAction,
+  resetEventsAction
+} from "../actions/actions";
 
 class NavBar extends Component {
-  dispatchLogout = () => {
+  logout = () => {
     this.props.logoutUser();
+    this.props.resetSeatsAvail();
+    this.props.resetEvents();
   };
 
   render() {
@@ -24,12 +30,18 @@ class NavBar extends Component {
             <img id="dropdown-img" src="menu-grid.png" alt="" />
             <div className="dropdown-content">
               <ul>
-                <Link to="/profile"><li>Profile</li> </Link>
-                  <Link to="/events"><li>Tickets</li> </Link>
-                  <Link to="/profile"><li>Add event</li> </Link>
-                  <Link to="/" onClick={this.dispatchLogout}>
-                   <li>Logout</li>
-                  </Link>
+                <Link to="/profile">
+                  <li>Profile</li>{" "}
+                </Link>
+                <Link to="/events">
+                  <li>Tickets</li>{" "}
+                </Link>
+                <Link to="/profile">
+                  <li>Add event</li>{" "}
+                </Link>
+                <Link to="/" onClick={this.logout}>
+                  <li>Logout</li>
+                </Link>
               </ul>
             </div>
           </div>
@@ -63,7 +75,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    logoutUser: () => dispatch(logOutAction())
+    logoutUser: () => dispatch(logOutAction()),
+    resetSeatsAvail: () => dispatch(resetSeatsAvailAction()),
+    resetEvents: () => dispatch(resetEventsAction())
   };
 };
 

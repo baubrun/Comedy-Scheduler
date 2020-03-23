@@ -5,7 +5,6 @@ import {seatingLeft} from "./Events"
 
 
 const EventsHistory = props => {
-  console.log( props.seatsAvail);
   return (
     <>
       <h1 id="events-history-title">EVENTS HISTORY</h1>

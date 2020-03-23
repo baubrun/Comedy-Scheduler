@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-// import { VenuesAvailable } from "./VenuesAvailable";
 import {
   getSeatsAvailAction,
-  getAllSeatsAvailAction
+  // getAllSeatsAvailAction
 } from "../actions/actions";
 import CalendarView from "./CalendarView";
-import moment from "moment";
 
 class AddEvent extends Component {
   constructor(props) {
@@ -30,14 +28,11 @@ class AddEvent extends Component {
     };
   }
 
-
   componentDidUpdate(prevProps, prevState) {
     if (prevState.venue !== this.state.venue) {
       this.eventsByVenueHostId()
     }
   }
-
-
 
   eventsByVenueHostId = () => {
     const filter = {
@@ -53,33 +48,6 @@ class AddEvent extends Component {
     this.setState({userEvents: userEvents})
   };
 
-
-  formatAddedEvents = (startStr, endStr) => {
-    const [monthSt, dateSt, yearSt, timeSt] = startStr
-      .toString()
-      .split(" ")
-      .slice(1, 5);
-    const [monthEnd, dateEnd, yearEnd, timeEnd] = endStr
-      .toString()
-      .split(" ")
-      .slice(1, 5);
-
-    const regexTime = time =>
-      time
-        .split(/[d+:]/)
-        .slice(0, 2)
-        .join(":");
-    const formatMonth = month =>
-      moment()
-        .month(month)
-        .format("MM");
-    this.setState({
-      startDate: `${yearSt}-${formatMonth(monthSt)}-${dateSt}`,
-      startTime: regexTime(timeSt),
-      endDate: `${yearEnd}-${formatMonth(monthEnd)}-${dateEnd}`,
-      endTime: regexTime(timeEnd)
-    });
-  };
 
   dispatchGetSeatsAvail = seats => {
     this.props.getSeatsAvail(seats);
@@ -112,14 +80,6 @@ class AddEvent extends Component {
       performer: "",
       price: ""
     });
-
-
-    // await Promise.all([
-    //   fetch("/setVenueSeating", { method: "POST", body: data }),
-    //   fetch("/profile", { method: "POST", body: data }),
-    // ]).catch(err => console.log(err));
-
-    // this.resetOptionInputFields();
   };
 
   handleEndTime = event => {
@@ -135,14 +95,6 @@ class AddEvent extends Component {
   handleImage = event => {
     this.setState({ image: event.target.files[0] });
   };
-
-  // handleStartDate = event => {
-  //   this.setState({ startDate: event.target.value });
-  // };
-
-  // handleStartTime = event => {
-  //   this.setState({ startTime: event.target.value });
-  // };
 
   handleVenueChange = event => {
     this.setState({ venue: event.target.value });
@@ -162,12 +114,6 @@ class AddEvent extends Component {
     });
   };
 
-  // disableSubmit = () => {
-  //   const submitBtn = document.getElementById("add-submit-btn")
-  //   submitBtn.disabled = true
-
-  // }
-
   render() {
     return (
       <>
@@ -175,11 +121,6 @@ class AddEvent extends Component {
           <h2>ADD EVENT</h2>
         </div>
         <div className="add-event-body">
-          {/* <VenuesAvailable
-            findAvailVenues={this.findAvailVenues}
-            defaultVenues={this.state.defaultVenues}
-          /> */}
-          {/* {this.state.calendarViewShow && ( */}
             <div className="venue-select">
               <select onChange={this.handleVenueChange} name="venue">
                 <option value="">SELECT A VENUE</option>
@@ -188,20 +129,12 @@ class AddEvent extends Component {
                 <option value="RIRE_NOW">RIRE NOW</option>
               </select>
             </div>
-          {/* )} */}
           <div className="add-events-header-img">
-            {/* <img
-              id="calendar-view"
-              onClick={this.toggleCalendarView}
-              src="calendar2-view-30px.png"
-              alt=""
-            /> */}
           </div>
           <CalendarView 
           selectedVenue={this.state.venue}
           events={this.state.userEvents} 
           />
-
         </div>
       </>
     );
@@ -213,14 +146,13 @@ const mapStateToProps = state => {
     loggedIn: state.auth.loggedIn,
     hostId: state.auth.hostId,
     seatsAvail: state.seatsAvail.venue,
-    // events: state.events
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     getSeatsAvail: seats => dispatch(getSeatsAvailAction(seats)),
-    getAllSeatsAvail: () => dispatch(getAllSeatsAvailAction())
+    // getAllSeatsAvail: () => dispatch(getAllSeatsAvailAction())
   };
 };
 

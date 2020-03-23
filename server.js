@@ -38,9 +38,6 @@ MongoClient.connect(
 
 
 
-
-
-
 /*===============
  Helper functions 
  ================*/
@@ -52,7 +49,6 @@ const fileFilter = (req, file, cb) => {
         cb(null, false)
     }
 }
-
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -125,7 +121,6 @@ GET
 
 app.get(["/events", "/profile"], async (req, res) => {
 
-
     dbo.collection("events").find({}).toArray((err, evt) => {
         if (err) {
             console.log(err)
@@ -153,7 +148,6 @@ app.get("/confirmation", async (req, res) => {
 
 
 app.get("/getSeatsAvail", async (req, res) => {
-
     dbo.collection("seating").find({}).toArray((err, evt) => {
         if (err) {
             console.log(err)
@@ -184,8 +178,8 @@ app.post("/profile", upload.single("image"), async (req, res) => {
 
     await dbo.collection("events").findOne({
         "startDate": startDate,
-        "venue": venue
-
+        "venue": venue,
+        "startTime": startTime
     }, (err, result) => {
         if (err) {
             console.log(err)
@@ -219,7 +213,6 @@ app.post("/profile", upload.single("image"), async (req, res) => {
         }
     })
 })
-
 
 app.post("/checkout", upload.none(), (req, res) => {
     const {
@@ -256,9 +249,7 @@ app.post("/checkout", upload.none(), (req, res) => {
 })
 
 app.post("/deleteEvents", upload.single("image"), async (req, res) => {
-
     const id = req.body.id
-
     await dbo.collection("events")
         .findOneAndDelete({
             _id: ObjectID(id)
@@ -275,25 +266,21 @@ app.post("/deleteEvents", upload.single("image"), async (req, res) => {
     })
 })
 
+app.post("/deleteSeating", upload.none(), async (req, res) => {
 
+})
 
-
-
-
-/* use to render venue avail for hosting and events page */
 app.post("/getVenueAvail", upload.none(), async (req, res) => {
     const {
         startDate,
         venue
     } = req.body
 
-
     await dbo.collection("seating").findOne({
         "startDate": startDate,
         [`venue.${venue}`]: {
             $exists: 1
         }
-
     }, (err, result) => {
         if (err) {
             console.log(err)
@@ -313,7 +300,6 @@ app.post("/getVenueAvail", upload.none(), async (req, res) => {
             })
         }
     })
-
 })
 
 app.post("/login", upload.none(), async (req, res) => {
@@ -334,7 +320,6 @@ app.post("/login", upload.none(), async (req, res) => {
                 success: false
             })
         }
-
         try {
             if (await bcrypt.compare(givenPassword, user.password)) {
                 const sessionId = generateId()
@@ -342,12 +327,10 @@ app.post("/login", upload.none(), async (req, res) => {
                 res.cookie("sid", sessionId)
 
                 const hostId = user.hostId
-
                 return res.json({
                     success: true,
                     hostId: hostId
                 })
-
             } else {
                 return res.json({
                     success: false,
@@ -402,7 +385,6 @@ app.post("/register", upload.none(), async (req, res) => {
                     success: true,
                     hostId: hostId
                 })
-
             } catch (error) {
                 console.log(error)
                 return res.status(400).json({
@@ -419,10 +401,6 @@ app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
         startDate,
         venue
     } = req.body
-
-    console.log('startDate', startDate)
-    console.log('venue', venue)
-    console.log("seating end point")
 
     await dbo.collection("seating").findOne({
         "startDate": startDate,
@@ -466,15 +444,20 @@ app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
 
 app.post("/slotsTaken", upload.single("image"), async (req, res) => {
     const {
+        title,
         startDate,
         startTime,
+        endDate,
         endTime,
         venue,
+        performer,
+        price,
+        hostId,
     } = req.body
 
     await dbo.collection("events").find({
         "startDate": startDate,
-        "venue": venue,
+        "venue": venue
     }).toArray((err, result) => {
         if (err) {
             console.log(err)
@@ -483,25 +466,38 @@ app.post("/slotsTaken", upload.single("image"), async (req, res) => {
             })
         }
         if (result) {
-            const overlaps = []
             const eventTimes = result.map(i => {
                 return {
-                    startDate: i.startDate,
                     startTime: i.startTime,
                     endTime: i.endTime
                 }
             })
-            eventTimes.forEach(
-                event =>
-                overlaps.push(isOverlap(
-                    startTime, endTime, event)))
+            const ans = []
+            let overlaps = true
+            for (let i = 0; i < eventTimes.length; i++) {
+                overlaps = isOverlap(startTime, endTime, eventTimes[i])
+                    ans.push('overlaps:', overlaps)
+                    ans.push('eventTime:', eventTimes[i])
 
-            return res.json({
-                success: true,
-                msg: "Found date match",
-                overlaps: overlaps,
-                eventTimes: eventTimes
-            })
+                if (!overlaps) {
+                    dbo.collection("events").insertOne({
+                        title: title,
+                        startDate: startDate,
+                        startTime: startTime,
+                        endDate: endDate,
+                        endTime: endTime,
+                        venue: venue,
+                        performer: performer,
+                        image: !req.file ? "" : req.file.originalname,
+                        price: price,
+                        hostId: hostId,
+                        allDay: "false",
+                        dateAdded: new Date()
+                    })
+                    // return res.json({success: true})
+                }
+            }
+            return res.json({ans: ans, success: true})
         }
     })
 })

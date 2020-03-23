@@ -12,7 +12,7 @@ class Profile extends Component {
 
     this.state = {
       showHistory: false,
-      showAddEventForm: false,
+      showAddEvent: false,
       showUpdateEvent: false,
       selectedEvent: [],
       selectedOption: "",
@@ -20,9 +20,36 @@ class Profile extends Component {
     };
   }
 
-  async componentDidMount() {
-    this.dispatchGetSeatsAvail(await this.fetchData("/getSeatsAvail"));
+
+  componentDidMount(){
+    this.fetchSeatsAvail()
+    this.fetchEvents()
   }
+
+  fetchEvents = async () => {
+    const response = await fetch("/events");
+    const body = await response.text();
+    const parsed = JSON.parse(body);
+    if (Array.isArray(parsed)){
+      this.dispatchGetEvents(parsed);
+    }
+    this.setState({
+      showHistory: true,
+      showAddEvent: false,
+      showUpdateEvent: false,
+      selectedOption: "",
+      userEvents: this.getHostEvents()
+    });
+  };
+
+  fetchSeatsAvail = async () => {
+    const response = await fetch("/getSeatsAvail");
+    const body = await response.text();
+    const parsed = JSON.parse(body);
+    if (Array.isArray(parsed)){
+      this.dispatchGetSeatsAvail(parsed);
+    }
+  };
 
   dispatchGetEvents = events => {
     this.props.getEvents(events);
@@ -41,15 +68,15 @@ class Profile extends Component {
       if (confirm) {
         const data = new FormData();
         data.append("id", this.state.selectedOption);
+
         const response = await fetch("/deleteEvents", {
-          method: "POST",
-          body: data
-        });
+            method: "POST",
+            body: data
+          })
         const body = await response.text();
         const parser = JSON.parse(body);
         if (parser.success) {
-          console.log(parser.success);
-          this.showEvents();
+          this.fetchEvents();
         }
       } else {
         return;
@@ -57,46 +84,23 @@ class Profile extends Component {
     }
   };
 
-  enableButtonsOnChecked = condition => {
-    const updateBtn = document.getElementById("update-event-btn");
-    updateBtn.style.pointerEvents = condition;
-    const deleteBtn = document.getElementById("delete-event-btn");
-    deleteBtn.style.pointerEvents = condition;
-  };
-
-  fetchData = async url => {
-    const response = await fetch(url);
-    const body = await response.text();
-    const parser = JSON.parse(body);
-    if (Array.isArray(parser)) {
-      return parser;
+  getEventsToDelete = () => {
+    // const del = this.state.userEvents.filter(
+    //   event =>
+    //     event._id.indexOf(this.state.selectedOption) !==
+    //     -1
+    const toDelete = this.state.userEvents.find(
+      event =>  event._id === this.state.selectedOption
+       
+    );
+    // console.log(toDelete);
+    // console.log(this.state.selectedOption);
+    console.log({
+      startDate : toDelete.startDate,
+      venue : toDelete.venue,
+    })
     }
-  };
-
-  // confirmOverlapped = async () => {
-  //   const data = new FormData();
-  //   data.append("startDate", this.state.startDate);
-  //   data.append("venue", this.state.venue);
-  //   // data.append("endTime", this.state.endTime);
-  //   const response = await fetch("/slotsTaken", {
-  //     method: "POST",
-  //     body: data
-  //   });
-  //   const body = await response.text();
-  //   const parser = JSON.parse(body);
-  //   if (parser.success) {
-  //     // const start = parser.result.startTime
-  //     // const end = parser.result.endTime
-  //     // const expectedStart = this.state.startTime
-  //     // const ole = calcOverlappedEvents(
-  //     //   start,
-  //     //   end,
-  //     //   expectedStart
-  //     // )
-  //     // console.log('ole :', ole);
-  //     console.log("result", parser.result);
-  //   }
-  // };
+  
 
   getHostEvents = () => {
     const events = this.props.events.filter(
@@ -111,6 +115,7 @@ class Profile extends Component {
     const event = this.state.userEvents.find(
       evt => evt._id === this.state.selectedOption
     );
+    console.log('eventFound :', event);
     return event;
   };
 
@@ -120,23 +125,7 @@ class Profile extends Component {
     });
   };
 
-  showEvents = async () => {
-    this.dispatchGetEvents(await this.fetchData("/events"));
-    this.showEvents()
-  };
-
-  showEvents = () => {
-    this.setState({
-      showHistory: true,
-      showAddEvent: false,
-      showUpdateEvent: false,
-      selectedOption: "",
-      userEvents: this.getHostEvents()
-    });
-
-  }
-
-  showAddEventForm = () => {
+  showAddEvent = () => {
     this.setState({
       showHistory: false,
       showAddEvent: true,
@@ -166,18 +155,18 @@ class Profile extends Component {
           <h1>PROFILE</h1>
           <ul className="profile-buttons">
             <li>
-              <div id="events-history-btn" onClick={this.showEvents}>
+              <div id="events-history-btn" onClick={this.fetchEvents}>
                 Show Events
               </div>
             </li>
             <li>
-              {/* <div id="add-event-btn" onClick={this.showAddEventForm}> */}
-              <div id="add-event-btn" onClick={this.showAddEventForm}>
+              <div id="add-event-btn" onClick={this.showAddEvent}>
                 Add Event
               </div>
             </li>
             <li>
-              <div id="delete-event-btn" onClick={this.deleteEvent}>
+              {/* <div id="delete-event-btn" onClick={this.deleteEvent}> */}
+              <div id="delete-event-btn" onClick={this.getEventsToDelete}>
                 Delete Event
               </div>
             </li>
@@ -205,7 +194,7 @@ class Profile extends Component {
             <UpdateEvent
               event={this.state.selectedEvent}
               id={this.state.selectedOption}
-              showEvents={this.showEvents}
+              // showEvents={this.showEvents}
             />
           )}
         </div>
@@ -230,3 +219,30 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+
+
+  // confirmOverlapped = async () => {
+  //   const data = new FormData();
+  //   data.append("startDate", this.state.startDate);
+  //   data.append("venue", this.state.venue);
+  //   // data.append("endTime", this.state.endTime);
+  //   const response = await fetch("/slotsTaken", {
+  //     method: "POST",
+  //     body: data
+  //   });
+  //   const body = await response.text();
+  //   const parser = JSON.parse(body);
+  //   if (parser.success) {
+  //     // const start = parser.result.startTime
+  //     // const end = parser.result.endTime
+  //     // const expectedStart = this.state.startTime
+  //     // const ole = calcOverlappedEvents(
+  //     //   start,
+  //     //   end,
+  //     //   expectedStart
+  //     // )
+  //     // console.log('ole :', ole);
+  //     console.log("result", parser.result);
+  //   }
+  // };
+

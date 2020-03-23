@@ -107,7 +107,6 @@ class UpdateEvent extends Component {
       fetch("/setVenueSeating", { method: "POST", body: data }),
       fetch("/updateEvent", {method: "POST", body: data})
     ])
-    // this.props.showEventHistory()
   };
 
   handleImage = event => {

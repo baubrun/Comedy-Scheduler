@@ -10,11 +10,9 @@ import {
     EMPTIED_CART,
     RESET_CHECKOUT,
     GOT_SEATS_AVAIL,
-    GOT_ALL_SEATS_AVAIL,
     RESET_EVENTS,
     RESET_SEATS_AVAIL
 } from "./actionTypes"
-
 
 
 export const getEventsAction = events => ({
@@ -29,9 +27,14 @@ export const getSeatsAvailAction = seats => ({
     }
 })
 
-export const getAllSeatsAvailAction = () => ({
-    type: GOT_ALL_SEATS_AVAIL
+export const resetSeatsAvailAction = () => ({
+    type: RESET_SEATS_AVAIL,
+    payload: []
+        
+    
+
 })
+
 
 export const logInAction = hostId => ({
     type: LOGGED_IN,
@@ -59,7 +62,6 @@ export const getItemsBoughtAction = items => ({
     payload: items
 })
 
-
 export const addToCartAction = item => ({
     type: ADDED_TO_CART,
     payload: item
@@ -75,12 +77,10 @@ export const emptyCartAction = () => ({
     payload: []
 })
 
-export const resetEvents = () => ({
-    type: RESET_EVENTS
-})
+export const resetEventsAction = () => ({
+    type: RESET_EVENTS,
+    payload: []
 
-export const resetSeatsAvail = () => ({
-    type: RESET_SEATS_AVAIL,
 })
 
 export const confirmCheckoutAction = () => ({
@@ -88,8 +88,8 @@ export const confirmCheckoutAction = () => ({
     payload: true
 })
 
-
 export const resetCheckoutAction = () => ({
     type: RESET_CHECKOUT,
     payload: false
 })
+
