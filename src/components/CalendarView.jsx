@@ -130,8 +130,8 @@ class CalendarView extends Component {
     data.append("venue", this.state.venue);
 
     await Promise.all([
-      // fetch("/profile", { method: "POST", body: data }),
-      fetch("/slotsTaken", { method: "POST", body: data }),
+      fetch("/profile", { method: "POST", body: data }),
+      // fetch("/slotsTaken", { method: "POST", body: data }),
       fetch("/setVenueSeating", { method: "POST", body: data })
     ]).catch(err => console.log(err));
   };

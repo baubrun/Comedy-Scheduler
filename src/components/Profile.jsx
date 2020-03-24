@@ -20,17 +20,16 @@ class Profile extends Component {
     };
   }
 
-
-  componentDidMount(){
-    this.fetchSeatsAvail()
-    this.fetchEvents()
+  componentDidMount() {
+    this.fetchSeatsAvail();
+    this.fetchEvents();
   }
 
   fetchEvents = async () => {
     const response = await fetch("/events");
     const body = await response.text();
     const parsed = JSON.parse(body);
-    if (Array.isArray(parsed)){
+    if (Array.isArray(parsed)) {
       this.dispatchGetEvents(parsed);
     }
     this.setState({
@@ -46,7 +45,7 @@ class Profile extends Component {
     const response = await fetch("/getSeatsAvail");
     const body = await response.text();
     const parsed = JSON.parse(body);
-    if (Array.isArray(parsed)){
+    if (Array.isArray(parsed)) {
       this.dispatchGetSeatsAvail(parsed);
     }
   };
@@ -59,6 +58,19 @@ class Profile extends Component {
     this.props.getSeatsAvail(seats);
   };
 
+
+  getStartDateVenue2Delete = () => {
+    const toDelete = this.state.userEvents.find(
+      event => event._id === this.state.selectedOption
+    );
+    const event = {
+      startDate: toDelete.startDate,
+      venue: toDelete.venue
+    };
+    console.log('event :', event);
+    return event
+  };
+
   deleteEvent = async () => {
     if (this.state.selectedOption === "") {
       window.alert("Please select an event.");
@@ -66,41 +78,31 @@ class Profile extends Component {
     } else {
       const confirm = window.confirm("Delete event(s) ?");
       if (confirm) {
+
         const data = new FormData();
         data.append("id", this.state.selectedOption);
+        
+        const data2 = new FormData()
+        data2.append("toDelete", JSON.stringify(this.getStartDateVenue2Delete()))
+        
+        await Promise.all([
+          fetch("/deleteEvents", {method: "POST", body: data}),
+          fetch("/deleteSeating", {method: "POST", body: data2})
 
-        const response = await fetch("/deleteEvents", {
-            method: "POST",
-            body: data
-          })
-        const body = await response.text();
-        const parser = JSON.parse(body);
-        if (parser.success) {
+        ])
+
+        // const response = await fetch("/deleteEvents", {method: "POST", body: data})
+        // const body = await response.text();
+        // const parser = JSON.parse(body);
+        // if (parser.success) {
           this.fetchEvents();
-        }
-      } else {
-        return;
+        // }
+      // } else {
+      //   return;
       }
     }
-  };
+  }
 
-  getEventsToDelete = () => {
-    // const del = this.state.userEvents.filter(
-    //   event =>
-    //     event._id.indexOf(this.state.selectedOption) !==
-    //     -1
-    const toDelete = this.state.userEvents.find(
-      event =>  event._id === this.state.selectedOption
-       
-    );
-    // console.log(toDelete);
-    // console.log(this.state.selectedOption);
-    console.log({
-      startDate : toDelete.startDate,
-      venue : toDelete.venue,
-    })
-    }
-  
 
   getHostEvents = () => {
     const events = this.props.events.filter(
@@ -115,7 +117,7 @@ class Profile extends Component {
     const event = this.state.userEvents.find(
       evt => evt._id === this.state.selectedOption
     );
-    console.log('eventFound :', event);
+    console.log("eventFound :", event);
     return event;
   };
 
@@ -165,8 +167,11 @@ class Profile extends Component {
               </div>
             </li>
             <li>
-              {/* <div id="delete-event-btn" onClick={this.deleteEvent}> */}
-              <div id="delete-event-btn" onClick={this.getEventsToDelete}>
+              <div id="delete-event-btn" onClick={this.deleteEvent}>
+              {/* <div
+                id="delete-event-btn"
+                onClick={this.getStartDateVenue2Delete}
+              > */}
                 Delete Event
               </div>
             </li>
@@ -220,29 +225,27 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 
-
-  // confirmOverlapped = async () => {
-  //   const data = new FormData();
-  //   data.append("startDate", this.state.startDate);
-  //   data.append("venue", this.state.venue);
-  //   // data.append("endTime", this.state.endTime);
-  //   const response = await fetch("/slotsTaken", {
-  //     method: "POST",
-  //     body: data
-  //   });
-  //   const body = await response.text();
-  //   const parser = JSON.parse(body);
-  //   if (parser.success) {
-  //     // const start = parser.result.startTime
-  //     // const end = parser.result.endTime
-  //     // const expectedStart = this.state.startTime
-  //     // const ole = calcOverlappedEvents(
-  //     //   start,
-  //     //   end,
-  //     //   expectedStart
-  //     // )
-  //     // console.log('ole :', ole);
-  //     console.log("result", parser.result);
-  //   }
-  // };
-
+// confirmOverlapped = async () => {
+//   const data = new FormData();
+//   data.append("startDate", this.state.startDate);
+//   data.append("venue", this.state.venue);
+//   // data.append("endTime", this.state.endTime);
+//   const response = await fetch("/slotsTaken", {
+//     method: "POST",
+//     body: data
+//   });
+//   const body = await response.text();
+//   const parser = JSON.parse(body);
+//   if (parser.success) {
+//     // const start = parser.result.startTime
+//     // const end = parser.result.endTime
+//     // const expectedStart = this.state.startTime
+//     // const ole = calcOverlappedEvents(
+//     //   start,
+//     //   end,
+//     //   expectedStart
+//     // )
+//     // console.log('ole :', ole);
+//     console.log("result", parser.result);
+//   }
+// };

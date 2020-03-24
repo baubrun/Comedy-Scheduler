@@ -42,6 +42,18 @@ MongoClient.connect(
  Helper functions 
  ================*/
 
+const sendCookie = (response, user ) => {
+    const sessionId = generateId()
+    sessions[sessionId] = user
+    response.cookie("sid", sessionId)
+}
+
+const getCookie = (request) => {
+    const sessionId = request.cookies.sid
+    const user = sessions[sessionId]
+    return user ? user : false
+}
+
 const fileFilter = (req, file, cb) => {
     if (file !== undefined) {
         cb(null, true)
@@ -89,9 +101,6 @@ const generateId = () => {
     return "" + Math.floor(Math.random() * 1000000)
 }
 
-// const generateTicketPrices = () => {
-//     return "" + Math.floor(Math.random() * (20 - 15) + 15)
-// }
 
 
 const isOverlap = (start, end, result) => {
@@ -119,7 +128,28 @@ GET
 ====================*/
 
 
-app.get(["/events", "/profile"], async (req, res) => {
+app.get("/events", async (req, res) => {
+
+    dbo.collection("events").find({}).toArray((err, evt) => {
+        if (err) {
+            console.log(err)
+            return res.json({
+                success: false
+            })
+        }
+        return res.json(evt)
+    })
+})
+
+app.get("/profile", async (req, res) => {
+
+
+    if (!getCookie(req)) {
+        return res.json({success: false})
+        // return res.redirect("/login")
+    }
+
+
 
     dbo.collection("events").find({}).toArray((err, evt) => {
         if (err) {
@@ -267,7 +297,29 @@ app.post("/deleteEvents", upload.single("image"), async (req, res) => {
 })
 
 app.post("/deleteSeating", upload.none(), async (req, res) => {
+   
+    const {startDate, venue} = req.body
+    // const ans = req.body
 
+
+
+    await dbo.collection("seating")
+        .updateOne({
+            "startDate": startDate},
+            {$unset: {[`venue.${venue}`]: {$type: "int"}} }
+        , (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.json({
+                    success: false
+                })
+            } else {
+                return res.json({
+                    success: true,
+                    result: result
+                })
+            }
+        })
 })
 
 app.post("/getVenueAvail", upload.none(), async (req, res) => {
@@ -322,10 +374,12 @@ app.post("/login", upload.none(), async (req, res) => {
         }
         try {
             if (await bcrypt.compare(givenPassword, user.password)) {
-                const sessionId = generateId()
-                sessions[sessionId] = givenUsername
-                res.cookie("sid", sessionId)
+                // const sessionId = generateId()
+                // sessions[sessionId] = givenUsername
+                // res.cookie("sid", sessionId)
 
+                sendCookie(res, givenUsername)
+                
                 const hostId = user.hostId
                 return res.json({
                     success: true,
@@ -381,6 +435,10 @@ app.post("/register", upload.none(), async (req, res) => {
                     events: "",
                     dateAdded: new Date()
                 })
+                const sessionId = generateId()
+                sessions[sessionId] = username
+                res.cookie("sid", sessionId)
+
                 return res.status(200).json({
                     success: true,
                     hostId: hostId
@@ -476,8 +534,8 @@ app.post("/slotsTaken", upload.single("image"), async (req, res) => {
             let overlaps = true
             for (let i = 0; i < eventTimes.length; i++) {
                 overlaps = isOverlap(startTime, endTime, eventTimes[i])
-                    ans.push('overlaps:', overlaps)
-                    ans.push('eventTime:', eventTimes[i])
+                ans.push('overlaps:', overlaps)
+                ans.push('eventTime:', eventTimes[i])
 
                 if (!overlaps) {
                     dbo.collection("events").insertOne({
@@ -497,7 +555,10 @@ app.post("/slotsTaken", upload.single("image"), async (req, res) => {
                     // return res.json({success: true})
                 }
             }
-            return res.json({ans: ans, success: true})
+            return res.json({
+                ans: ans,
+                success: true
+            })
         }
     })
 })
