@@ -14,7 +14,6 @@ let dbo = undefined
 let sessions = {}
 
 
-
 /*=============
  Middleware 
  ==============*/
@@ -42,7 +41,7 @@ MongoClient.connect(
  Helper functions 
  ================*/
 
-const sendCookie = (response, user ) => {
+const setCookie = (response, user ) => {
     const sessionId = generateId()
     sessions[sessionId] = user
     response.cookie("sid", sessionId)
@@ -144,10 +143,9 @@ app.get("/events", async (req, res) => {
 app.get("/profile", async (req, res) => {
 
 
-    if (!getCookie(req)) {
-        return res.json({success: false})
-        // return res.redirect("/login")
-    }
+    // if (!getSid(req)) {
+    //     return res.json({success: false})
+    // }
 
 
 
@@ -297,11 +295,10 @@ app.post("/deleteEvents", upload.single("image"), async (req, res) => {
 })
 
 app.post("/deleteSeating", upload.none(), async (req, res) => {
-   
-    const {startDate, venue} = req.body
-    // const ans = req.body
-
-
+    
+    const {startDate, venue} = JSON.parse(req.body.delSeating)
+    console.log('startDate:', startDate)
+    console.log('venue:', venue)
 
     await dbo.collection("seating")
         .updateOne({
@@ -374,12 +371,9 @@ app.post("/login", upload.none(), async (req, res) => {
         }
         try {
             if (await bcrypt.compare(givenPassword, user.password)) {
-                // const sessionId = generateId()
-                // sessions[sessionId] = givenUsername
-                // res.cookie("sid", sessionId)
-
-                sendCookie(res, givenUsername)
                 
+                // getCookie(req)
+
                 const hostId = user.hostId
                 return res.json({
                     success: true,
@@ -435,9 +429,8 @@ app.post("/register", upload.none(), async (req, res) => {
                     events: "",
                     dateAdded: new Date()
                 })
-                const sessionId = generateId()
-                sessions[sessionId] = username
-                res.cookie("sid", sessionId)
+
+                // setCookie(res, username)
 
                 return res.status(200).json({
                     success: true,
@@ -622,7 +615,7 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
                 venue: venue,
                 performer: performer,
                 price: price,
-                image: req.file.originalname
+                image: !req.file ? "" : req.file.originalname,
             }
         },
         (err) => {

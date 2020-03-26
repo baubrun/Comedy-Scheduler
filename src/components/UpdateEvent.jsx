@@ -72,11 +72,8 @@ class UpdateEvent extends Component {
       price,
       hostId
     });
-    this.preFillFields()
+    this.preFillFields();
   }
-
-
-
 
   handleSubmit = async event => {
     event.preventDefault();
@@ -102,11 +99,11 @@ class UpdateEvent extends Component {
       performer: "",
       price: ""
     });
-     
+
     await Promise.all([
       fetch("/setVenueSeating", { method: "POST", body: data }),
-      fetch("/updateEvent", {method: "POST", body: data})
-    ])
+      fetch("/updateEvent", { method: "POST", body: data })
+    ]);
   };
 
   handleImage = event => {
@@ -135,17 +132,20 @@ class UpdateEvent extends Component {
     docOption.selected = true;
   };
 
-
   render() {
-
     return (
       <>
         <div className="update-event-header">
           <h2>UPDATE EVENT</h2>
         </div>
         <div className="update-body">
-          <form className="add-event-flex-container" onSubmit={this.handleSubmit}>
-            <ul className="add-event-form-container">
+          {/* <form className="add-event-flex-container" onSubmit={this.handleSubmit}> */}
+          <form
+            className="update-event-flex-container"
+            onSubmit={this.handleSubmit}
+          >
+            {/* <ul className="add-event-form-container"> */}
+            <ul className="update-event-form-container">
               <li>
                 <label htmlFor="title">Title</label>
                 <input
@@ -168,7 +168,7 @@ class UpdateEvent extends Component {
               </li>
               <li>
                 <label htmlFor="start-time">Start time</label>
-                <select  id="start-time" onChange={this.handleStartTime}>
+                {/* <select  id="start-time" onChange={this.handleStartTime}>
                   <option value="">{this.state.startTime}</option>
                   {timeSelector().map((time, idx) => {
                     return (
@@ -177,7 +177,15 @@ class UpdateEvent extends Component {
                       </option>
                     );
                   })}
-                </select>
+                </select> */}
+                <input
+                  id="start-time"
+                  type="text"
+                  value={this.state.startTime}
+                  onChange={this.handleStartTime}
+                  placeholder="HH:MM"
+
+                />
               </li>
               <li>
                 <label htmlFor="end-date">End date</label>
@@ -192,7 +200,7 @@ class UpdateEvent extends Component {
 
               <li>
                 <label htmlFor="end-time">End time</label>
-                <select id="end-time" onChange={this.handleEndTime}>
+                {/* <select id="end-time" onChange={this.handleEndTime}>
                   <option  value="">{this.state.endTime}</option>
                   {timeSelector().map((t, idx) => {
                     return (
@@ -201,7 +209,14 @@ class UpdateEvent extends Component {
                       </option>
                     );
                   })}
-                </select>
+                </select> */}
+                <input
+                  id="end-time"
+                  type="text"
+                  value={this.state.endTime}
+                  onChange={this.handleEndTime}
+                  placeholder="HH:MM"
+                />
               </li>
               <li>
                 <label htmlFor="venue">Venue</label>
@@ -210,10 +225,16 @@ class UpdateEvent extends Component {
                   name="venue"
                   onChange={this.handleVenueChange}
                 >
-                  <option  value=""></option>
-                  <option id="LE_FOU_FOU" value="LE_FOU_FOU">LE FOU FOU</option>
-                  <option id="JOKES_BLAGUES" value="JOKES_BLAGUES">JOKES BLAGUES</option>
-                  <option id="RIRE_NOW" value="RIRE_NOW">RIRE NOW</option>
+                  <option value=""></option>
+                  <option id="LE_FOU_FOU" value="LE_FOU_FOU">
+                    LE FOU FOU
+                  </option>
+                  <option id="JOKES_BLAGUES" value="JOKES_BLAGUES">
+                    JOKES BLAGUES
+                  </option>
+                  <option id="RIRE_NOW" value="RIRE_NOW">
+                    RIRE NOW
+                  </option>
                 </select>
               </li>
               <li>

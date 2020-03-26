@@ -1,9 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logInAction } from "../actions/actions";
-
-
 
 class Login extends Component {
   constructor(props) {
@@ -11,15 +8,13 @@ class Login extends Component {
 
     this.state = {
       username: "",
-      password: "",
+      password: ""
     };
   }
 
-
   dispatchLogin = hostId => {
-    this.props.loginUser(hostId)
-  }
-
+    this.props.loginUser(hostId);
+  };
 
   handleChange = event => {
     const name = event.target.name;
@@ -28,8 +23,9 @@ class Login extends Component {
   };
 
   handleRegister = () => {
-    this.props.history.push("/register")
-  }
+    this.props.history.push("/register");
+  };
+
   handleSubmit = async event => {
     event.preventDefault();
     const data = new FormData();
@@ -39,13 +35,11 @@ class Login extends Component {
       username: "",
       password: ""
     });
-    // await fetch("/", { method: "POST", body: data });
-    // make dynamic url profile page for push history
     const response = await fetch("/login", { method: "POST", body: data });
     const body = await response.text();
     const parser = JSON.parse(body);
     if (parser.success) {
-      this.dispatchLogin(parser.hostId)
+      this.dispatchLogin(parser.hostId);
       this.props.history.push("/profile");
     }
   };
@@ -53,13 +47,18 @@ class Login extends Component {
   render() {
     return (
       <div className="modal login">
+       {/* <div className="login-form">  */}
         <form className="modal-content animate" onSubmit={this.handleSubmit}>
+        {/* <form className="login-flex-container" onSubmit={this.handleSubmit}> */}
+          {/* <div className="login-form-container"> */}
           <div className="modal-img-container">
+          {/* <div className="login-form-img"> */}
             <div>
               <img className="user-icon" src="user_icon_gros.png" alt=""></img>
             </div>
           </div>
           <div className="container">
+          {/* <div  className="login-form-fields" > */}
             <label htmlFor="username">
               <b>Username</b>
             </label>
@@ -70,7 +69,6 @@ class Login extends Component {
               value={this.state.username}
               onChange={this.handleChange}
             />
-
             <label htmlFor="password">
               <b>Password</b>
             </label>
@@ -81,14 +79,16 @@ class Login extends Component {
               value={this.state.password}
               onChange={this.handleChange}
             />
-            <button className="login-btn" type="submit">Login</button>
-            {/* <div className="register-btn"> */}
-            <button className="not-registered-btn" type="submit" onClick={this.handleRegister}>Not registered? Register here!</button>
-
-              {/* <Link id="register-btn" to="/register"> */}
-                {/* Not registered? Register here! */}
-              {/* </Link> */}
-            {/* </div> */}
+            <button className="login-btn" type="submit">
+              Login
+            </button>
+            <button
+              className="not-registered-btn"
+              type="submit"
+              onClick={this.handleRegister}
+            >
+              Not registered? Register here!
+            </button>
           </div>
         </form>
       </div>
@@ -96,13 +96,10 @@ class Login extends Component {
   }
 }
 
-
-
 const mapDispatchToProps = dispatch => {
-  return{
-    loginUser: (hostId) => dispatch(logInAction(hostId))
-  }
-}
-
+  return {
+    loginUser: hostId => dispatch(logInAction(hostId))
+  };
+};
 
 export default connect(null, mapDispatchToProps)(Login);

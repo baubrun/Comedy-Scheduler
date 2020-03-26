@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import HomePage from "./components/HomePage"
-import {BrowserRouter, Route} from "react-router-dom"
+import {BrowserRouter, Route, Redirect} from "react-router-dom"
 import Register from "./components/Register";
 import Events from "./components/Events";
 import RenderEvent from "./components/EventDetail"
@@ -10,11 +10,9 @@ import NavBar from "./components/NavBar"
 import Checkout from "./components/Checkout"
 import Confirmation from "./components/Confirmation"
 import RenderCart from "./components/RenderCart"
-
+import { connect } from "react-redux";
 
 class App extends Component {
-
-
 
   render() {
     return (
@@ -25,11 +23,15 @@ class App extends Component {
         <Route exact={true} path="/login" component={Login}/>
         <Route exact={true} path="/register" component={Register}/>
         <Route exact={true} path="/events" component={Events}/>
-        <Route exact={true} path="/event/:title" component={RenderEvent} />
-        <Route exact={true} path="/profile" component={Profile} />
-        <Route exact={true} path="/checkout" component={Checkout} />
-        <Route exact={true} path="/confirmation" component={Confirmation} />
-        <Route exact={true} path="/cart" component={RenderCart} />
+        <Route exact={true} path="/event/:title" component={RenderEvent}/>
+        <Route exact={true} path="/cart" component={RenderCart}/>
+        <Route exact={true} path="/checkout" component={Checkout}/>
+        <Route exact={true} path="/confirmation" component={Confirmation}/>
+        
+        <Route exact={true} path="/profile">
+          {!this.props.loggedIn ? <Redirect to="/login" /> : <Profile/>}
+        </Route >
+
         </BrowserRouter>
       </div>
     )
@@ -37,6 +39,14 @@ class App extends Component {
 }
 
 
-export default App;
+
+const mapStateToProps = state => {
+  return {
+    loggedIn: state.auth.loggedIn
+  }
+}
+
+
+export default connect(mapStateToProps,)(App);
 
 

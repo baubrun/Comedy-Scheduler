@@ -174,12 +174,14 @@ class Events extends Component {
   };
 
   render() {
+    const venueFormatted = this.state.venue.split("_").join(" ")
+
     return (
       <>
         <div className="events-header">
           <h2>EVENTS</h2>
           <div className="venue-select">
-            <h2>{this.state.venue ? this.state.venue : "CHOOSE A VENUE"}</h2>
+            <h2>{venueFormatted ? venueFormatted : "CHOOSE A VENUE"}</h2>
             <select onChange={this.handleVenueChange} name="venue">
               <option value="">CHOOSE A VENUE</option>
               <option value="LE_FOU_FOU">LE FOU FOU</option>

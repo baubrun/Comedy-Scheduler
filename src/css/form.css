@@ -3,10 +3,23 @@ Form
 ===============*/
 
 
+.login {
+  background-image: url("./images/door-lock.jpg") ;
+  background-size: cover;
+}
 .modal {
   overflow: auto;
   position: fixed;
   width: 100%;
+}
+
+.login-form{
+  background-image: url("./images/door-lock.jpg") ;
+  background-size: cover;
+  overflow: auto;
+  position: fixed;
+  width: 100%;
+
 }
 
 .modal-content {
@@ -24,6 +37,8 @@ Form
   width: 100%
 }
 
+.login-form-img,
+.login-form-container,
 .modal-img-container {
   position: relative;
   display: flex;
@@ -31,6 +46,7 @@ Form
   width: 100%;
 }
 
+/* .login-form-img, */
 .modal-img-container img {
   height: 100px;
   width: 100px;
@@ -47,6 +63,7 @@ Form
   box-sizing: border-box;
 }
 
+.login-form-fields,
 .modal .container {
   width: 100%;
 }
@@ -89,7 +106,6 @@ Form
   letter-spacing: 1px;
   margin-top: 5px;
   padding: 5px 0;
-
 }
 
 .register-btn,
@@ -106,16 +122,8 @@ Form
   letter-spacing: 1px;
   margin: 10px 0;
   padding: 5px 0;
-
 }
 
-
-
-.login {
-  /* background-image: url("./images/gold-lock-resized.jpg") ; */
-  background-image: url("./images/door-lock.jpg") ;
-  background-size: cover;
-}
 
 
 .events-btn {
@@ -123,14 +131,8 @@ Form
 }
 
 /* ====================
-AddEvent
+UpdateEvent
 ======================*/
-
-
-
-/* .add-event-header {
-  display: flex;
-} */
 
 .add-event-header {
   background-color:  #663A2B;
@@ -140,46 +142,58 @@ AddEvent
   width: 100%;
 }
 
+.update-body {
+  background-color: black;
+  color: white;
+}
 
-.add-event-flex-container, 
-.update-event-flex-container
-{
+.update-event-flex-container{
   display: flex;
   flex-flow: row wrap;
   margin: 20px 0 0 20%;
   width: 60%;
 }
 
-.add-event-form-container,
 .update-event-form-container {
   /* border: 1px solid gray; */
   padding: 20px 5px;
   width: 100%;
 }
 
-.add-event-form-container  li {
+.update-event-form-container li{
   display: flex;
-  flex-flow: row wrap;
+  /* flex-flow: row wrap; */
   margin-right: 50px;
-
 }
 
-
-.add-event-form-container  label {
+.update-event-form-container label {
+  /* color: #663A2B ; */
+  color: white ;
   flex: 1 1 120px;
-  /* text-align: center; */
+  margin-top: 10px;
 }
-.add-event-form-container input {
+
+.update-event-form-container input{
   flex: 3 1 261px;
   margin: 10px 0 10px 0 ;
 }
 
 select#venue,
-select#time-start,
-select#time-end {
+select#start-time,
+select#end-time {
   flex: 3 1 261px;
   margin: 10px 0 10px 0 ;
 }
 
-
+.update-body button {
+  background-color: rgb(224, 151, 33);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1em;
+  letter-spacing: 1px;
+  padding: 10px;
+}
 

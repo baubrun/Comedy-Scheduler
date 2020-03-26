@@ -53,14 +53,11 @@
     background-color: #020202;
     display: flex;
     justify-content: center;
+    height: 100vh;
 }
 
 .event-detail {
     padding: 10px;
-}
-
-.event-detail-body button {
-    /* text-align: center; */
 }
 
 .event-detail li {

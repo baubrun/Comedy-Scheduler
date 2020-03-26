@@ -63,13 +63,11 @@ class Profile extends Component {
     const toDelete = this.state.userEvents.find(
       event => event._id === this.state.selectedOption
     );
-    const event = {
+    return {
       startDate: toDelete.startDate,
       venue: toDelete.venue
     };
-    console.log('event :', event);
-    return event
-  };
+  }
 
   deleteEvent = async () => {
     if (this.state.selectedOption === "") {
@@ -83,26 +81,16 @@ class Profile extends Component {
         data.append("id", this.state.selectedOption);
         
         const data2 = new FormData()
-        data2.append("toDelete", JSON.stringify(this.getStartDateVenue2Delete()))
+        data2.append("delSeating", JSON.stringify(this.getStartDateVenue2Delete()))
         
         await Promise.all([
           fetch("/deleteEvents", {method: "POST", body: data}),
           fetch("/deleteSeating", {method: "POST", body: data2})
-
         ])
-
-        // const response = await fetch("/deleteEvents", {method: "POST", body: data})
-        // const body = await response.text();
-        // const parser = JSON.parse(body);
-        // if (parser.success) {
           this.fetchEvents();
-        // }
-      // } else {
-      //   return;
       }
     }
   }
-
 
   getHostEvents = () => {
     const events = this.props.events.filter(
@@ -168,10 +156,6 @@ class Profile extends Component {
             </li>
             <li>
               <div id="delete-event-btn" onClick={this.deleteEvent}>
-              {/* <div
-                id="delete-event-btn"
-                onClick={this.getStartDateVenue2Delete}
-              > */}
                 Delete Event
               </div>
             </li>
@@ -199,7 +183,6 @@ class Profile extends Component {
             <UpdateEvent
               event={this.state.selectedEvent}
               id={this.state.selectedOption}
-              // showEvents={this.showEvents}
             />
           )}
         </div>

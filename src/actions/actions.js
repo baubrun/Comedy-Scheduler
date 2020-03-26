@@ -30,9 +30,6 @@ export const getSeatsAvailAction = seats => ({
 export const resetSeatsAvailAction = () => ({
     type: RESET_SEATS_AVAIL,
     payload: []
-        
-    
-
 })
 
 
