@@ -130,9 +130,8 @@ class CalendarView extends Component {
     data.append("venue", this.state.venue);
 
     await Promise.all([
-      fetch("/profile", { method: "POST", body: data }),
-      // fetch("/slotsTaken", { method: "POST", body: data }),
-      fetch("/setVenueSeating", { method: "POST", body: data })
+      fetch("/slotsTaken", { method: "POST", body: data }),
+      // fetch("/setVenueSeating", { method: "POST", body: data })
     ]).catch(err => console.log(err));
   };
 
@@ -167,7 +166,7 @@ class CalendarView extends Component {
           onSelectSlot={this.props.loggedIn ? this.handleSelect : ""}
           selectable
           startAccessor="start"
-          step={30}
+          step={15}
           style={{ height: 500 }}
           views={allViews}
         />

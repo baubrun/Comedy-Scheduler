@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logInAction } from "../actions/actions";
 
@@ -11,7 +10,8 @@ class Register extends Component {
       username: "",
       password: "",
       email: "",
-      hostId: ""
+      hostId: "",
+      errors: []
     };
   }
 
@@ -51,19 +51,40 @@ class Register extends Component {
       this.dispatchLogin(parser.hostId)
       this.props.history.push("/profile");
     }
+    if (Array.isArray(parser)){
+      this.setState({errors: parser})
+    }
   };
+
+  handleCloseErrors = () => {
+    this.setState({errors: []})
+  }
+
 
   render() {
     return (
       <div className="modal register">
-        <form className="modal-content animate" onSubmit={this.handleSubmit}>
+        <form className="register-flex-container" onSubmit={this.handleSubmit}>
           <div className="home-header">
             <div className="home-title">
               <h1>BIENVENUE TO THE COMEDY HUB</h1>
               <h3>Please register to host events.</h3>
             </div>
           </div>
-          <div className="modal-img-container">
+          <div className="register-form-container">
+          {this.state.errors.map((err, idx) => {
+              return (
+                <div key={idx} id="errors">
+                  {err.msg}
+                  <span
+                    id="close-btn"
+                    onClick={this.handleCloseErrors}
+                  >
+                    &times;
+                  </span>
+                </div>
+              );
+            })}
             <div>
               <img className="user-icon" src="user_icon_gros.png" alt=""></img>
             </div>
@@ -79,7 +100,6 @@ class Register extends Component {
               value={this.state.username}
               onChange={this.handleChange}
             />
-
             <label htmlFor="password">
               <b>Password</b>
             </label>
@@ -101,7 +121,7 @@ class Register extends Component {
               onChange={this.handleChange}
             />
             <label htmlFor="host">
-              <b>What will be your host name?</b>
+              <b>What is your host name?</b>
             </label>
             <input
               id="host"
@@ -110,14 +130,8 @@ class Register extends Component {
               placeholder="Host Name"
               onChange={this.handleChange}
             />
-
             <button className="register-btn" type="submit">REGISTER</button>
             <button className="cancel-btn" type="submit" onClick={this.handleCancel}>CANCEL</button>
-            {/* <div className="cancel-btn"> */}
-              {/* <Link id="cancel-btn" to="/"> */}
-                {/* CANCEL */}
-              {/* </Link> */}
-            {/* </div> */}
           </div>
         </form>
       </div>

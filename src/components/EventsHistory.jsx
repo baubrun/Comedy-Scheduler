@@ -13,22 +13,16 @@ const EventsHistory = props => {
           <ul className="events-history" key={idx}>
             <li>{event.title}</li>
             <li>
-              Start:{" "}
-              {moment(`${event.startDate} ${event.startTime}`).format(
-                "DD-MM-YYYY HH:mm"
-              )}
-              h
+              Start: {moment(event.startDate).format("DD-MM-YYYY")}
             </li>
+            <li>Time: {event.startTime}</li>
             <li>Venue: {event.venue}</li>
-            <li>Performer: {event.performer}</li>
-            {/* <li className="seatsAvail">Seats Available: {event.seatsAvail}</li> */}
-            
+            <li>Performer: {event.performer}</li>            
             <li className="seatsAvail">Seats Available: {
             seatingLeft(event.startDate, props.seatsAvail, event.venue)
             }
             </li>
-
-
+            <li>Price: {event.price} $</li>
             <li>
               <img id="performer-img" src={`../../${event.image}`} alt="" />
             </li>

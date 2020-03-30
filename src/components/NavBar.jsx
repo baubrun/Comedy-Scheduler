@@ -1,68 +1,59 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   logOutAction,
   resetSeatsAvailAction,
   resetEventsAction
 } from "../actions/actions";
+import Dropdown from "./Dropdown";
 
-class NavBar extends Component {
-  logout = () => {
-    this.props.logoutUser();
-    this.props.resetSeatsAvail();
-    this.props.resetEvents();
+const NavBar = props => {
+
+  const currentPage = useLocation().pathname
+
+  const logout = () => {
+    props.logoutUser();
+    props.resetSeatsAvail();
+    props.resetEvents();
   };
 
-  render() {
-    return (
-      <div className="navbar">
-        <div className="home-title">
-          <h1>
-            <Link to="/">LE COMEDY HUB</Link>
-          </h1>
-          <div className="hostId">
-            {this.props.loggedIn ? `Salut ${this.props.hostId}!` : ""}
-          </div>
-        </div>
-        {this.props.loggedIn && (
-          <div className="dropdown">
-            <img id="dropdown-img" src="menu-grid.png" alt="" />
-            <div className="dropdown-content">
-              <ul>
-                <Link to="/profile">
-                  <li>Profile</li>{" "}
-                </Link>
-                <Link to="/events">
-                  <li>Tickets</li>{" "}
-                </Link>
-                <Link to="/profile">
-                  <li>Add event</li>{" "}
-                </Link>
-                <Link to="/" onClick={this.logout}>
-                  <li>Logout</li>
-                </Link>
-              </ul>
-            </div>
-          </div>
+
+  return (
+    <div className="navbar">
+      <div className="home-title">
+        <h1>
+          <Link to="/">LE COMEDY HUB</Link>
+        </h1>
+        {!props.loggedIn && (currentPage !== "/login") ? (
+          <Link  to="/login">
+            <div id="login-link">LOGIN</div>
+          </Link>
+        ) : (
+          ""
         )}
-        {
-          <div className="cart">
-            <Link to="/cart">
-              <img src="ticket-blk-white.png" alt=""></img>
-              {this.props.cart.length > 0 ? (
-                <span className="cart-length">{this.props.cart.length}</span>
-              ) : (
-                ""
-              )}
-            </Link>
-          </div>
-          //  )
-        }
+        <div className="hostId">
+          {props.loggedIn ? `Salut ${props.hostId}!` : ""}
+        </div>
       </div>
-    );
-  }
-}
+      {props.loggedIn && (
+        <Dropdown logout={logout} />
+      )}
+      {
+        <div className="cart">
+          <Link to="/cart">
+            <img src="ticket-blk-white.png" alt=""></img>
+            {props.cart.length > 0 ? (
+              <span className="cart-length">{props.cart.length}</span>
+            ) : (
+              ""
+            )}
+          </Link>
+        </div>
+      }
+    </div>
+  );
+};
 
 const mapStateToProps = state => {
   return {

@@ -146,7 +146,7 @@ class Profile extends Component {
           <ul className="profile-buttons">
             <li>
               <div id="events-history-btn" onClick={this.fetchEvents}>
-                Show Events
+               Show Events History
               </div>
             </li>
             <li>
@@ -183,6 +183,7 @@ class Profile extends Component {
             <UpdateEvent
               event={this.state.selectedEvent}
               id={this.state.selectedOption}
+              fetchEvents={this.fetchEvents}
             />
           )}
         </div>
@@ -208,27 +209,3 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 
-// confirmOverlapped = async () => {
-//   const data = new FormData();
-//   data.append("startDate", this.state.startDate);
-//   data.append("venue", this.state.venue);
-//   // data.append("endTime", this.state.endTime);
-//   const response = await fetch("/slotsTaken", {
-//     method: "POST",
-//     body: data
-//   });
-//   const body = await response.text();
-//   const parser = JSON.parse(body);
-//   if (parser.success) {
-//     // const start = parser.result.startTime
-//     // const end = parser.result.endTime
-//     // const expectedStart = this.state.startTime
-//     // const ole = calcOverlappedEvents(
-//     //   start,
-//     //   end,
-//     //   expectedStart
-//     // )
-//     // console.log('ole :', ole);
-//     console.log("result", parser.result);
-//   }
-// };

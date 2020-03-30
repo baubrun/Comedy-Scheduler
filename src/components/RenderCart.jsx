@@ -12,8 +12,6 @@ export const currencyFormat = amount => {
   }).format(amount);
 };
 
-
-
 class RenderCart extends Component {
   constructor(props) {
     super(props);
@@ -23,12 +21,10 @@ class RenderCart extends Component {
     };
   }
 
-
   componentDidMount() {
     const cart = this.props.cart.map(i => Object.assign(i, { qty: 1 }));
     this.setState({ cartItems: cart });
   }
-
 
   handleQtyChange = event => {
     const id = event.target.name;
@@ -47,11 +43,10 @@ class RenderCart extends Component {
     this.props.getCart(this.props.cart);
   };
 
-
   handleCheckout = () => {
     this.props.getBoughtItems(this.state.cartItems);
-    this.props.history.push("/checkout")
-  }
+    this.props.history.push("/checkout");
+  };
 
   deleteCartItem = event => {
     const id = event.target.name;
@@ -62,11 +57,10 @@ class RenderCart extends Component {
     this.dispatchDelItem(item);
   };
 
+
   render() {
     let subtotal = 0;
-    this.state.cartItems.forEach(
-      pr => (subtotal += pr.price * pr.qty)
-    );
+    this.state.cartItems.forEach(pr => (subtotal += pr.price * pr.qty));
 
     let tps = subtotal * 0.05;
     let tvq = subtotal * 0.09975;
@@ -101,7 +95,7 @@ class RenderCart extends Component {
                       <tr key={idx}>
                         <td>{item.title}</td>
                         <td>{item.venue}</td>
-                        <td>$ {item.price}</td>
+                        <td>{item.price}</td>
                         <td>
                           <input
                             type="number"
@@ -134,13 +128,16 @@ class RenderCart extends Component {
                 <li>TVQ:</li>
                 <li>{tvq.toFixed(2)}</li>
                 <li>Total:</li>
-                <li>{currencyFormat(total)}</li>
+                <li>{total.toFixed(2)} $</li>
                 {/* <Link id="checkout-btn" to="/checkout">Checkout</Link> */}
+
                 <button 
                 id="checkout-btn" 
-                onClick={this.handleCheckout}>Checkout</button>
+                onClick={this.handleCheckout}>
+                  Checkout
+                  </button>
+
               </ul>
-                
             </>
           ) : (
             <div>
@@ -163,7 +160,7 @@ const mapDispatchToProps = dispatch => {
   return {
     getCart: items => dispatch(getCartAction(items)),
     delItem: item => dispatch(deleteFromCartAction(item)),
-    getBoughtItems: items => dispatch(getItemsBoughtAction(items)),
+    getBoughtItems: items => dispatch(getItemsBoughtAction(items))
   };
 };
 

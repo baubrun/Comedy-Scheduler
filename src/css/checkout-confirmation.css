@@ -1,28 +1,47 @@
-.checkout-header {
-    /* width: 100%; */
-}
-
 
 .checkout-body{
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
     padding-top: 10px;
-    /* width: 100%; */
 }
 
 .checkout-flex-container {
     border: 1px solid rgb(224, 151, 33);
     display: flex;
-    margin: 5px;
+    flex-flow: row wrap;
+}
+
+.checkout-flex-container li {
+   width: 100%;
+}
+
+.checkout-flex-container li:first-of-type {
+  text-align: center;
+}
+
+.cc-icons {
+    display: flex;
+    flex: 1 1 120px;
+    /* margin-right: 50px; */
+}
+
+.pay-btn{
+    display: block;
     width: 100%;
 }
 
-.checkout-form-container {
-    /* display: flex; */
-    /* flex-flow: row wrap ; */
-    /* justify-content: center; */
+:root{
+    --px: 42px
 }
+
+#debit-card{
+    border-radius: 5px;
+    margin-top: 10px;
+    height: var(--px);
+    width: var(--px);
+}
+
 
 .checkout-form-container label {
     flex: 1 1 120px;
@@ -37,15 +56,6 @@
     width: 100%;
 }
 
-.checkout-form-container li {
-    display: flex;
-    margin: 10px;
-}
-
-.cc {
-    flex: 1 1 120px;
-    /* margin-right: 50px; */
-}
 
 .confirm tbody td {
     border-bottom: 1px solid  rgb(224, 151, 33);
@@ -73,7 +83,9 @@
 
 
 .items-summary li{
-    border-top: 1px solid #663A2B;
+    /* border-top: 1px solid #663A2B; */
+    margin: 5px 0;
+    padding: 0 5px
 }
 
 .process-btn {
@@ -93,10 +105,32 @@
 .total-checkout {
     border: 1px solid #663A2B;
     margin: 10px;
+    padding: 5px;
     width: 100%;
-}
-
-.total-checkout h2 {
     text-align: center;
 }
 
+.total-checkout li,
+.total-checkout h2
+{
+    padding: 2px 0;
+}
+
+
+
+
+.Overlay-Badge--bottomLeft {
+    display: none;
+}
+
+.debit-card-logo {
+    height: 48px;
+    width: 48px;
+}
+
+
+.pay-btn{
+    width: 100%;
+    text-align: center;
+    margin: 10px 0;
+}

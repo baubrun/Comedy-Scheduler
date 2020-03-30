@@ -1,31 +1,5 @@
 import React, { Component } from "react";
 
-const timeSelector = () => {
-  let selectTimes = [];
-  let hour = 20;
-  let min = 45;
-  while (hour < 24) {
-    for (let i = 0; i < 3; i++) {
-      min += 15;
-      let time = `${hour}:${min}`;
-      if (min === 60) {
-        hour += 1;
-        min = 0;
-        time = `${hour}:0${min}`;
-      }
-      if (hour === 24 && min === 0) {
-        hour = 0;
-        min = 0;
-        time = `0${hour}:0${min}`;
-      }
-      selectTimes.push(time);
-      if (hour === 1) {
-        return selectTimes;
-      }
-    }
-  }
-};
-
 class UpdateEvent extends Component {
   constructor(props) {
     super(props);
@@ -72,7 +46,7 @@ class UpdateEvent extends Component {
       price,
       hostId
     });
-    this.preFillFields();
+    this.preFillVenueOption();
   }
 
   handleSubmit = async event => {
@@ -104,6 +78,7 @@ class UpdateEvent extends Component {
       fetch("/setVenueSeating", { method: "POST", body: data }),
       fetch("/updateEvent", { method: "POST", body: data })
     ]);
+    this.props.fetchEvents()
   };
 
   handleImage = event => {
@@ -127,7 +102,7 @@ class UpdateEvent extends Component {
     this.setState({ endTime: event.target.value });
   };
 
-  preFillFields = () => {
+  preFillVenueOption = () => {
     const docOption = document.getElementById(this.props.event.venue);
     docOption.selected = true;
   };
@@ -139,12 +114,10 @@ class UpdateEvent extends Component {
           <h2>UPDATE EVENT</h2>
         </div>
         <div className="update-body">
-          {/* <form className="add-event-flex-container" onSubmit={this.handleSubmit}> */}
           <form
             className="update-event-flex-container"
             onSubmit={this.handleSubmit}
           >
-            {/* <ul className="add-event-form-container"> */}
             <ul className="update-event-form-container">
               <li>
                 <label htmlFor="title">Title</label>
@@ -168,23 +141,12 @@ class UpdateEvent extends Component {
               </li>
               <li>
                 <label htmlFor="start-time">Start time</label>
-                {/* <select  id="start-time" onChange={this.handleStartTime}>
-                  <option value="">{this.state.startTime}</option>
-                  {timeSelector().map((time, idx) => {
-                    return (
-                      <option key={idx} value={time}>
-                        {time}
-                      </option>
-                    );
-                  })}
-                </select> */}
                 <input
                   id="start-time"
                   type="text"
                   value={this.state.startTime}
                   onChange={this.handleStartTime}
                   placeholder="HH:MM"
-
                 />
               </li>
               <li>
@@ -197,19 +159,8 @@ class UpdateEvent extends Component {
                   value={this.state.endDate}
                 />
               </li>
-
               <li>
                 <label htmlFor="end-time">End time</label>
-                {/* <select id="end-time" onChange={this.handleEndTime}>
-                  <option  value="">{this.state.endTime}</option>
-                  {timeSelector().map((t, idx) => {
-                    return (
-                      <option key={idx} value={t}>
-                        {t}
-                      </option>
-                    );
-                  })}
-                </select> */}
                 <input
                   id="end-time"
                   type="text"
@@ -277,12 +228,4 @@ class UpdateEvent extends Component {
   }
 }
 
-// const mapStateToProps = state => {
-//   return {
-//     loggedIn: state.auth.loggedIn,
-//     hostId: state.auth.hostId
-//   };
-// };
-
-// export default connect(mapStateToProps)(UpdateEvent);
 export default UpdateEvent;

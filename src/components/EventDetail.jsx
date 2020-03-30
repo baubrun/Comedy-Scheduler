@@ -21,31 +21,35 @@ const EventDetail = props => {
   } = props.event;
 
   return (
-    <div>
-      <div className="event-detail-header">
-        <Link to="/events">RETURN TO EVENTS</Link>
-      </div>
-      <div className="event-detail-body">
-        <ul className="event-detail" key={_id}>
-        <li>
-            <Link to="/cart">
-              <button className="reserve-btn" onClick={dispatchAddToCart}>
-                PURCHASE
-              </button>
-            </Link>
-          </li>
-          <li>Title: {title}</li>
-          <li> Date:{moment(`${startDate}`).format("DD-MM-YYYY")}</li>
-          <li>Time: {startTime}</li>
-          <li>Venue: {venue}</li>
-          <li>Performer: {performer}</li>
-          <li>Price: ${price}</li>
-          <li>
-            <img className="performer-img-detail" src={`../../${image}`} alt="" />
-          </li>
-        </ul>
-      </div>
-    </div>
+        <div>
+          <div className="event-detail-header">
+            <Link to="/events">RETURN TO EVENTS</Link>
+          </div>
+          <div className="event-detail-body">
+            <ul className="event-detail" key={_id}>
+              <li>
+                <Link to="/cart">
+                  <button className="reserve-btn" onClick={dispatchAddToCart}>
+                    PURCHASE
+                  </button>
+                </Link>
+              </li>
+              <li>Title: {title}</li>
+              <li> Date: {moment(`${startDate}`).format("DD-MM-YYYY")}</li>
+              <li>Time: {startTime}</li>
+              <li>Venue: {venue.split("_").join(" ")}</li>
+              <li>Performer: {performer}</li>
+              <li>Price: {price} $</li>
+              <li>
+                <img
+                  className="performer-img-detail"
+                  src={`../../${image}`}
+                  alt=""
+                />
+              </li>
+            </ul>
+          </div>
+        </div>
   );
 };
 

@@ -8,7 +8,8 @@ class Login extends Component {
 
     this.state = {
       username: "",
-      password: ""
+      password: "",
+      errors: []
     };
   }
 
@@ -41,24 +42,42 @@ class Login extends Component {
     if (parser.success) {
       this.dispatchLogin(parser.hostId);
       this.props.history.push("/profile");
+      return;
+    }
+    if (Array.isArray(parser)) {
+      console.log(parser);
+      this.setState({ errors: parser });
+      return;
     }
   };
+
+  handleCloseErrors = () => {
+    this.setState({errors: []})
+  }
 
   render() {
     return (
       <div className="modal login">
-       {/* <div className="login-form">  */}
-        <form className="modal-content animate" onSubmit={this.handleSubmit}>
-        {/* <form className="login-flex-container" onSubmit={this.handleSubmit}> */}
-          {/* <div className="login-form-container"> */}
-          <div className="modal-img-container">
-          {/* <div className="login-form-img"> */}
+          <form className="login-flex-container" onSubmit={this.handleSubmit}>
+          <div className="login-form-container">
+            {this.state.errors.map((err, idx) => {
+              return (
+                <div key={idx} id="errors">
+                  {err.msg}
+                  <span
+                    id="close-btn"
+                    onClick={this.handleCloseErrors}
+                  >
+                    &times;
+                  </span>
+                </div>
+              );
+            })}
             <div>
               <img className="user-icon" src="user_icon_gros.png" alt=""></img>
             </div>
           </div>
           <div className="container">
-          {/* <div  className="login-form-fields" > */}
             <label htmlFor="username">
               <b>Username</b>
             </label>

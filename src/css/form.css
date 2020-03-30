@@ -2,10 +2,32 @@
 Form 
 ===============*/
 
+#errors{
+  background-color: rgba(243, 60, 60, 0.856);
+  display: flex;
+  color: white;
+  padding: 5px;
+  width: 100%;
+}
+
+
+#close-btn{
+  color: white;
+  cursor: pointer;
+  /* float: right; */
+  font-size: 30px;
+  font-weight: bold;
+  margin-left: auto;
+}
+
+#close-btn:hover {
+  color: rgb(255, 0, 0);
+}
 
 .login {
   background-image: url("./images/door-lock.jpg") ;
   background-size: cover;
+  height: 100vh;
 }
 .modal {
   overflow: auto;
@@ -13,16 +35,11 @@ Form
   width: 100%;
 }
 
-.login-form{
-  background-image: url("./images/door-lock.jpg") ;
-  background-size: cover;
-  overflow: auto;
-  position: fixed;
-  width: 100%;
 
-}
-
-.modal-content {
+.login-flex-container,
+.register-flex-container
+/* .modal-content  */
+{
   background-color: #fefefe;
   border: 1px solid #888;
   border-radius: 5px;
@@ -37,19 +54,22 @@ Form
   width: 100%
 }
 
-.login-form-img,
 .login-form-container,
-.modal-img-container {
+.register-form-container
+/* .modal-img-container  */
+{
   position: relative;
   display: flex;
   flex-flow: row wrap;
   width: 100%;
 }
 
-/* .login-form-img, */
-.modal-img-container img {
-  height: 100px;
-  width: 100px;
+.login-form-container img,
+.register-form-container img
+/* .modal-img-container img  */
+{
+  height: 95px;
+  width: 95px;
 }
 
 
@@ -70,10 +90,10 @@ Form
 
 .cancel-btn {
   display: flex;
-
 }
+
 .cancel-btn{
-  background-color: rgb(197, 23, 23);
+  background-color: rgba(243, 60, 60, 0.856);
   border: none;
   border-radius: 5px;
   color: white;
@@ -124,6 +144,10 @@ Form
   padding: 5px 0;
 }
 
+.register-btn{
+  margin: 5px 0;
+
+}
 
 
 .events-btn {

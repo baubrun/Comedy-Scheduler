@@ -8,12 +8,12 @@ const mongodb = require("mongodb")
 const MongoClient = mongodb.MongoClient
 const ObjectID = mongodb.ObjectID
 const bcrypt = require("bcryptjs")
-const validator = require("./validators")
+const validateLoginForm = require("./validators").validateLoginForm
+const validateRegisterForm = require("./validators").validateRegisterForm
 const SALT_FACTOR = 10
 let dbo = undefined
-let sessions = {}
-
-
+const stripe = require("stripe")(process.env.STRIPE_SECRET)
+const uuid = require("uuid/v4")
 /*=============
  Middleware 
  ==============*/
@@ -37,21 +37,11 @@ MongoClient.connect(
 
 
 
+
 /*===============
  Helper functions 
  ================*/
 
-const setCookie = (response, user ) => {
-    const sessionId = generateId()
-    sessions[sessionId] = user
-    response.cookie("sid", sessionId)
-}
-
-const getCookie = (request) => {
-    const sessionId = request.cookies.sid
-    const user = sessions[sessionId]
-    return user ? user : false
-}
 
 const fileFilter = (req, file, cb) => {
     if (file !== undefined) {
@@ -96,9 +86,6 @@ const venueSeatingInit = venue => {
     }
 }
 
-const generateId = () => {
-    return "" + Math.floor(Math.random() * 1000000)
-}
 
 
 
@@ -111,14 +98,24 @@ const isOverlap = (start, end, result) => {
     const givenEnd = new Date(0, 0, 0, h2, m2, 0)
     const eventStart = new Date(0, 0, 0, eventSt1H, eventSt1M, 0)
     const eventEnd = new Date(0, 0, 0, eventEnd1H, eventEnd1M, 0)
-    if ((givenStart >= eventStart && givenStart <= eventEnd) ||
-        (givenStart < eventStart && givenEnd <= eventEnd) ||
-        (givenEnd <= eventEnd && givenEnd >= eventStart)
+    if ((givenStart >= eventStart && givenEnd <= eventEnd) ||
+        (givenStart < eventStart && givenEnd > eventEnd) ||
+        (givenStart < eventStart &&
+            (givenEnd > eventStart && givenEnd <= eventEnd)) ||
+        (givenStart > eventStart && givenEnd > eventEnd)
     ) {
         return true
     } else {
         return false
     }
+    // if ((givenStart >= eventStart && givenStart <= eventEnd) ||
+    //     (givenStart < eventStart && givenEnd <= eventEnd) ||
+    //     (givenEnd <= eventEnd && givenEnd > eventStart)
+    // ) {
+    //     return true
+    // } else {
+    //     return false
+    // }
 }
 
 
@@ -141,13 +138,6 @@ app.get("/events", async (req, res) => {
 })
 
 app.get("/profile", async (req, res) => {
-
-
-    // if (!getSid(req)) {
-    //     return res.json({success: false})
-    // }
-
-
 
     dbo.collection("events").find({}).toArray((err, evt) => {
         if (err) {
@@ -191,56 +181,7 @@ app.get("/getSeatsAvail", async (req, res) => {
 /* =====================
 POST 
 ========================*/
-app.post("/profile", upload.single("image"), async (req, res) => {
-    const {
-        title,
-        startDate,
-        startTime,
-        endDate,
-        endTime,
-        venue,
-        performer,
-        price,
-        hostId,
-    } = req.body
 
-    await dbo.collection("events").findOne({
-        "startDate": startDate,
-        "venue": venue,
-        "startTime": startTime
-    }, (err, result) => {
-        if (err) {
-            console.log(err)
-            return res.status(400).json({
-                success: false
-            })
-        }
-        if (result) {
-            return res.status(400).json({
-                success: false,
-                msg: "Time slot taken",
-            })
-        } else {
-            dbo.collection("events").insertOne({
-                title: title,
-                startDate: startDate,
-                startTime: startTime,
-                endDate: endDate,
-                endTime: endTime,
-                venue: venue,
-                performer: performer,
-                image: !req.file ? "" : req.file.originalname,
-                price: price,
-                hostId: hostId,
-                allDay: "false",
-                dateAdded: new Date()
-            })
-            return res.json({
-                success: true
-            })
-        }
-    })
-})
 
 app.post("/checkout", upload.none(), (req, res) => {
     const {
@@ -295,16 +236,24 @@ app.post("/deleteEvents", upload.single("image"), async (req, res) => {
 })
 
 app.post("/deleteSeating", upload.none(), async (req, res) => {
-    
-    const {startDate, venue} = JSON.parse(req.body.delSeating)
+
+    const {
+        startDate,
+        venue
+    } = JSON.parse(req.body.delSeating)
     console.log('startDate:', startDate)
     console.log('venue:', venue)
 
     await dbo.collection("seating")
         .updateOne({
-            "startDate": startDate},
-            {$unset: {[`venue.${venue}`]: {$type: "int"}} }
-        , (err, result) => {
+            "startDate": startDate
+        }, {
+            $unset: {
+                [`venue.${venue}`]: {
+                    $type: "int"
+                }
+            }
+        }, (err, result) => {
             if (err) {
                 console.log(err)
                 return res.json({
@@ -355,6 +304,9 @@ app.post("/login", upload.none(), async (req, res) => {
     const givenPassword = req.body.password
     const givenUsername = req.body.username
 
+    const errors = validateLoginForm(givenUsername, givenPassword)
+    if (errors.length > 0) return res.json(errors)
+
     await dbo.collection("user").findOne({
         username: givenUsername
     }, async (err, user) => {
@@ -365,25 +317,25 @@ app.post("/login", upload.none(), async (req, res) => {
             })
         }
         if (!user) {
-            return res.json({
-                success: false
-            })
+            return res.json(
+                [{
+                    msg: "Invalid username or password."
+                }]
+            )
         }
         try {
             if (await bcrypt.compare(givenPassword, user.password)) {
-                
-                // getCookie(req)
-
                 const hostId = user.hostId
                 return res.json({
                     success: true,
                     hostId: hostId
                 })
             } else {
-                return res.json({
-                    success: false,
-                    msg: "Invalid username or password."
-                })
+                return res.json(
+                    [{
+                        msg: "Invalid username or password."
+                    }]
+                )
             }
         } catch (err) {
             console.log(err)
@@ -403,6 +355,11 @@ app.post("/register", upload.none(), async (req, res) => {
         hostId
     } = req.body
 
+    const errors = validateRegisterForm(username, password, email, hostId)
+    if (errors.length > 0) {
+        return res.json(errors)
+    }
+
     await dbo.collection("user").findOne({
         username: username
     }, async (err, user) => {
@@ -413,10 +370,11 @@ app.post("/register", upload.none(), async (req, res) => {
             })
         }
         if (user) {
-            return res.status(404).json({
-                success: false,
-                msg: "Username already exists."
-            })
+            return res.json(
+                [{
+                    msg: "Username already exists."
+                }]
+            )
         } else {
             try {
                 const hashedPassword = await bcrypt.hash(password, SALT_FACTOR)
@@ -429,9 +387,6 @@ app.post("/register", upload.none(), async (req, res) => {
                     events: "",
                     dateAdded: new Date()
                 })
-
-                // setCookie(res, username)
-
                 return res.status(200).json({
                     success: true,
                     hostId: hostId
@@ -506,10 +461,10 @@ app.post("/slotsTaken", upload.single("image"), async (req, res) => {
         hostId,
     } = req.body
 
-    await dbo.collection("events").find({
+    await dbo.collection("events").findOne({
         "startDate": startDate,
         "venue": venue
-    }).toArray((err, result) => {
+    }, (err, result) => {
         if (err) {
             console.log(err)
             return res.status(400).json({
@@ -517,40 +472,47 @@ app.post("/slotsTaken", upload.single("image"), async (req, res) => {
             })
         }
         if (result) {
-            const eventTimes = result.map(i => {
-                return {
-                    startTime: i.startTime,
-                    endTime: i.endTime
-                }
-            })
-            const ans = []
             let overlaps = true
-            for (let i = 0; i < eventTimes.length; i++) {
-                overlaps = isOverlap(startTime, endTime, eventTimes[i])
-                ans.push('overlaps:', overlaps)
-                ans.push('eventTime:', eventTimes[i])
+            overlaps = isOverlap(
+                startTime,
+                endTime,
+                result)
 
-                if (!overlaps) {
-                    dbo.collection("events").insertOne({
-                        title: title,
-                        startDate: startDate,
-                        startTime: startTime,
-                        endDate: endDate,
-                        endTime: endTime,
-                        venue: venue,
-                        performer: performer,
-                        image: !req.file ? "" : req.file.originalname,
-                        price: price,
-                        hostId: hostId,
-                        allDay: "false",
-                        dateAdded: new Date()
-                    })
-                    // return res.json({success: true})
-                }
+            if (!overlaps) {
+                dbo.collection("events").insertOne({
+                    title: title,
+                    startDate: startDate,
+                    startTime: startTime,
+                    endDate: endDate,
+                    endTime: endTime,
+                    venue: venue,
+                    performer: performer,
+                    image: !req.file ? "" : req.file.originalname,
+                    price: price,
+                    hostId: hostId,
+                    allDay: "false",
+                    dateAdded: new Date()
+                })
+                // return res.json({success: true})
             }
-            return res.json({
-                ans: ans,
-                success: true
+            // return res.json({
+            //     ans: ans,
+            //     success: true
+            // })
+        } else {
+            dbo.collection("events").insertOne({
+                title: title,
+                startDate: startDate,
+                startTime: startTime,
+                endDate: endDate,
+                endTime: endTime,
+                venue: venue,
+                performer: performer,
+                image: !req.file ? "" : req.file.originalname,
+                price: price,
+                hostId: hostId,
+                allDay: "false",
+                dateAdded: new Date()
             })
         }
     })
@@ -633,6 +595,45 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
 })
 
 
+
+/*========================
+ Stripe 
+ ==========================*/
+
+
+
+app.post("/charge", async (req, res) => {
+
+    let error
+    let status
+
+    try {
+        const {
+            total,
+            token
+        } = req.body
+
+        const customer = await stripe.customers.create({
+            email: token.email,
+            source: token.id
+        })
+
+        const idempotency_key = uuid()
+        const charge = await stripe.charge.create({
+            amount: total * 100,
+            customer: customer.id,
+            currency: "cad",
+            receipt_email: token.email,
+            idempotency_key
+
+        })
+        console.log('charge:', charge)
+    } catch (error) {
+        console.error("Error", error)
+    }
+
+
+})
 
 
 

@@ -4,6 +4,9 @@ import { currencyFormat } from "./RenderCart";
 import { confirmCheckoutAction } from "../actions/actions";
 import { emptyCartAction } from "../actions/actions";
 import { resetCheckoutAction } from "../actions/actions";
+import StripeCheckout from "react-stripe-checkout";
+
+const PK_STRIPE = "pk_test_1jcRkbFeUYqVsCGYpNX51Ggv00oyStF042";
 
 class Checkout extends Component {
   constructor(props) {
@@ -23,7 +26,8 @@ class Checkout extends Component {
       cardName: "",
       cardNumber: "",
       exp: "",
-      cvv: ""
+      cvv: "",
+      receiptUrl: ""
     };
   }
 
@@ -37,25 +41,27 @@ class Checkout extends Component {
   filterItemsBought = () => {
     return this.props.checkout.map(i => {
       return {
-        title:  i.title,
+        title: i.title,
         venue: i.venue,
         startDate: i.startDate,
         startTime: i.startTime,
         performer: i.performer,
         price: i.price,
         qty: i.qty
-      }
-    })
-  }
+      };
+    });
+  };
 
   componentDidMount() {
-    this.setState({
-      itemsBought: this.filterItemsBought(),
-      subTotal: this.calcSubtotal(),
-      tps: this.tps(),
-      tvq: this.tvq(),
-      total: currencyFormat(this.total())
-    });
+    this.props.checkout.length > 0
+      ? this.setState({
+          itemsBought: this.filterItemsBought(),
+          subTotal: this.calcSubtotal(),
+          tps: this.tps(),
+          tvq: this.tvq(),
+          total: this.total().toFixed(2)
+        })
+      : this.props.history.push("/events");
   }
 
   dispatchConfirmCheckout = () => {
@@ -74,6 +80,15 @@ class Checkout extends Component {
     const name = event.target.name;
     const value = event.target.value;
     this.setState({ [name]: value });
+  };
+
+  handleToken = async (token, address) => {
+    const data = new FormData();
+    data.append("token", token);
+    data.append("address", address);
+    data.append("address", address);
+    await fetch("/charge", { method: "POST", body: data });
+    // console.log({ token, address });
   };
 
   handleSubmit = async event => {
@@ -106,15 +121,16 @@ class Checkout extends Component {
       cvv: "",
       itemsBought: []
     });
-    const response = await fetch("/checkout", { method: "POST", body: data });
-    const body = await response.text();
-    const parser = JSON.parse(body);
-    if (parser.success) {
-      this.dispatchConfirmCheckout();
-      this.dispatchEmptyCart();
-      this.dispatchResetCheckout();
-      this.props.history.push("/confirmation");
-    }
+
+    // const response = await fetch("/checkout", { method: "POST", body: data });
+    // const body = await response.text();
+    // const parser = JSON.parse(body);
+    // if (parser.success) {
+    //   this.dispatchConfirmCheckout();
+    //   this.dispatchEmptyCart();
+    //   this.dispatchResetCheckout();
+    //   this.props.history.push("/confirmation");
+    // }
   };
 
   tps = () => 0.05 * this.calcSubtotal().toFixed(2);
@@ -122,150 +138,64 @@ class Checkout extends Component {
   total = () => this.calcSubtotal() + this.tps() + this.tvq();
 
   render() {
-    const numTickets = this.props.checkout
-      .map(t => t.qty)
-      .reduce((acc, curr) => acc + curr);
+    const numTickets = () => {
+      return this.props.checkout.length > 0
+        ? this.props.checkout.map(t => t.qty).reduce((acc, curr) => acc + curr)
+        : this.props.history.push("/events");
+    };
 
     return (
       <>
         <div className="checkout-header">Checkout</div>
         <div className="checkout-body">
-          {!this.props.checkedOut && (
-            <>
-              <form
-                className="checkout-flex-container"
-                onSubmit={this.handleSubmit}
-              >
-                <ul className="checkout-form-container">
-                  <li>Billing Address</li>
-                  <li>
-                    <label htmlFor="firstName">First Name *</label>
-                    <input
-                      name="firstName"
-                      onChange={this.handleChange}
-                      type="text"
-                      placeholder="First Name"
-                      value={this.state.firstName}
-                    />
-                  </li>
-                  <li>
-                    <label htmlFor="lastName">Last Name *</label>
-                    <input
-                      type="text"
-                      placeholder="Last Name"
-                      name="lastName"
-                      value={this.state.lastName}
-                      onChange={this.handleChange}
-                    />
-                  </li>
-                  <li>
-                    <label htmlFor="email">Email *</label>
-                    <input
-                      // type="email"
-                      type="text"
-                      placeholder="Email"
-                      name="email"
-                      value={this.state.email}
-                      onChange={this.handleChange}
-                    />
-                  </li>
-                  <li>
-                    <label htmlFor="address" className="">
-                      Address
-                    </label>
-                    <input
-                      type="text"
-                      name="address"
-                      placeholder="Address"
-                      value={this.state.address}
-                      onChange={this.handleChange}
-                    />
-                  </li>
-                  <li>
-                    <label htmlFor="city">City</label>
-                    <input
-                      type="text"
-                      name="city"
-                      placeholder="City"
-                      value={this.state.city}
-                      onChange={this.handleChange}
-                    />
-                  </li>
-                </ul>
-                <ul className="checkout-form-container">
-                  <li>Payment Details</li>
-                  <li>
-                    <div className="cc">Accepted Cards</div>
-                    <div>
-                      <img src="amex-cc.png" alt="" />
-                      <img src="disc-cc.png" alt="" />
-                      <img src="mc-cc.png" alt="" />
-                      <img src="visa-cc.png" alt="" />
-                    </div>
-                  </li>
-                  <li>
-                    <label htmlFor="cardName">Name on Card</label>
-                    <input
-                      type="text"
-                      name="cardName"
-                      placeholder="Name on card"
-                      value={this.state.cardName}
-                      onChange={this.handleChange}
-                    />
-                  </li>
-                  <li>
-                    <label htmlFor="cardNumber">Credit card number</label>
-                    <input
-                      type="text"
-                      name="cardNumber"
-                      placeholder="1111-2222-3333-4444"
-                      value={this.state.cardNumber}
-                      onChange={this.handleChange}
-                    />
-                  </li>
-                  <li className="exp-cvv">
-                    <label htmlFor="exp">Exp Year</label>
-                    <input
-                      type="text"
-                      name="exp"
-                      placeholder="Exp"
-                      value={this.state.exp}
-                      onChange={this.handleChange}
-                    />
-                    <label htmlFor="cvv">CVV</label>
-                    <input
-                      type="text"
-                      name="cvv"
-                      placeholder="CVV"
-                      value={this.state.cvv}
-                      onChange={this.handleChange}
-                    />
-                  </li>
-                  <li>
-                    <button
-                      className="process-btn"
-                      onClick={this.handleSubmit}
-                      type="submit"
-                    >
-                      Process Payment
-                    </button>
-                  </li>
-                </ul>
-                <div></div>
-              </form>
-              <div className="total-checkout">
-                <h2>Summary</h2>
-                {`${numTickets} tickets for: `}
-                {this.state.itemsBought.map((item, idx) => (
-                  <ul className="items-summary" key={idx}>
-                    <li>{item.title}</li>
+          {this.props.checkout === []
+            ? this.props.history.push("/events")
+            : !this.props.checkedOut && (
+                <>
+                  <ul className="checkout-flex-container">
+                    <li>Cards Accepted</li>
+                    <li className="cc-icons">
+                      <li>
+                        <img src="ax-64.png" alt="" />
+                      </li>
+                      <li>
+                        <img src="dc-64.png" alt="" />
+                      </li>
+                      <li>
+                        <img src="mc-64.png" alt="" />
+                      </li>
+                      <li>
+                        <img src="vs-64.png" alt="" />
+                      </li>
+                      <li className="debit-card-logo">
+                        <img id="debit-card" src="db-48.png" alt="" />
+                      </li>
+                    </li>
+                    <div />
+                    <li className="pay-btn">
+                      <StripeCheckout
+                        amount={this.state.total * 100}
+                        currency="CAD"
+                        stripeKey={PK_STRIPE}
+                        token={this.handleToken}
+                        country="CA"
+                      />
+                    </li>
                   </ul>
-                ))}
-                {`Total: ${this.state.total}`}
-              </div>
-            </>
-          )
-          }
+
+                  <div className="total-checkout">
+                    <h2>Summary</h2>
+                    {`
+                    ${numTickets()} ticket${numTickets() > 1 ? "s" :""} for:`}
+                    {this.state.itemsBought.map((item, idx) => (
+                      <ul className="items-summary" key={idx}>
+                        <li>{item.title}</li>
+                      </ul>
+                    ))}
+                    <h2>{`Total: $${this.state.total}`}</h2>
+                  </div>
+                </>
+              )}
         </div>
       </>
     );

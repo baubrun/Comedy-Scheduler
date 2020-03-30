@@ -12,6 +12,8 @@ import Confirmation from "./components/Confirmation"
 import RenderCart from "./components/RenderCart"
 import { connect } from "react-redux";
 
+
+
 class App extends Component {
 
   render() {
@@ -27,11 +29,9 @@ class App extends Component {
         <Route exact={true} path="/cart" component={RenderCart}/>
         <Route exact={true} path="/checkout" component={Checkout}/>
         <Route exact={true} path="/confirmation" component={Confirmation}/>
-        
         <Route exact={true} path="/profile">
           {!this.props.loggedIn ? <Redirect to="/login" /> : <Profile/>}
         </Route >
-
         </BrowserRouter>
       </div>
     )
