@@ -46,7 +46,6 @@ class Register extends Component {
     const response = await fetch("/register", { method: "POST", body: data });
     const body = await response.text();
     const parser = JSON.parse(body);
-    console.log('parser :', parser);
     if (parser.success) {
       this.dispatchLogin(parser.hostId)
       this.props.history.push("/profile");

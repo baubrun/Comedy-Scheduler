@@ -45,7 +45,6 @@ class Login extends Component {
       return;
     }
     if (Array.isArray(parser)) {
-      console.log(parser);
       this.setState({ errors: parser });
       return;
     }

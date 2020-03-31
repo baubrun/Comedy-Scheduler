@@ -88,7 +88,6 @@ class Checkout extends Component {
     data.append("address", address);
     data.append("address", address);
     await fetch("/charge", { method: "POST", body: data });
-    // console.log({ token, address });
   };
 
   handleSubmit = async event => {

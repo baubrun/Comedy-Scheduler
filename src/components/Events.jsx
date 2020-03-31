@@ -26,22 +26,22 @@ export const Event = props => {
   } = props.events;
 
   return (
-    <div>
+    <>
       {
-        <div className="event">
-          <div className="event-title-info">
+        <ul className="event">
+          <li >
             <Link to={`/event/${title}`}>{title}</Link>
             <img id="performer-img" src={`../../${image}`} alt="" />
-          </div>
-          <div className="event-title-info ">{performer}</div>
+          </li>
+          <li >{performer}</li>
 
-          <div className="event-title-info">
+          <li >
             {moment(`${startDate}`).format("DD-MM-YYYY")}
             <br />
             <br />
             {startTime}
-          </div>
-          <div className="event-title-info ">
+          </li>
+          <li >
             Seats Available:{" "}
             {seatingLeft(startDate, props.seatsAvail, props.venue) > 0 ? (
               <img
@@ -52,10 +52,10 @@ export const Event = props => {
             ) : (
               <img id="seats-avail-img" src="red-x-red-wht-15px.png" alt="" />
             )}{" "}
-          </div>
-        </div>
+          </li>
+        </ul>
       }
-    </div>
+    </>
   );
 };
 
@@ -183,7 +183,7 @@ class Events extends Component {
           <div className="venue-select">
             <h2>{venueFormatted ? venueFormatted : "CHOOSE A VENUE"}</h2>
             <select onChange={this.handleVenueChange} name="venue">
-              <option value="">CHOOSE A VENUE</option>
+              <option value="" default>CHOOSE A VENUE</option>
               <option value="LE_FOU_FOU">LE FOU FOU</option>
               <option value="JOKES_BLAGUES">JOKES BLAGUES</option>
               <option value="RIRE_NOW">RIRE NOW</option>

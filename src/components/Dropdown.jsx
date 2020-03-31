@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Dropdown = props => {
   return (
     <div className="dropdown">
-      <img id="dropdown-img" src="menu-grid.png" alt="" />
+      <img  src="menu-grid-50.png" alt="" />
       <div className="dropdown-content">
         <ul>
           <Link to="/profile">

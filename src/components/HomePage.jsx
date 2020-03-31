@@ -5,7 +5,7 @@ class HomePage extends Component {
 
   render() {
     return (
-      <>
+      <div className="home">
         <div className="home-header">
           <div className="venues">
             <div>Le Fou Fou</div>
@@ -24,7 +24,7 @@ class HomePage extends Component {
             </Link>
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }

@@ -5,10 +5,62 @@ Mobile Styles: 0 to 480px
 
 @media only screen and (max-width: 480px) {
 
+    *{
+        font-size: 1.2em;
+    }
 
 
+     .dropdown img {
+        width: 50px;
+        height: 50px;
+      
+      } 
+      
+
+    .event{
+        display: block;
+       
+    }
+
+    .event li{
+        width: 100%;
+    }
+
+    .event > li a {
+        text-align: center;
+        width: 100%;
+    }
+
+    .event > li a:hover {
+        color: white;   
+    }
+
+    #events-history-title{
+        margin: 0;
+    }
+
+    #performer-img{
+        height: 150px;
+        width: 150px;
+    }
 
 
+    .profile-buttons{
+        display: block;
+    }
 
+    .profile-header{
+        margin: 0;
+        position: relative;
+    }
+
+    .profile-header h1{
+        margin-bottom: 0;
+    }
+
+
+    .venue-select select {
+        padding: 10px;
+    }
 
 }

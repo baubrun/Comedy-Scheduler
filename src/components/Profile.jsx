@@ -59,7 +59,7 @@ class Profile extends Component {
   };
 
 
-  getStartDateVenue2Delete = () => {
+  seatingToDelete = () => {
     const toDelete = this.state.userEvents.find(
       event => event._id === this.state.selectedOption
     );
@@ -81,7 +81,8 @@ class Profile extends Component {
         data.append("id", this.state.selectedOption);
         
         const data2 = new FormData()
-        data2.append("delSeating", JSON.stringify(this.getStartDateVenue2Delete()))
+        data2.append("startDate", this.seatingToDelete().startDate)
+        data2.append("venue", this.seatingToDelete().venue)
         
         await Promise.all([
           fetch("/deleteEvents", {method: "POST", body: data}),
@@ -105,7 +106,6 @@ class Profile extends Component {
     const event = this.state.userEvents.find(
       evt => evt._id === this.state.selectedOption
     );
-    console.log("eventFound :", event);
     return event;
   };
 

@@ -87,8 +87,6 @@ const venueSeatingInit = venue => {
 }
 
 
-
-
 const isOverlap = (start, end, result) => {
     const [h1, m1] = start.split(":")
     const [h2, m2] = end.split(":")
@@ -100,25 +98,26 @@ const isOverlap = (start, end, result) => {
     const eventEnd = new Date(0, 0, 0, eventEnd1H, eventEnd1M, 0)
     if ((givenStart >= eventStart && givenEnd <= eventEnd) ||
         (givenStart < eventStart && givenEnd > eventEnd) ||
-        (givenStart < eventStart &&
-            (givenEnd > eventStart && givenEnd <= eventEnd)) ||
-        (givenStart > eventStart && givenEnd > eventEnd)
-    ) {
+        (givenStart < eventStart && givenEnd <= eventEnd) ||
+        ((givenStart > eventStart && givenStart < eventEnd) &&
+            (givenEnd > eventEnd)
+        )) {
         return true
     } else {
         return false
     }
-    // if ((givenStart >= eventStart && givenStart <= eventEnd) ||
-    //     (givenStart < eventStart && givenEnd <= eventEnd) ||
-    //     (givenEnd <= eventEnd && givenEnd > eventStart)
-    // ) {
-    //     return true
-    // } else {
-    //     return false
-    // }
 }
 
 
+
+const deleteEmptySeating = async startDate => {
+    await dbo.collection("seating").findOneAndDelete({
+        "startDate": startDate,
+        "venue": {
+            $eq: {}
+        }
+    })
+}
 /* ==================
 GET 
 ====================*/
@@ -240,9 +239,7 @@ app.post("/deleteSeating", upload.none(), async (req, res) => {
     const {
         startDate,
         venue
-    } = JSON.parse(req.body.delSeating)
-    console.log('startDate:', startDate)
-    console.log('venue:', venue)
+    } = req.body
 
     await dbo.collection("seating")
         .updateOne({
@@ -435,7 +432,7 @@ app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
                 }
             }, {
                 upsert: true
-            })
+            }, deleteEmptySeating(startDate))
             return res.json({
                 success: true
             })

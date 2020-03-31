@@ -22,7 +22,7 @@ const EventsHistory = props => {
             seatingLeft(event.startDate, props.seatsAvail, event.venue)
             }
             </li>
-            <li>Price: {event.price} $</li>
+            <li>Price: {event.price} </li>
             <li>
               <img id="performer-img" src={`../../${event.image}`} alt="" />
             </li>
