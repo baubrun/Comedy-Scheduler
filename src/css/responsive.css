@@ -5,24 +5,24 @@ Mobile Styles: 0 to 480px
 
 @media only screen and (max-width: 480px) {
 
-    *{
+    * {
         font-size: 1.2em;
     }
-
 
      .dropdown img {
         width: 50px;
         height: 50px;
-      
       } 
-      
 
-    .event{
+    .event {
         display: block;
-       
     }
 
-    .event li{
+    .events-header {
+        width: 100%;
+    }
+
+    .event li {
         width: 100%;
     }
 
@@ -35,29 +35,35 @@ Mobile Styles: 0 to 480px
         color: white;   
     }
 
-    #events-history-title{
+    #events-history-title {
         margin: 0;
     }
 
-    #performer-img{
+    .home-body img {
+        background-size: contain;
+        /* background-position: center center; */
+        height: 100vh;
+        /* width: 100vw; */
+    }
+
+
+    #performer-img {
         height: 150px;
         width: 150px;
     }
 
-
-    .profile-buttons{
+    .profile-buttons {
         display: block;
     }
 
-    .profile-header{
+    .profile-header {
         margin: 0;
         position: relative;
     }
 
-    .profile-header h1{
+    .profile-header h1 {
         margin-bottom: 0;
     }
-
 
     .venue-select select {
         padding: 10px;

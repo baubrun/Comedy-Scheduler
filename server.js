@@ -14,6 +14,9 @@ const SALT_FACTOR = 10
 let dbo = undefined
 const stripe = require("stripe")(process.env.STRIPE_SECRET)
 const uuid = require("uuid/v4")
+
+
+
 /*=============
  Middleware 
  ==============*/
@@ -149,7 +152,6 @@ app.get("/profile", async (req, res) => {
     })
 })
 
-
 app.get("/confirmation", async (req, res) => {
     dbo.collection("purchases").find({}).toArray((err, evt) => {
         if (err) {
@@ -161,8 +163,6 @@ app.get("/confirmation", async (req, res) => {
         return res.json(evt)
     })
 })
-
-
 
 app.get("/getSeatsAvail", async (req, res) => {
     dbo.collection("seating").find({}).toArray((err, evt) => {
@@ -265,38 +265,6 @@ app.post("/deleteSeating", upload.none(), async (req, res) => {
         })
 })
 
-app.post("/getVenueAvail", upload.none(), async (req, res) => {
-    const {
-        startDate,
-        venue
-    } = req.body
-
-    await dbo.collection("seating").findOne({
-        "startDate": startDate,
-        [`venue.${venue}`]: {
-            $exists: 1
-        }
-    }, (err, result) => {
-        if (err) {
-            console.log(err)
-            return res.status(400).json({
-                success: false
-            })
-        }
-        if (result) {
-            return res.status(200).json({
-                success: true,
-                result: result
-            })
-        } else {
-            return res.status(400).json({
-                success: false,
-                msg: "Not found."
-            })
-        }
-    })
-})
-
 app.post("/login", upload.none(), async (req, res) => {
     const givenPassword = req.body.password
     const givenUsername = req.body.username
@@ -342,7 +310,6 @@ app.post("/login", upload.none(), async (req, res) => {
         }
     })
 })
-
 
 app.post("/register", upload.none(), async (req, res) => {
     const {
@@ -397,7 +364,6 @@ app.post("/register", upload.none(), async (req, res) => {
         }
     })
 })
-
 
 app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
     const {
@@ -546,8 +512,6 @@ app.post("/updateSeatsAvail", upload.none(), async (req, res) => {
         })
     }
 })
-
-
 
 app.post("/updateEvent", upload.single("image"), async (req, res) => {
     const {

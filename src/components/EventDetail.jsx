@@ -21,35 +21,44 @@ const EventDetail = props => {
   } = props.event;
 
   return (
-        <div>
-          <div className="event-detail-header">
-            <Link to="/events">RETURN TO EVENTS</Link>
-          </div>
-          <div className="event-detail-body">
-            <ul className="event-detail" key={_id}>
-              <li>
-                <Link to="/cart">
-                  <button className="reserve-btn" onClick={dispatchAddToCart}>
-                    PURCHASE
-                  </button>
-                </Link>
-              </li>
-              <li>Title: {title}</li>
-              <li> Date: {moment(`${startDate}`).format("DD-MM-YYYY")}</li>
-              <li>Time: {startTime}</li>
-              <li>Venue: {venue.split("_").join(" ")}</li>
-              <li>Performer: {performer}</li>
-              <li>Price: {price} $</li>
-              <li>
-                <img
-                  className="performer-img-detail"
-                  src={`../../${image}`}
-                  alt=""
-                />
-              </li>
-            </ul>
-          </div>
-        </div>
+    <div>
+      <div className="event-detail-header">
+        <Link to="/events">RETURN TO EVENTS</Link>
+      </div>
+      <div className="event-detail-body">
+        <ul className="event-detail" key={_id}>
+          <li>
+            <img
+              className="performer-img-detail"
+              src={`../../${image}`}
+              alt=""
+            />
+          </li>
+
+          <li>
+            <li>
+              <Link to="/cart">
+                <button className="reserve-btn" onClick={dispatchAddToCart}>
+                  PURCHASE
+                </button>
+              </Link>
+            </li>
+
+            <li className="event-detail-info">Title: {title}</li>
+            <li className="event-detail-info">
+              {" "}
+              Date: {moment(`${startDate}`).format("DD-MM-YYYY")}
+            </li>
+            <li className="event-detail-info">Time: {startTime}</li>
+            <li className="event-detail-info">
+              Venue: {venue.split("_").join(" ")}
+            </li>
+            <li className="event-detail-info">Performer: {performer}</li>
+            <li className="event-detail-info">Price: {price} $</li>
+          </li>
+        </ul>
+      </div>
+    </div>
   );
 };
 

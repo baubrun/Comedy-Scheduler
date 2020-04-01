@@ -17,31 +17,24 @@ export const seatingLeft = (eventDate, seats, venue) => {
 };
 
 export const Event = props => {
-  const {
-    title,
-    startDate,
-    performer,
-    startTime,
-    image
-  } = props.events;
+  const { title, startDate, performer, startTime, image } = props.events;
 
   return (
     <>
       {
         <ul className="event">
           <li >
-            <Link to={`/event/${title}`}>{title}</Link>
+            <Link className="event-title" to={`/event/${title}`}>{title}</Link>
+          </li>
+          <li>
             <img id="performer-img" src={`../../${image}`} alt="" />
           </li>
-          <li >{performer}</li>
-
-          <li >
+          <li>{performer}</li>
+          <li>
             {moment(`${startDate}`).format("DD-MM-YYYY")}
-            <br />
-            <br />
-            {startTime}
+            <li>{startTime}</li>
           </li>
-          <li >
+          <li>
             Seats Available:{" "}
             {seatingLeft(startDate, props.seatsAvail, props.venue) > 0 ? (
               <img
@@ -73,8 +66,8 @@ class Events extends Component {
   }
 
   componentDidMount() {
-    this.fetchEvents()
-    this.fetchSeatsAvail()
+    this.fetchEvents();
+    this.fetchSeatsAvail();
     this.eventsByVenue();
   }
 
@@ -97,7 +90,7 @@ class Events extends Component {
     const body = await response.text();
     const parsed = JSON.parse(body);
     // if (parsed) {
-      this.dispatchGetEvents(parsed);
+    this.dispatchGetEvents(parsed);
     // }
   };
 
@@ -106,7 +99,7 @@ class Events extends Component {
     const body = await response.text();
     const parsed = JSON.parse(body);
     // if (parsed) {
-      this.dispatchGetSeatsAvail(parsed);
+    this.dispatchGetSeatsAvail(parsed);
     // }
   };
 
@@ -129,7 +122,6 @@ class Events extends Component {
   handleVenueChange = event => {
     this.setState({ venue: event.target.value });
   };
-
 
   toggleCalendarView = () => {
     this.setState({
@@ -174,7 +166,7 @@ class Events extends Component {
   };
 
   render() {
-    const venueFormatted = this.state.venue.split("_").join(" ")
+    const venueFormatted = this.state.venue.split("_").join(" ");
 
     return (
       <>
@@ -183,7 +175,9 @@ class Events extends Component {
           <div className="venue-select">
             <h2>{venueFormatted ? venueFormatted : "CHOOSE A VENUE"}</h2>
             <select onChange={this.handleVenueChange} name="venue">
-              <option value="" default>CHOOSE A VENUE</option>
+              <option value="" default>
+                CHOOSE A VENUE
+              </option>
               <option value="LE_FOU_FOU">LE FOU FOU</option>
               <option value="JOKES_BLAGUES">JOKES BLAGUES</option>
               <option value="RIRE_NOW">RIRE NOW</option>
@@ -204,9 +198,7 @@ class Events extends Component {
             />
           </div>
         </div>
-        <div className="events-body">
-          {this.showEvents()}
-        </div>
+        <div className="events-body">{this.showEvents()}</div>
       </>
     );
   }
@@ -227,4 +219,3 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Events);
-
