@@ -14,9 +14,10 @@ const SALT_FACTOR = 10
 let dbo = undefined
 const stripe = require("stripe")(process.env.STRIPE_SECRET)
 const uuid = require("uuid/v4")
-
-
-
+const sharp = require("sharp")
+const fs = require('fs')
+let imageRenamed = true
+const glob = require("glob")
 /*=============
  Middleware 
  ==============*/
@@ -47,11 +48,16 @@ MongoClient.connect(
 
 
 const fileFilter = (req, file, cb) => {
-    if (file !== undefined) {
+    if (file.mimetype.startsWith("image")) {
         cb(null, true)
     } else {
         cb(null, false)
     }
+}
+
+const renameImg = file => {
+    const sp = file.split(".")
+    return sp.join("-chUpload-" + Date.now() + ".")
 }
 
 const storage = multer.diskStorage({
@@ -121,6 +127,17 @@ const deleteEmptySeating = async startDate => {
         }
     })
 }
+
+const isImageRenamed = () => {
+    if (imageRenamed){
+        imageRenamed = false
+    }
+    else {
+        imageRenamed = true
+    }
+
+}
+
 /* ==================
 GET 
 ====================*/
@@ -216,11 +233,10 @@ app.post("/checkout", upload.none(), (req, res) => {
     })
 })
 
-app.post("/deleteEvents", upload.single("image"), async (req, res) => {
-    const id = req.body.id
+app.post("/deleteEvents", upload.none(), async (req, res) => {
     await dbo.collection("events")
         .findOneAndDelete({
-            _id: ObjectID(id)
+            _id: ObjectID(req.body.id)
         }, (err, r) => {
             if (err) {
                 console.log(err)
@@ -229,6 +245,12 @@ app.post("/deleteEvents", upload.single("image"), async (req, res) => {
                 })
             }
         })
+    fs.unlink(`./uploads/${req.body.image}`, err => {
+        if (err) {
+            console.log(err)
+        }
+    })
+
     return res.json({
         success: true
     })
@@ -514,6 +536,19 @@ app.post("/updateSeatsAvail", upload.none(), async (req, res) => {
 })
 
 app.post("/updateEvent", upload.single("image"), async (req, res) => {
+    let img;
+    isImageRenamed()
+    if (req.file !== undefined) {
+        img = renameImg(req.file.originalname)
+
+        sharp(req.file.path)
+            .resize(450, 450)
+            .toFile(`./uploads/${img}`, (err) => {
+                console.log("err in sharp:", err)
+            })
+            isImageRenamed()
+        }
+
     const {
         title,
         startDate,
@@ -525,6 +560,7 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
         price,
         id
     } = req.body
+
 
     await dbo.collection("events").updateOne({
             _id: ObjectID(id)
@@ -538,7 +574,9 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
                 venue: venue,
                 performer: performer,
                 price: price,
-                image: !req.file ? "" : req.file.originalname,
+                // image: !req.file ? "" : req.file.originalname,
+                // image: !req.file ? "" : renameImg(req.file.originalname),
+                image: !req.file ? "" : img,
             }
         },
         (err) => {
@@ -550,6 +588,8 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
             }
         }
     )
+
+
     return res.status(200).json({
         success: true
     })

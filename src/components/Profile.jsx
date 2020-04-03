@@ -59,13 +59,14 @@ class Profile extends Component {
   };
 
 
-  seatingToDelete = () => {
-    const toDelete = this.state.userEvents.find(
+  toDelete = () => {
+    const found = this.state.userEvents.find(
       event => event._id === this.state.selectedOption
     );
     return {
-      startDate: toDelete.startDate,
-      venue: toDelete.venue
+      startDate: found.startDate,
+      venue: found.venue,
+      image: found.image
     };
   }
 
@@ -77,16 +78,17 @@ class Profile extends Component {
       const confirm = window.confirm("Delete event(s) ?");
       if (confirm) {
 
-        const data = new FormData();
-        data.append("id", this.state.selectedOption);
-        
-        const data2 = new FormData()
-        data2.append("startDate", this.seatingToDelete().startDate)
-        data2.append("venue", this.seatingToDelete().venue)
+        const dataEvents = new FormData();
+        dataEvents.append("id", this.state.selectedOption);
+        dataEvents.append("image", this.toDelete().image)
+
+        const dataSeating = new FormData()
+        dataSeating.append("startDate", this.toDelete().startDate)
+        dataSeating.append("venue", this.toDelete().venue)
         
         await Promise.all([
-          fetch("/deleteEvents", {method: "POST", body: data}),
-          fetch("/deleteSeating", {method: "POST", body: data2})
+          fetch("/deleteEvents", {method: "POST", body: dataEvents}),
+          fetch("/deleteSeating", {method: "POST", body: dataSeating})
         ])
           this.fetchEvents();
       }

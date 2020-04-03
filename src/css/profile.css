@@ -41,7 +41,7 @@
     background-color: rgba(2, 2, 2, 1);
     border-bottom: 1px solid white;
     color: white;
-    margin-top: 90px;
+    /* margin-top: 90px; */
     padding: 5px 0;
     text-align: center;
     width: 100%;
@@ -70,9 +70,9 @@
 .profile-header {
     display: flex;
     flex-flow: row wrap;
-    position: fixed;
+    /* position: fixed; */
     width: 100%;
-    margin-top: -90px;
+    /* margin-top: -90px; */
     background-color: white;
 }
 

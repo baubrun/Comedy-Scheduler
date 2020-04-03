@@ -28,6 +28,7 @@ export const Event = props => {
           </li>
           <li>
             <img id="performer-img" src={`../../${image}`} alt="" />
+            {/* <img id="performer-img" src={`../../public/${image}`} alt="" /> */}
           </li>
           <li>{performer}</li>
           <li>
