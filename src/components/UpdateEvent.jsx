@@ -20,6 +20,7 @@ class UpdateEvent extends Component {
   }
 
   componentDidMount() {
+    console.log("update mount");
     const {
       title,
       startDate,
@@ -74,10 +75,15 @@ class UpdateEvent extends Component {
       price: ""
     });
 
+    const delDup = new FormData()
+    delDup.append("delDup", true)
+
     await Promise.all([
       fetch("/setVenueSeating", { method: "POST", body: data }),
-      fetch("/updateEvent", { method: "POST", body: data })
+      fetch("/updateEvent", { method: "POST", body: data }),
     ]);
+      fetch("/delOriginalImg")
+
     this.props.fetchEvents()
   };
 

@@ -4,6 +4,10 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { connect } from "react-redux";
 import "moment/locale/en-gb";
+import { getEventsAction, getSeatsAvailAction } from "../actions/actions";
+import { loadingAction, loadedAction } from "../actions/actions";
+
+
 
 const allViews = Object.keys(Views).map(k => Views[k]);
 const localizer = momentLocalizer(moment);
@@ -119,6 +123,11 @@ class CalendarView extends Component {
     });
   };
 
+  dispatchLoading = () => {
+    this.props.loadData()
+  }
+
+
   storeCalendarEvent = async () => {
     const data = new FormData();
     data.append("title", this.state.title);
@@ -132,7 +141,7 @@ class CalendarView extends Component {
     await Promise.all([
       fetch("/slotsTaken", { method: "POST", body: data }),
       fetch("/setVenueSeating", { method: "POST", body: data })
-    ]).catch(err => console.log(err));
+    ]).catch( err => console.log(err));
   };
 
   handleSelect = ({ start, end }) => {
@@ -146,8 +155,12 @@ class CalendarView extends Component {
       });
       this.formatAddedEvents(start, end, title);
       this.storeCalendarEvent();
+      // this.dispatchLoading()
     }
   };
+
+
+
 
   render() {
     return (
@@ -181,5 +194,16 @@ const mapStateToProps = state => {
     hostId: state.auth.hostId
   };
 };
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     getEvents: events => dispatch(getEventsAction(events)),
+//     getSeatsAvail: seats => dispatch(getSeatsAvailAction(seats)),
+//     loadData: () => dispatch(loadingAction())
+//   };
+// };
+
+// export default connect(mapStateToProps, mapDispatchToProps)(CalendarView);
+
 
 export default connect(mapStateToProps)(CalendarView);

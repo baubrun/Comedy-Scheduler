@@ -1,57 +1,16 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getEventsAction, getSeatsAvailAction } from "../actions/actions";
 import CalendarView from "./CalendarView";
-import moment from "moment";
+import Event from "./Event"
 
-export const comp = (a, b) => {
+export const compareDates = (a, b) => {
   let dateA = new Date(a.startDate);
   let dateB = new Date(b.startDate);
   return dateA - dateB;
 };
 
-export const seatingLeft = (eventDate, seats, venue) => {
-  const seat = seats.find(i => i.startDate === eventDate);
-  return seat.venue[venue];
-};
 
-export const Event = props => {
-  const { title, startDate, performer, startTime, image } = props.events;
-
-  return (
-    <>
-      {
-        <ul className="event">
-          <li >
-            <Link className="event-title" to={`/event/${title}`}>{title}</Link>
-          </li>
-          <li>
-            <img id="performer-img" src={`../../${image}`} alt="" />
-            {/* <img id="performer-img" src={`../../public/${image}`} alt="" /> */}
-          </li>
-          <li>{performer}</li>
-          <li>
-            {moment(`${startDate}`).format("DD-MM-YYYY")}
-            <li>{startTime}</li>
-          </li>
-          <li>
-            Seats Available:{" "}
-            {seatingLeft(startDate, props.seatsAvail, props.venue) > 0 ? (
-              <img
-                id="seats-avail-img"
-                src="green-check-grn-wht-15px.png"
-                alt=""
-              />
-            ) : (
-              <img id="seats-avail-img" src="red-x-red-wht-15px.png" alt="" />
-            )}{" "}
-          </li>
-        </ul>
-      }
-    </>
-  );
-};
 
 class Events extends Component {
   constructor(props) {
@@ -68,7 +27,10 @@ class Events extends Component {
 
   componentDidMount() {
     this.fetchEvents();
+    console.log("fetchEvents from /Events");
     this.fetchSeatsAvail();
+    console.log("fetchSeatsAvail from /Events");
+
     this.eventsByVenue();
   }
 
@@ -108,13 +70,13 @@ class Events extends Component {
     const events = this.props.events.filter(
       event => event.venue.indexOf(this.state.venue) !== -1
     );
-    const eventsSorted = events.sort(comp);
+    const eventsSorted = events.sort(compareDates);
     this.setState({ events: eventsSorted });
   };
 
-  seatsAvail = () => {
-    this.setState({ seatsAvail: this.props.seatsAvail });
-  };
+  // seatsAvail = () => {
+  //   this.setState({ seatsAvail: this.props.seatsAvail });
+  // };
 
   handleSearchInput = event => {
     this.setState({ searchInput: event.target.value });
@@ -209,6 +171,7 @@ const mapStateToProps = state => {
   return {
     events: state.events,
     seatsAvail: state.seatsAvail.venue
+    // seatsAvail: state.seatsAvail
   };
 };
 

@@ -4,7 +4,10 @@ import EventsHistory from "./EventsHistory";
 import { getEventsAction, getSeatsAvailAction } from "../actions/actions";
 import AddEvent from "./AddEvent";
 import UpdateEvent from "./UpdateEvent";
-import { comp } from "./Events";
+import { compareDates } from "./Events";
+// import Loader from "react-loader-spinner";
+// import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import { loadingAction, loadedAction } from "../actions/actions";
 
 class Profile extends Component {
   constructor(props) {
@@ -16,13 +19,23 @@ class Profile extends Component {
       showUpdateEvent: false,
       selectedEvent: [],
       selectedOption: "",
-      userEvents: []
+      userEvents: [],
     };
   }
 
-  componentDidMount() {
-    this.fetchSeatsAvail();
-    this.fetchEvents();
+
+  dispatchLoaded = () => {
+    this.props.loadedData();
+  };
+
+  dispatchLoading = () => {
+    this.props.loadingData();
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.seatsAvail !== this.props.seatsAvail) {
+      this.fetchData();
+    }
   }
 
   fetchEvents = async () => {
@@ -32,13 +45,6 @@ class Profile extends Component {
     if (Array.isArray(parsed)) {
       this.dispatchGetEvents(parsed);
     }
-    this.setState({
-      showHistory: true,
-      showAddEvent: false,
-      showUpdateEvent: false,
-      selectedOption: "",
-      userEvents: this.getHostEvents()
-    });
   };
 
   fetchSeatsAvail = async () => {
@@ -50,25 +56,40 @@ class Profile extends Component {
     }
   };
 
-  dispatchGetEvents = events => {
+
+  fetchData = async () => {
+    await Promise.all([
+      this.fetchEvents(),
+      this.fetchSeatsAvail()
+    ]).catch(err => console.log(err))
+      this.setState({
+      userEvents: this.getHostEvents(),
+      showHistory: true,
+      showAddEvent: false,
+      showUpdateEvent: false,
+      selectedOption: "",
+    });
+
+  }
+
+  dispatchGetEvents = (events) => {
     this.props.getEvents(events);
   };
 
-  dispatchGetSeatsAvail = seats => {
+  dispatchGetSeatsAvail = (seats) => {
     this.props.getSeatsAvail(seats);
   };
 
-
   toDelete = () => {
     const found = this.state.userEvents.find(
-      event => event._id === this.state.selectedOption
+      (event) => event._id === this.state.selectedOption
     );
     return {
       startDate: found.startDate,
       venue: found.venue,
-      image: found.image
+      image: found.image,
     };
-  }
+  };
 
   deleteEvent = async () => {
     if (this.state.selectedOption === "") {
@@ -77,43 +98,42 @@ class Profile extends Component {
     } else {
       const confirm = window.confirm("Delete event(s) ?");
       if (confirm) {
-
         const dataEvents = new FormData();
         dataEvents.append("id", this.state.selectedOption);
-        dataEvents.append("image", this.toDelete().image)
+        dataEvents.append("image", this.toDelete().image);
 
-        const dataSeating = new FormData()
-        dataSeating.append("startDate", this.toDelete().startDate)
-        dataSeating.append("venue", this.toDelete().venue)
-        
+        const dataSeating = new FormData();
+        dataSeating.append("startDate", this.toDelete().startDate);
+        dataSeating.append("venue", this.toDelete().venue);
+
         await Promise.all([
-          fetch("/deleteEvents", {method: "POST", body: dataEvents}),
-          fetch("/deleteSeating", {method: "POST", body: dataSeating})
-        ])
-          this.fetchEvents();
+          fetch("/deleteEvents", { method: "POST", body: dataEvents }),
+          fetch("/deleteSeating", { method: "POST", body: dataSeating }),
+        ]);
+        this.fetchEvents();
       }
     }
-  }
+  };
 
   getHostEvents = () => {
     const events = this.props.events.filter(
-      event =>
+      (event) =>
         event.hostId.toLowerCase().indexOf(this.props.hostId.toLowerCase()) !==
         -1
     );
-    return events.sort(comp);
+    return events.sort(compareDates);
   };
 
   getSelectedEvent = () => {
     const event = this.state.userEvents.find(
-      evt => evt._id === this.state.selectedOption
+      (evt) => evt._id === this.state.selectedOption
     );
     return event;
   };
 
-  handleOptionChange = event => {
+  handleOptionChange = (event) => {
     this.setState({
-      selectedOption: event.target.value
+      selectedOption: event.target.value,
     });
   };
 
@@ -122,7 +142,7 @@ class Profile extends Component {
       showHistory: false,
       showAddEvent: true,
       showUpdateEvent: false,
-      userEvents: this.getHostEvents()
+      userEvents: this.getHostEvents(),
     });
   };
 
@@ -135,7 +155,7 @@ class Profile extends Component {
         selectedEvent: this.getSelectedEvent(),
         showHistory: false,
         showAddEvent: false,
-        showUpdateEvent: true
+        showUpdateEvent: true,
       });
     }
   };
@@ -147,8 +167,8 @@ class Profile extends Component {
           <h1>PROFILE</h1>
           <ul className="profile-buttons">
             <li>
-              <div id="events-history-btn" onClick={this.fetchEvents}>
-               Show Events History
+              <div id="events-history-btn" onClick={this.fetchData}>
+                Show Events History
               </div>
             </li>
             <li>
@@ -168,46 +188,63 @@ class Profile extends Component {
             </li>
           </ul>
         </div>
-        <div className="profile-body">
-          {this.state.showHistory && (
-            <EventsHistory
-              userEvents={this.state.userEvents}
-              hostId={this.props.hostId}
-              handleOptionChange={this.handleOptionChange}
-              selectedOption={this.state.selectedOption}
-              seatsAvail={this.props.seatsAvail}
-            />
-          )}
-          {this.state.showAddEvent && (
-            <AddEvent userEvents={this.state.userEvents} />
-          )}
-          {this.state.showUpdateEvent && (
-            <UpdateEvent
-              event={this.state.selectedEvent}
-              id={this.state.selectedOption}
-              fetchEvents={this.fetchEvents}
-            />
-          )}
-        </div>
+        {/* {
+        this.props.loading ? (
+          <div className="profile-body">
+            <Loader
+              type="Puff"
+              color="#00BFFF"
+              height={100}
+              width={100}
+              // timeout={3000} 
+              />
+          </div>
+        ) : ( */}
+          <div className="profile-body">
+            {/* {this.state.showHistory && !this.props.loading && ( */}
+            {this.state.showHistory && (
+              <EventsHistory
+                userEvents={this.state.userEvents}
+                handleOptionChange={this.handleOptionChange}
+                selectedOption={this.state.selectedOption}
+                // seatsAvail={this.props.seatsAvail}
+                fetchData={this.fetchData}
+              />
+            )}
+            {this.state.showAddEvent && (
+              <AddEvent userEvents={this.state.userEvents} />
+            )}
+            {this.state.showUpdateEvent && (
+              <UpdateEvent
+                event={this.state.selectedEvent}
+                id={this.state.selectedOption}
+                fetchEvents={this.fetchEvents}
+              />
+            )}
+          </div>
+        {/* ) */}
+        {/* } */}
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     events: state.events,
     hostId: state.auth.hostId,
-    seatsAvail: state.seatsAvail.venue
+    seatsAvail: state.seatsAvail.venue,
+    loading: state.loading,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getEvents: events => dispatch(getEventsAction(events)),
-    getSeatsAvail: seats => dispatch(getSeatsAvailAction(seats))
+    getEvents: (events) => dispatch(getEventsAction(events)),
+    getSeatsAvail: (seats) => dispatch(getSeatsAvailAction(seats)),
+    loadingData: () => dispatch(loadingAction()),
+    loadedData: () => dispatch(loadedAction()),
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
-

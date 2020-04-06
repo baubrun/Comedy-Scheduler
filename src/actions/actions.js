@@ -11,7 +11,9 @@ import {
     RESET_CHECKOUT,
     GOT_SEATS_AVAIL,
     RESET_EVENTS,
-    RESET_SEATS_AVAIL
+    RESET_SEATS_AVAIL,
+    LOADING,
+    LOADED
 } from "./actionTypes"
 
 
@@ -20,12 +22,27 @@ export const getEventsAction = events => ({
     payload: events
 })
 
+export const loadingAction = () => ({
+    type: LOADING,
+    payload: true
+})
+
+export const loadedAction = () => ({
+    type: LOADED,
+    payload: false
+})
+
 export const getSeatsAvailAction = seats => ({
     type: GOT_SEATS_AVAIL,
-    payload: {
-        venue: seats
-    }
+    payload: seats
 })
+
+// export const getSeatsAvailAction = seats => ({
+//     type: GOT_SEATS_AVAIL,
+//     payload: {
+//         venue: seats
+//     }
+// })
 
 export const resetSeatsAvailAction = () => ({
     type: RESET_SEATS_AVAIL,

@@ -16,8 +16,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET)
 const uuid = require("uuid/v4")
 const sharp = require("sharp")
 const fs = require('fs')
-let imageRenamed = true
-const glob = require("glob")
+
 /*=============
  Middleware 
  ==============*/
@@ -45,6 +44,55 @@ MongoClient.connect(
 /*===============
  Helper functions 
  ================*/
+const deleteEmptySeating = async (startDate, req, res) => {
+    await dbo.collection("seating").findOneAndDelete({
+        "startDate": startDate,
+        "venue": {
+            $eq: {}
+        }
+    }, (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+    })
+}
+
+const deleteImg = result => {
+    process.chdir("./uploads")
+
+    fs.unlink(result.img, err => {
+        if (err) {
+            console.log(err)
+        }
+    })
+}
+
+const delOriginalImg = () => {
+
+    const regex = /[\w+-]*chUpload-\w+\.\w+/
+    process.chdir("./uploads")
+    console.log(process.cwd())
+
+    fs.readdir(process.cwd(), (err, files) => {
+        if (err) {
+            console.log(err)
+        }
+
+        const excludedFiles = files.filter(f =>
+            f.indexOf(f.match(regex)) === -1
+        )
+
+        if (excludedFiles.length > 0) {
+            excludedFiles.forEach(f => {
+                fs.unlink(f, err => {
+                    if (err) {
+                        console.log(err)
+                    }
+                })
+            })
+        }
+    })
+}
 
 
 const fileFilter = (req, file, cb) => {
@@ -54,47 +102,6 @@ const fileFilter = (req, file, cb) => {
         cb(null, false)
     }
 }
-
-const renameImg = file => {
-    const sp = file.split(".")
-    return sp.join("-chUpload-" + Date.now() + ".")
-}
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "uploads/")
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname)
-    },
-    fileFilter: fileFilter
-})
-
-const upload = multer({
-    storage: storage,
-    limits: {
-        fileSize: (1024 ** 2) * 5
-    }
-})
-
-const seatsPerVenue = {}
-seatsPerVenue.LE_FOU_FOU = 100
-seatsPerVenue.JOKES_BLAGUES = 90
-seatsPerVenue.RIRE_NOW = 80
-
-const venueSeatingInit = venue => {
-    switch (venue) {
-        case "LE_FOU_FOU":
-            return seatsPerVenue.LE_FOU_FOU
-        case "JOKES_BLAGUES":
-            return seatsPerVenue.JOKES_BLAGUES
-        case "RIRE_NOW":
-            return seatsPerVenue.RIRE_NOW
-        default:
-            return 0
-    }
-}
-
 
 const isOverlap = (start, end, result) => {
     const [h1, m1] = start.split(":")
@@ -117,30 +124,57 @@ const isOverlap = (start, end, result) => {
     }
 }
 
+const renameImg = file => {
+    const sp = file.split(".")
+    return sp.join("-chUpload-" + Date.now() + ".")
+}
+const seatsPerVenue = {}
+seatsPerVenue.LE_FOU_FOU = 100
+seatsPerVenue.JOKES_BLAGUES = 90
+seatsPerVenue.RIRE_NOW = 80
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "uploads/")
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    },
+    fileFilter: fileFilter
+})
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: (1024 ** 2) * 5
+    }
+})
 
 
-const deleteEmptySeating = async startDate => {
-    await dbo.collection("seating").findOneAndDelete({
-        "startDate": startDate,
-        "venue": {
-            $eq: {}
-        }
-    })
+const venueSeatingInit = venue => {
+    switch (venue) {
+        case "LE_FOU_FOU":
+            return seatsPerVenue.LE_FOU_FOU
+        case "JOKES_BLAGUES":
+            return seatsPerVenue.JOKES_BLAGUES
+        case "RIRE_NOW":
+            return seatsPerVenue.RIRE_NOW
+        default:
+            return 0
+    }
 }
 
-const isImageRenamed = () => {
-    if (imageRenamed){
-        imageRenamed = false
-    }
-    else {
-        imageRenamed = true
-    }
 
-}
+
 
 /* ==================
 GET 
 ====================*/
+
+app.get("/delOriginalImg", (req, res) => {
+    delOriginalImg()
+})
+
 
 
 app.get("/events", async (req, res) => {
@@ -199,6 +233,7 @@ POST
 ========================*/
 
 
+
 app.post("/checkout", upload.none(), (req, res) => {
     const {
         firstName,
@@ -237,23 +272,19 @@ app.post("/deleteEvents", upload.none(), async (req, res) => {
     await dbo.collection("events")
         .findOneAndDelete({
             _id: ObjectID(req.body.id)
-        }, (err, r) => {
+        }, (err, result) => {
             if (err) {
                 console.log(err)
                 return res.json({
                     success: false
                 })
             }
+            // deleteImg(result, req)
+            console.log(result)
         })
-    fs.unlink(`./uploads/${req.body.image}`, err => {
-        if (err) {
-            console.log(err)
-        }
-    })
-
-    return res.json({
-        success: true
-    })
+        return res.json({
+            success: true
+        })
 })
 
 app.post("/deleteSeating", upload.none(), async (req, res) => {
@@ -279,6 +310,7 @@ app.post("/deleteSeating", upload.none(), async (req, res) => {
                     success: false
                 })
             } else {
+                deleteEmptySeating(startDate, req, res)
                 return res.json({
                     success: true,
                     result: result
@@ -401,12 +433,12 @@ app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
     }, (err, result) => {
         if (err) {
             console.log(err)
-            return res.status(400).json({
+            return res.json({
                 success: false
             })
         }
         if (result) {
-            return res.status(400).json({
+            return res.json({
                 success: false,
                 msg: "Venue seating established.",
             })
@@ -420,7 +452,7 @@ app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
                 }
             }, {
                 upsert: true
-            }, deleteEmptySeating(startDate))
+            })
             return res.json({
                 success: true
             })
@@ -537,7 +569,6 @@ app.post("/updateSeatsAvail", upload.none(), async (req, res) => {
 
 app.post("/updateEvent", upload.single("image"), async (req, res) => {
     let img;
-    isImageRenamed()
     if (req.file !== undefined) {
         img = renameImg(req.file.originalname)
 
@@ -546,8 +577,7 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
             .toFile(`./uploads/${img}`, (err) => {
                 console.log("err in sharp:", err)
             })
-            isImageRenamed()
-        }
+    }
 
     const {
         title,
@@ -576,7 +606,7 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
                 price: price,
                 // image: !req.file ? "" : req.file.originalname,
                 // image: !req.file ? "" : renameImg(req.file.originalname),
-                image: !req.file ? "" : img,
+                image: req.file === undefined || null ? "" : img,
             }
         },
         (err) => {

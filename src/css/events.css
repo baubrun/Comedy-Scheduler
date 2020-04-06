@@ -187,10 +187,12 @@ new layout
 }
 
 
-
-
 #seats-avail-img {
     height: 15px;
     margin-left: 3px;
     width: 15px;
+}
+
+#spinner {
+    text-align: center;
 }

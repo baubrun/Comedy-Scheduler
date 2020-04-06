@@ -12,5 +12,7 @@ export const GOT_SEATS_AVAIL = "GOT_SEATS_AVAIL"
 export const GOT_ALL_SEATS_AVAIL = "GOT_ALL_SEATS_AVAIL"
 export const RESET_EVENTS = "RESET_EVENTS"
 export const RESET_SEATS_AVAIL = "RESET_SEATS_AVAIL"
+export const LOADING = "LOADING"
+export const LOADED = "LOADED"
 
 

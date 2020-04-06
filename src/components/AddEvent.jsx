@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
   getSeatsAvailAction,
-  // getAllSeatsAvailAction
 } from "../actions/actions";
 import CalendarView from "./CalendarView";
 
@@ -53,9 +52,6 @@ class AddEvent extends Component {
     this.props.getSeatsAvail(seats);
   };
 
-  dispatchGetAllSeatsAvail = () => {
-    this.props.getAllSeatsAvail();
-  };
 
   handleSubmit = async event => {
     event.preventDefault();
@@ -152,7 +148,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getSeatsAvail: seats => dispatch(getSeatsAvailAction(seats)),
-    // getAllSeatsAvail: () => dispatch(getAllSeatsAvailAction())
   };
 };
 
