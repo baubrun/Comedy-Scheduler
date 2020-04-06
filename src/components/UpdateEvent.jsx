@@ -84,7 +84,7 @@ class UpdateEvent extends Component {
     ]);
       fetch("/delOriginalImg")
 
-    this.props.fetchEvents()
+    this.props.fetchData()
   };
 
   handleImage = event => {
@@ -117,6 +117,9 @@ class UpdateEvent extends Component {
     return (
       <>
         <div className="update-event-header">
+        <h2 className="show-events-updatePage" onClick={this.props.fetchData}>
+            SHOW EVENTS
+          </h2>
           <h2>UPDATE EVENT</h2>
         </div>
         <div className="update-body">
@@ -223,9 +226,14 @@ class UpdateEvent extends Component {
                   onChange={this.handleImage}
                 />
               </li>
-              <li>
-                <button type="submit">Submit</button>
+              <li className="update-btns">
+                <button id="submit-update-btn" type="submit">UPDATE</button>
+                <button 
+                id="cancel-update-btn" 
+                onClick={this.props.fetchData}
+                type="submit">CANCEL</button>
               </li>
+
             </ul>
           </form>
         </div>

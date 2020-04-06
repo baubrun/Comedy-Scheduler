@@ -8,13 +8,13 @@ const Dropdown = props => {
       <div className="dropdown-content">
         <ul>
           <Link to="/profile">
-            <li>Profile</li>{" "}
+            <li>PROFILE</li>{" "}
           </Link>
           <Link to="/events">
-            <li>Events</li>{" "}
+            <li>EVENTS</li>{" "}
           </Link>
           <Link to="/" onClick={props.logout}>
-            <li>Logout</li>
+            <li>LOGOUT</li>
           </Link>
         </ul>
       </div>

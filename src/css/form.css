@@ -146,7 +146,6 @@ Form
 
 .register-btn{
   margin: 5px 0;
-
 }
 
 
@@ -154,16 +153,77 @@ Form
   color: white
 }
 
+
+.show-events-addPage {
+  color:  rgb(224, 151, 33);
+  cursor: pointer;
+}
+
+
+.show-events-addPage:hover {
+  color: white;
+  font-size: 1.1em;
+}
+
+
 /* ====================
 UpdateEvent
 ======================*/
 
 .add-event-header {
-  background-color:  #663A2B;
+  background-color: #020202;
   color: white;
-  margin-top: 5px;
-  text-align: center;
+  display: flex;
+  padding: 5px 0;
+  justify-content: space-evenly;
   width: 100%;
+}
+
+#cancel-update-btn {
+  background-color:  rgba(243, 60, 60, 0.856);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1em;
+  letter-spacing: 1px;
+  padding: 10px;
+}
+
+
+.show-events-updatePage:hover {
+  color: white;
+  font-size: 1.1em;
+}
+
+.show-events-updatePage {
+  color:rgb(224, 151, 33);
+  cursor: pointer;
+}
+
+select#venue,
+select#start-time,
+select#end-time {
+  flex: 3 1 261px;
+  margin: 10px 0 10px 0 ;
+}
+
+#submit-update-btn {
+  background-color: rgb(224, 151, 33);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1em;
+  letter-spacing: 1px;
+  padding: 10px;
+}
+
+
+.update-btns button:first-child {
+  margin-right: auto;
 }
 
 .update-body {
@@ -179,19 +239,16 @@ UpdateEvent
 }
 
 .update-event-form-container {
-  /* border: 1px solid gray; */
   padding: 20px 5px;
   width: 100%;
 }
 
 .update-event-form-container li{
   display: flex;
-  /* flex-flow: row wrap; */
   margin-right: 50px;
 }
 
 .update-event-form-container label {
-  /* color: #663A2B ; */
   color: white ;
   flex: 1 1 120px;
   margin-top: 10px;
@@ -201,23 +258,3 @@ UpdateEvent
   flex: 3 1 261px;
   margin: 10px 0 10px 0 ;
 }
-
-select#venue,
-select#start-time,
-select#end-time {
-  flex: 3 1 261px;
-  margin: 10px 0 10px 0 ;
-}
-
-.update-body button {
-  background-color: rgb(224, 151, 33);
-  border: none;
-  border-radius: 5px;
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1.1em;
-  letter-spacing: 1px;
-  padding: 10px;
-}
-

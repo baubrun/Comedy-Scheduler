@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  getSeatsAvailAction,
-} from "../actions/actions";
+import { getSeatsAvailAction } from "../actions/actions";
 import CalendarView from "./CalendarView";
 
 class AddEvent extends Component {
@@ -23,37 +21,35 @@ class AddEvent extends Component {
       noVenues: false,
       calendarViewShow: false,
       listViewShow: true,
-      userEvents: this.props.userEvents
+      userEvents: this.props.userEvents,
     };
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.venue !== this.state.venue) {
-      this.eventsByVenueHostId()
+      this.eventsByVenueHostId();
     }
   }
 
   eventsByVenueHostId = () => {
     const filter = {
       hostId: this.props.hostId,
-      venue: this.state.venue
+      venue: this.state.venue,
     };
-    const userEvents = this.props.userEvents.filter(item => {
+    const userEvents = this.props.userEvents.filter((item) => {
       for (const key in filter) {
         if (item[key] !== filter[key] || !item[key]) return false;
       }
       return true;
     });
-    this.setState({userEvents: userEvents})
+    this.setState({ userEvents: userEvents });
   };
 
-
-  dispatchGetSeatsAvail = seats => {
+  dispatchGetSeatsAvail = (seats) => {
     this.props.getSeatsAvail(seats);
   };
 
-
-  handleSubmit = async event => {
+  handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData();
     data.append("title", this.state.title);
@@ -74,25 +70,25 @@ class AddEvent extends Component {
       endTime: "",
       venue: "",
       performer: "",
-      price: ""
+      price: "",
     });
   };
 
-  handleEndTime = event => {
+  handleEndTime = (event) => {
     this.setState({ endTime: event.target.value });
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     this.setState({ [name]: value });
   };
 
-  handleImage = event => {
+  handleImage = (event) => {
     this.setState({ image: event.target.files[0] });
   };
 
-  handleVenueChange = event => {
+  handleVenueChange = (event) => {
     this.setState({ venue: event.target.value });
   };
 
@@ -106,7 +102,7 @@ class AddEvent extends Component {
   toggleCalendarView = () => {
     this.setState({
       calendarViewShow: true,
-      listViewShow: false
+      listViewShow: false,
     });
   };
 
@@ -114,22 +110,24 @@ class AddEvent extends Component {
     return (
       <>
         <div className="add-event-header">
+          <h2 className="show-events-addPage" onClick={this.props.fetchData}>
+            SHOW EVENTS
+          </h2>
           <h2>ADD EVENT</h2>
         </div>
         <div className="add-event-body">
-            <div className="venue-select">
-              <select onChange={this.handleVenueChange} name="venue">
-                <option value="">SELECT A VENUE</option>
-                <option value="LE_FOU_FOU">LE FOU FOU</option>
-                <option value="JOKES_BLAGUES">JOKES BLAGUES</option>
-                <option value="RIRE_NOW">RIRE NOW</option>
-              </select>
-            </div>
-          <div className="add-events-header-img">
+          <div className="venue-select">
+            <select onChange={this.handleVenueChange} name="venue">
+              <option value="">SELECT A VENUE</option>
+              <option value="LE_FOU_FOU">LE FOU FOU</option>
+              <option value="JOKES_BLAGUES">JOKES BLAGUES</option>
+              <option value="RIRE_NOW">RIRE NOW</option>
+            </select>
           </div>
-          <CalendarView 
-          selectedVenue={this.state.venue}
-          events={this.state.userEvents} 
+          <div className="add-events-header-img"></div>
+          <CalendarView
+            selectedVenue={this.state.venue}
+            events={this.state.userEvents}
           />
         </div>
       </>
@@ -137,7 +135,7 @@ class AddEvent extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     loggedIn: state.auth.loggedIn,
     hostId: state.auth.hostId,
@@ -145,9 +143,9 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getSeatsAvail: seats => dispatch(getSeatsAvailAction(seats)),
+    getSeatsAvail: (seats) => dispatch(getSeatsAvailAction(seats)),
   };
 };
 

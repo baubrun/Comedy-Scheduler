@@ -13,7 +13,7 @@ export const EventsHistory = props => {
 
   return (
     <div>
-    <h1 id="events-history-title">EVENTS HISTORY</h1>
+    <h1 id="events-history-header">EVENTS HISTORY</h1>
     {props.userEvents.length > 0 ? (
       props.userEvents.map((event, idx) => (
         <ul className="events-history" key={idx}>

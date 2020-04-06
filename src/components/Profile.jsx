@@ -5,8 +5,6 @@ import { getEventsAction, getSeatsAvailAction } from "../actions/actions";
 import AddEvent from "./AddEvent";
 import UpdateEvent from "./UpdateEvent";
 import { compareDates } from "./Events";
-// import Loader from "react-loader-spinner";
-// import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { loadingAction, loadedAction } from "../actions/actions";
 
 class Profile extends Component {
@@ -23,7 +21,6 @@ class Profile extends Component {
     };
   }
 
-
   dispatchLoaded = () => {
     this.props.loadedData();
   };
@@ -33,8 +30,14 @@ class Profile extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.seatsAvail !== this.props.seatsAvail) {
-      this.fetchData();
+    // if (prevProps.seatsAvail !== this.props.seatsAvail) {
+    //   this.fetchData();
+    // }
+    if (
+      prevState.showAddEvent !== this.state.showAddEvent ||
+      prevState.showUpdateEvent !== this.state.showUpdateEvent
+    ) {
+      this.handleProfileButtons();
     }
   }
 
@@ -56,21 +59,19 @@ class Profile extends Component {
     }
   };
 
-
   fetchData = async () => {
     await Promise.all([
       this.fetchEvents(),
-      this.fetchSeatsAvail()
-    ]).catch(err => console.log(err))
-      this.setState({
+      this.fetchSeatsAvail(),
+    ]).catch((err) => console.log(err));
+    this.setState({
       userEvents: this.getHostEvents(),
       showHistory: true,
       showAddEvent: false,
       showUpdateEvent: false,
       selectedOption: "",
     });
-
-  }
+  };
 
   dispatchGetEvents = (events) => {
     this.props.getEvents(events);
@@ -137,6 +138,17 @@ class Profile extends Component {
     });
   };
 
+  handleProfileButtons = () => {
+    const doc = document.getElementById("profile-buttons");
+    const addEventShown = this.state.showAddEvent;
+    const updateEventShown = this.state.showUpdateEvent;
+    if (addEventShown || updateEventShown) {
+      doc.style.visibility = "hidden";
+    } else {
+      doc.style.visibility = "visible";
+    }
+  };
+
   showAddEvent = () => {
     this.setState({
       showHistory: false,
@@ -165,12 +177,8 @@ class Profile extends Component {
       <div>
         <div className="profile-header">
           <h1>PROFILE</h1>
-          <ul className="profile-buttons">
-            <li>
-              <div id="events-history-btn" onClick={this.fetchData}>
-                Show Events History
-              </div>
-            </li>
+
+          <ul id="profile-buttons">
             <li>
               <div id="add-event-btn" onClick={this.showAddEvent}>
                 Add Event
@@ -182,48 +190,41 @@ class Profile extends Component {
               </div>
             </li>
             <li>
+              <div id="events-history-btn" onClick={this.fetchData}>
+                Show Events
+              </div>
+            </li>
+
+            <li>
               <div id="update-event-btn" onClick={this.showUpdateEventForm}>
                 Update Event
               </div>
             </li>
           </ul>
         </div>
-        {/* {
-        this.props.loading ? (
-          <div className="profile-body">
-            <Loader
-              type="Puff"
-              color="#00BFFF"
-              height={100}
-              width={100}
-              // timeout={3000} 
-              />
-          </div>
-        ) : ( */}
-          <div className="profile-body">
-            {/* {this.state.showHistory && !this.props.loading && ( */}
-            {this.state.showHistory && (
-              <EventsHistory
-                userEvents={this.state.userEvents}
-                handleOptionChange={this.handleOptionChange}
-                selectedOption={this.state.selectedOption}
-                // seatsAvail={this.props.seatsAvail}
-                fetchData={this.fetchData}
-              />
-            )}
-            {this.state.showAddEvent && (
-              <AddEvent userEvents={this.state.userEvents} />
-            )}
-            {this.state.showUpdateEvent && (
-              <UpdateEvent
-                event={this.state.selectedEvent}
-                id={this.state.selectedOption}
-                fetchEvents={this.fetchEvents}
-              />
-            )}
-          </div>
-        {/* ) */}
-        {/* } */}
+        <div className="profile-body">
+          {this.state.showHistory && (
+            <EventsHistory
+              userEvents={this.state.userEvents}
+              handleOptionChange={this.handleOptionChange}
+              selectedOption={this.state.selectedOption}
+              fetchData={this.fetchData}
+            />
+          )}
+          {this.state.showAddEvent && (
+            <AddEvent
+              userEvents={this.state.userEvents}
+              fetchData={this.fetchData}
+            />
+          )}
+          {this.state.showUpdateEvent && (
+            <UpdateEvent
+              event={this.state.selectedEvent}
+              id={this.state.selectedOption}
+              fetchData={this.fetchData}
+            />
+          )}
+        </div>
       </div>
     );
   }
