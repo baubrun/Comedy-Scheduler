@@ -4,7 +4,7 @@ import {
 } from "../actions/actionTypes"
 
 
-const loadingReducer = (state = true, action) => {
+const loadingReducer = (state = false, action) => {
     switch (action.type) {
         case LOADING:
             return action.payload

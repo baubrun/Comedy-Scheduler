@@ -2,23 +2,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
-/* seatingLeft(startDate, props.seatsAvail, props.venue)*/
-// const seatingLeft = (eventDate, seats, venue) => {
-//     console.log("in seatingLeft");
-//     const seat = seats.find((i) => i.startDate === eventDate);
-//     return seat.venue[venue];
-//   }
 
 const Event = props => {
-    console.log("in /Event");
   
-      const seatingLeft = (eventDate, seats, venue) => {
-      console.log("in seatingLeft");
+    const seatingLeft = (eventDate, seats, venue) => {
       const seat = seats.find((i) => i.startDate === eventDate);
       return seat.venue[venue];
-      // return []
-    }
+    };
   
+  
+    
     const { title, startDate, performer, startTime, image } = props.events;
   return (
     <>

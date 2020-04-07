@@ -77,6 +77,14 @@
     padding: 5px;
 }
 
+
+#loading{
+    /* right: 50%; */
+    /* margin-top: 50px; */
+    /* padding-top: 50px; */
+    text-align: center;
+
+}
 .reserve-btn{
     background-color:  #663A2B;
     border: none;

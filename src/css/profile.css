@@ -42,7 +42,7 @@
     width: 100%;
 }
 
-#profile-buttons  {
+#profile-btns  {
     border: 1px solid black;
     background-color: white;
     color: white;
@@ -51,23 +51,23 @@
     position: fixed;
     top: 150px;
     z-index: 100;
+    /* visibility: hidden; */
 }
 
 
-#profile-buttons li {
+#profile-btns li {
     cursor: pointer;
-
     padding: 10px 2px;
 }
 
-#profile-buttons li div {
+#profile-btns li div {
     border-radius: 5px;
     opacity: 0.7;
     padding: 10px 2px;
 }
 
 
-#profile-buttons li div:hover {
+#profile-btns li div:hover {
     opacity: 1;
 
 }

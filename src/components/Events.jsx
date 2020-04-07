@@ -27,10 +27,7 @@ class Events extends Component {
 
   componentDidMount() {
     this.fetchEvents();
-    console.log("fetchEvents from /Events");
     this.fetchSeatsAvail();
-    console.log("fetchSeatsAvail from /Events");
-
     this.eventsByVenue();
   }
 
@@ -170,8 +167,7 @@ class Events extends Component {
 const mapStateToProps = state => {
   return {
     events: state.events,
-    seatsAvail: state.seatsAvail.venue
-    // seatsAvail: state.seatsAvail
+    seatsAvail: state.seatsAvail
   };
 };
 

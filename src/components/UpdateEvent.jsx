@@ -20,7 +20,6 @@ class UpdateEvent extends Component {
   }
 
   componentDidMount() {
-    console.log("update mount");
     const {
       title,
       startDate,
@@ -81,10 +80,11 @@ class UpdateEvent extends Component {
     await Promise.all([
       fetch("/setVenueSeating", { method: "POST", body: data }),
       fetch("/updateEvent", { method: "POST", body: data }),
-    ]);
       fetch("/delOriginalImg")
+    ]);
 
-    this.props.fetchData()
+    // this.props.fetchData()
+    this.props.dispatchLoading()
   };
 
   handleImage = event => {
@@ -118,7 +118,7 @@ class UpdateEvent extends Component {
       <>
         <div className="update-event-header">
         <h2 className="show-events-updatePage" onClick={this.props.fetchData}>
-            SHOW EVENTS
+          LOAD EVENTS
           </h2>
           <h2>UPDATE EVENT</h2>
         </div>
@@ -215,6 +215,7 @@ class UpdateEvent extends Component {
                   name="price"
                   onChange={this.handleChange}
                   value={this.state.price}
+                  defaultValue={10}
                 />
               </li>
               <li>
@@ -230,7 +231,7 @@ class UpdateEvent extends Component {
                 <button id="submit-update-btn" type="submit">UPDATE</button>
                 <button 
                 id="cancel-update-btn" 
-                onClick={this.props.fetchData}
+                onClick={this.props.dispatchLoading}
                 type="submit">CANCEL</button>
               </li>
 

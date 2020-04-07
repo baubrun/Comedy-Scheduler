@@ -110,8 +110,8 @@ class AddEvent extends Component {
     return (
       <>
         <div className="add-event-header">
-          <h2 className="show-events-addPage" onClick={this.props.fetchData}>
-            SHOW EVENTS
+          <h2 className="show-events-addPage" onClick={this.props.dispatchLoading}>
+          LOAD EVENTS
           </h2>
           <h2>ADD EVENT</h2>
         </div>

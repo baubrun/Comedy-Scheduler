@@ -71,7 +71,6 @@ const delOriginalImg = () => {
 
     const regex = /[\w+-]*chUpload-\w+\.\w+/
     process.chdir("./uploads")
-    console.log(process.cwd())
 
     fs.readdir(process.cwd(), (err, files) => {
         if (err) {
@@ -165,15 +164,20 @@ const venueSeatingInit = venue => {
 }
 
 
+/* ==================
+DELETE
+====================*/
+
+app.delete("/delOriginalImg", (req, res) => {
+    delOriginalImg()
+})
+
 
 
 /* ==================
 GET 
 ====================*/
 
-app.get("/delOriginalImg", (req, res) => {
-    delOriginalImg()
-})
 
 
 
@@ -282,9 +286,9 @@ app.post("/deleteEvents", upload.none(), async (req, res) => {
             // deleteImg(result, req)
             console.log(result)
         })
-        return res.json({
-            success: true
-        })
+    return res.json({
+        success: true
+    })
 })
 
 app.post("/deleteSeating", upload.none(), async (req, res) => {
@@ -569,16 +573,6 @@ app.post("/updateSeatsAvail", upload.none(), async (req, res) => {
 
 app.post("/updateEvent", upload.single("image"), async (req, res) => {
     let img;
-    if (req.file !== undefined) {
-        img = renameImg(req.file.originalname)
-
-        sharp(req.file.path)
-            .resize(450, 450)
-            .toFile(`./uploads/${img}`, (err) => {
-                console.log("err in sharp:", err)
-            })
-    }
-
     const {
         title,
         startDate,
@@ -591,7 +585,19 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
         id
     } = req.body
 
+    // if (req.file !== undefined) {
+    if (req.file) {
+        img = renameImg(req.file.originalname)
 
+        sharp(req.file.path)
+            .resize(450, 450)
+            .toFile(`./uploads/${img}`, (err) => {
+                console.log("err in sharp:", err)
+            })
+    }
+
+
+    console.log(img)
     await dbo.collection("events").updateOne({
             _id: ObjectID(id)
         }, {
@@ -606,7 +612,7 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
                 price: price,
                 // image: !req.file ? "" : req.file.originalname,
                 // image: !req.file ? "" : renameImg(req.file.originalname),
-                image: req.file === undefined || null ? "" : img,
+                image: !req.file ? "" : img,
             }
         },
         (err) => {

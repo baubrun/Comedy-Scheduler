@@ -25,8 +25,13 @@ class Profile extends Component {
     this.props.loadedData();
   };
 
-  dispatchLoading = () => {
+  dispatchLoading = async () => {
     this.props.loadingData();
+    await this.fetchData()
+    setTimeout(() => {
+      this.dispatchLoaded()
+    }, 2000)
+    this.showEvents()
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -64,6 +69,9 @@ class Profile extends Component {
       this.fetchEvents(),
       this.fetchSeatsAvail(),
     ]).catch((err) => console.log(err));
+  };
+
+  showEvents = () => {
     this.setState({
       userEvents: this.getHostEvents(),
       showHistory: true,
@@ -71,7 +79,8 @@ class Profile extends Component {
       showUpdateEvent: false,
       selectedOption: "",
     });
-  };
+
+  }
 
   dispatchGetEvents = (events) => {
     this.props.getEvents(events);
@@ -178,26 +187,26 @@ class Profile extends Component {
         <div className="profile-header">
           <h1>PROFILE</h1>
 
-          <ul id="profile-buttons">
+          <ul id="profile-btns">
             <li>
               <div id="add-event-btn" onClick={this.showAddEvent}>
-                Add Event
+                ADD EVENT
               </div>
             </li>
             <li>
               <div id="delete-event-btn" onClick={this.deleteEvent}>
-                Delete Event
+                DELETE EVENT
               </div>
             </li>
             <li>
-              <div id="events-history-btn" onClick={this.fetchData}>
-                Show Events
+              <div id="events-history-btn" onClick={this.dispatchLoading}>
+                LOAD EVENTS
               </div>
             </li>
 
             <li>
               <div id="update-event-btn" onClick={this.showUpdateEventForm}>
-                Update Event
+                UPDATE EVENT
               </div>
             </li>
           </ul>
@@ -208,20 +217,20 @@ class Profile extends Component {
               userEvents={this.state.userEvents}
               handleOptionChange={this.handleOptionChange}
               selectedOption={this.state.selectedOption}
-              fetchData={this.fetchData}
             />
           )}
           {this.state.showAddEvent && (
             <AddEvent
               userEvents={this.state.userEvents}
-              fetchData={this.fetchData}
+              dispatchLoading={this.dispatchLoading}
             />
           )}
           {this.state.showUpdateEvent && (
             <UpdateEvent
               event={this.state.selectedEvent}
               id={this.state.selectedOption}
-              fetchData={this.fetchData}
+              dispatchLoading={this.dispatchLoading}
+
             />
           )}
         </div>
