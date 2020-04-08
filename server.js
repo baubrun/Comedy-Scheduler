@@ -641,33 +641,11 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
 
 app.post("/charge", async (req, res) => {
 
-    let error
-    let status
 
-    try {
-        const {
-            total,
-            token
-        } = req.body
 
-        const customer = await stripe.customers.create({
-            email: token.email,
-            source: token.id
-        })
 
-        const idempotency_key = uuid()
-        const charge = await stripe.charge.create({
-            amount: total * 100,
-            customer: customer.id,
-            currency: "cad",
-            receipt_email: token.email,
-            idempotency_key
+    
 
-        })
-        console.log('charge:', charge)
-    } catch (error) {
-        console.error("Error", error)
-    }
 
 
 })

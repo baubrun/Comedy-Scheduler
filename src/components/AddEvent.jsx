@@ -3,20 +3,24 @@ import { connect } from "react-redux";
 import { getSeatsAvailAction } from "../actions/actions";
 import CalendarView from "./CalendarView";
 
+const DEFAULT_STATE = {
+  title: "",
+  startDate: "",
+  startTime: "",
+  endDate: "",
+  endTime: "",
+  venue: "",
+  performer: "",
+  image: "",
+  price: "",
+};
+
 class AddEvent extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      title: "",
-      startDate: "",
-      startTime: "",
-      endDate: "",
-      endTime: "",
-      venue: "",
-      performer: "",
-      image: "",
-      price: "",
+      ...DEFAULT_STATE,
       hostId: this.props.hostId,
       noVenues: false,
       calendarViewShow: false,
@@ -63,14 +67,7 @@ class AddEvent extends Component {
     data.append("price", this.state.price);
     data.append("hostId", this.state.hostId);
     this.setState({
-      title: "",
-      startDate: "",
-      startTime: "",
-      endDate: "",
-      endTime: "",
-      venue: "",
-      performer: "",
-      price: "",
+      DEFAULT_STATE,
     });
   };
 
@@ -110,8 +107,11 @@ class AddEvent extends Component {
     return (
       <>
         <div className="add-event-header">
-          <h2 className="show-events-addPage" onClick={this.props.dispatchLoading}>
-          LOAD EVENTS
+          <h2
+            className="show-events-addPage"
+            onClick={this.props.dispatchLoading}
+          >
+            LOAD EVENTS
           </h2>
           <h2>ADD EVENT</h2>
         </div>

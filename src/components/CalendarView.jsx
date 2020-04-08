@@ -4,8 +4,8 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { connect } from "react-redux";
 import "moment/locale/en-gb";
-import { getEventsAction, getSeatsAvailAction } from "../actions/actions";
-import { loadingAction, loadedAction } from "../actions/actions";
+// import { getEventsAction, getSeatsAvailAction } from "../actions/actions";
+// import { loadingAction, loadedAction } from "../actions/actions";
 
 
 

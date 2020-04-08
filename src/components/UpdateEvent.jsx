@@ -1,23 +1,27 @@
 import React, { Component } from "react";
 
+
+const DEFAULT_STATE = {
+  title: "",
+  startDate: "",
+  startTime: "",
+  endDate: "",
+  endTime: "",
+  venue: "",
+  performer: "",
+  image: "",
+  price: "",
+  hostId: "",
+  id: ""
+};
+
 class UpdateEvent extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      title: "",
-      startDate: "",
-      startTime: "",
-      endDate: "",
-      endTime: "",
-      venue: "",
-      performer: "",
-      image: "",
-      price: "",
-      hostId: "",
-      id: ""
-    };
-  }
+    this.state = 
+      DEFAULT_STATE  
+    }
 
   componentDidMount() {
     const {
@@ -63,16 +67,7 @@ class UpdateEvent extends Component {
     data.append("image", this.state.image);
     data.append("price", this.state.price);
     data.append("hostId", this.state.hostId);
-    this.setState({
-      title: "",
-      startDate: "",
-      startTime: "",
-      endDate: "",
-      endTime: "",
-      venue: "",
-      performer: "",
-      price: ""
-    });
+    this.setState(DEFAULT_STATE);
 
     const delDup = new FormData()
     delDup.append("delDup", true)
@@ -83,7 +78,6 @@ class UpdateEvent extends Component {
       fetch("/delOriginalImg")
     ]);
 
-    // this.props.fetchData()
     this.props.dispatchLoading()
   };
 
