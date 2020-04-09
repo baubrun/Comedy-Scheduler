@@ -67,7 +67,7 @@ class UpdateEvent extends Component {
     data.append("image", this.state.image);
     data.append("price", this.state.price);
     data.append("hostId", this.state.hostId);
-    this.setState(DEFAULT_STATE);
+    // this.setState(DEFAULT_STATE);
 
     const delDup = new FormData()
     delDup.append("delDup", true)

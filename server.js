@@ -641,10 +641,21 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
 
 app.post("/charge", async (req, res) => {
 
+    // const {id, amount} = req.body
+
+    console.log('/charge req.body:', req.body)
+    // console.log('/charge id:', id)
+    // console.log('/charge amount:', amount)
+
+    // const paymentIntent = await stripe.paymentIntents.create({
+    //     amount: 1099,
+    //     currency: "ca",
+    //     metadata: {integration_check: "accept_a_payment"},
+    // })
+    // return res.json({success: true})
+    return res.json(req.body)
 
 
-
-    
 
 
 

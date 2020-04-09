@@ -3,14 +3,13 @@ import { connect } from "react-redux";
 import { getEventsAction, getSeatsAvailAction } from "../actions/actions";
 import CalendarView from "./CalendarView";
 import Event from "./Event"
+import { loadingAction, loadedAction } from "../actions/actions";
 
 export const compareDates = (a, b) => {
   let dateA = new Date(a.startDate);
   let dateB = new Date(b.startDate);
   return dateA - dateB;
 };
-
-
 
 class Events extends Component {
   constructor(props) {
@@ -26,13 +25,16 @@ class Events extends Component {
   }
 
   componentDidMount() {
-    this.fetchEvents();
-    this.fetchSeatsAvail();
+    // this.fetchEvents();
+    // this.fetchSeatsAvail();
+    this.fetchData()
     this.eventsByVenue();
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.venue !== this.state.venue) {
+        // this.fetchData()
+
       this.eventsByVenue();
     }
   }
@@ -49,18 +51,25 @@ class Events extends Component {
     const response = await fetch("/events");
     const body = await response.text();
     const parsed = JSON.parse(body);
-    // if (parsed) {
-    this.dispatchGetEvents(parsed);
-    // }
+    if (Array.isArray(parsed)) {
+      this.dispatchGetEvents(parsed);
+    }
   };
 
   fetchSeatsAvail = async () => {
     const response = await fetch("/getSeatsAvail");
     const body = await response.text();
     const parsed = JSON.parse(body);
-    // if (parsed) {
-    this.dispatchGetSeatsAvail(parsed);
-    // }
+    if (Array.isArray(parsed)) {
+      this.dispatchGetSeatsAvail(parsed);
+    }
+  };
+
+  fetchData = async () => {
+    await Promise.all([
+      this.fetchEvents(),
+      this.fetchSeatsAvail(),
+    ]).catch((err) => console.log(err));
   };
 
   eventsByVenue = () => {
@@ -167,14 +176,18 @@ class Events extends Component {
 const mapStateToProps = state => {
   return {
     events: state.events,
-    seatsAvail: state.seatsAvail
+    seatsAvail: state.seatsAvail,
+    loading: state.loading,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     getEvents: events => dispatch(getEventsAction(events)),
-    getSeatsAvail: seats => dispatch(getSeatsAvailAction(seats))
+    getSeatsAvail: seats => dispatch(getSeatsAvailAction(seats)),
+    loadingData: () => dispatch(loadingAction()),
+    loadedData: () => dispatch(loadedAction()),
+
   };
 };
 

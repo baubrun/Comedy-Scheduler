@@ -4,7 +4,6 @@
     justify-content: space-around;
 }
 
-
 .login-btn,
 #add-event-btn,
 #remove-btn {
@@ -13,7 +12,6 @@
 
 #delete-event-btn {
     background-color: rgb(224, 39, 33) ;
-
 }
 
 .events-history {
@@ -26,7 +24,6 @@
     color: white;
 }
 
-
 #events-history-header {
     background-color: rgba(2, 2, 2, 1);
     border-bottom: 1px solid white;
@@ -35,8 +32,6 @@
     text-align: center;
     width: 100%;
 }
-
-
 
 .profile-body{
     width: 100%;
@@ -54,7 +49,6 @@
     /* visibility: hidden; */
 }
 
-
 #profile-btns li {
     cursor: pointer;
     padding: 10px 2px;
@@ -66,10 +60,8 @@
     padding: 10px 2px;
 }
 
-
 #profile-btns li div:hover {
     opacity: 1;
-
 }
 
 .profile-header {
@@ -91,7 +83,6 @@
 #add-event-btn {
     color: white;
 }
-
 
 #remove-btn  {
     border: none;
@@ -135,7 +126,6 @@ Events history
     width: 1.25em;
 }
 
-
 #custom-checkbox::after {
     color: white;
     content: "\2714";
@@ -154,18 +144,5 @@ Events history
     width: 100%;
 }
 
-
-.update-event-header {
-    background-color: #020202;
-    display: flex;
-    color: white;
-    justify-content: space-evenly;
-    padding: 5px 0;
-        
-}
-
-#update-event-btn {
-    background-color: rgb(224, 151, 33) ;
-}
 
 

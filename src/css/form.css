@@ -191,7 +191,6 @@ UpdateEvent
   padding: 10px;
 }
 
-
 .show-events-updatePage:hover {
   color: white;
   font-size: 1.1em;
@@ -220,7 +219,6 @@ select#end-time {
   letter-spacing: 1px;
   padding: 10px;
 }
-
 
 .update-btns button:first-child {
   margin-right: auto;
@@ -258,3 +256,16 @@ select#end-time {
   flex: 3 1 261px;
   margin: 10px 0 10px 0 ;
 }
+
+.update-event-header {
+  background-color: #020202;
+  display: flex;
+  color: white;
+  justify-content: space-evenly;
+  padding: 5px 0;  
+}
+
+#update-event-btn {
+  background-color: rgb(224, 151, 33) ;
+}
+
