@@ -180,10 +180,9 @@ GET
 
 
 
-
 app.get("/events", async (req, res) => {
 
-    dbo.collection("events").find({}).toArray((err, evt) => {
+    await dbo.collection("events").find({}).toArray((err, evt) => {
         if (err) {
             console.log(err)
             return res.json({
@@ -196,7 +195,7 @@ app.get("/events", async (req, res) => {
 
 app.get("/profile", async (req, res) => {
 
-    dbo.collection("events").find({}).toArray((err, evt) => {
+    await dbo.collection("events").find({}).toArray((err, evt) => {
         if (err) {
             console.log(err)
             return res.json({
@@ -208,7 +207,7 @@ app.get("/profile", async (req, res) => {
 })
 
 app.get("/confirmation", async (req, res) => {
-    dbo.collection("purchases").find({}).toArray((err, evt) => {
+    await dbo.collection("purchases").find({}).toArray((err, evt) => {
         if (err) {
             console.log(err)
             return res.json({
@@ -220,7 +219,7 @@ app.get("/confirmation", async (req, res) => {
 })
 
 app.get("/getSeatsAvail", async (req, res) => {
-    dbo.collection("seating").find({}).toArray((err, evt) => {
+    await dbo.collection("seating").find({}).toArray((err, evt) => {
         if (err) {
             console.log(err)
             return res.json({
@@ -238,36 +237,21 @@ POST
 
 
 
-app.post("/checkout", upload.none(), (req, res) => {
-    const {
-        firstName,
-        lastName,
-        address,
-        email,
-        city,
-        total,
-        cardName,
-        cardNumber,
-        exp,
-        cvv,
-        itemsBought
-    } = req.body
-
-    dbo.collection("purchases").insertOne({
-        firstName: firstName,
-        lastName: lastName,
-        address: address,
-        email: email,
-        city: city,
-        total: total,
-        cardName: cardName,
-        cardNumber: cardNumber,
-        exp: exp,
-        cvv: cvv,
-        itemsBought: itemsBought,
+app.post("/checkout", upload.none(), async (req, res) => {
+    const {amount, itemsBought} = req.body
+    // console.log("\n", "/checkout req.body: ", req.body)
+    await dbo.collection("purchases").insertOne({
+        amount,
+        itemsBought: JSON.parse(itemsBought),
         dateAdded: new Date()
+    }, err => {
+        if (err) {
+            return res.json({
+                success: false
+            })
+        }
     })
-    return res.status(200).json({
+    return res.json({
         success: true
     })
 })
@@ -638,30 +622,32 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
  ==========================*/
 
 
+app.post("/charge", upload.none(), async (req, res) => {
+    const {
+        id,
+        amount,
+        description
+    } = req.body
 
-app.post("/charge", async (req, res) => {
-
-    // const {id, amount} = req.body
-
-    console.log('/charge req.body:', req.body)
-    // console.log('/charge id:', id)
-    // console.log('/charge amount:', amount)
-
-    // const paymentIntent = await stripe.paymentIntents.create({
-    //     amount: 1099,
-    //     currency: "ca",
-    //     metadata: {integration_check: "accept_a_payment"},
-    // })
-    // return res.json({success: true})
-    return res.json(req.body)
-
-
-
-
+    try {
+        await stripe.paymentIntents.create({
+            amount: amount,
+            currency: "cad",
+            confirm: true,
+            description,
+            payment_method: id,
+        })
+        return res.json({
+            success: true
+        })
+    } catch (error) {
+         return res.json({
+            success: false,
+            msg: error
+        })
+        }
 
 })
-
-
 
 
 

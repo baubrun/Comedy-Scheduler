@@ -129,8 +129,6 @@ class RenderCart extends Component {
                 <li>{tvq.toFixed(2)}</li>
                 <li>Total:</li>
                 <li>{total.toFixed(2)} $</li>
-                {/* <Link id="checkout-btn" to="/checkout">Checkout</Link> */}
-
                 <button 
                 id="checkout-btn" 
                 onClick={this.handleCheckout}>

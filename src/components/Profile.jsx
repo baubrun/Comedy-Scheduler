@@ -42,7 +42,7 @@ class Profile extends Component {
       prevState.showAddEvent !== this.state.showAddEvent ||
       prevState.showUpdateEvent !== this.state.showUpdateEvent
     ) {
-      this.handleProfileButtons();
+      this.toggleProfileButtons();
     }
   }
 
@@ -147,8 +147,8 @@ class Profile extends Component {
     });
   };
 
-  handleProfileButtons = () => {
-    const doc = document.getElementById("profile-buttons");
+  toggleProfileButtons = () => {
+    const doc = document.getElementById("profile-btns");
     const addEventShown = this.state.showAddEvent;
     const updateEventShown = this.state.showUpdateEvent;
     if (addEventShown || updateEventShown) {

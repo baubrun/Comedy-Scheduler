@@ -1,21 +1,16 @@
-import React, { Component, useState } from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import {
-  CardElement,
-  ElementsConsumer,
-  useElements,
-  useStripe,
-} from "@stripe/react-stripe-js";
-
-const PK_STRIPE = "pk_test_1jcRkbFeUYqVsCGYpNX51Ggv00oyStF042";
-const stripePromise = loadStripe(PK_STRIPE);
+import React, { useState, useEffect } from "react";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
+import { loadingAction, loadedAction } from "../actions/actions";
+import { connect } from "react-redux";
 
 const CARD_OPTIONS = {
   style: {
     base: {
       iconColor: "black",
       fontFamily: "Roboto, Open Sans, Segoe UI, sans-serif",
-      fontSize: "16px",
+      fontSize: "18px",
       color: "#424770",
       "::placeholder": {
         color: "#37383b",
@@ -27,68 +22,33 @@ const CARD_OPTIONS = {
   },
 };
 
+const orderNumber = () => {
+  return "CB3" + Math.floor(Math.random() * 1000);
+};
+
+const formattedAmount = (amount) => {
+  const [wholeNum, decimal] = amount.split(".");
+  console.log("formattedNum :", wholeNum + decimal);
+  return wholeNum + decimal;
+};
+
 const CheckoutForm = (props) => {
   const stripe = useStripe();
   const elements = useElements();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [order, setOrder] = useState("");
+  const [stripeMsg, setSripeMsg] = useState("")
 
-  const resetState = () => {
-    setName("");
-    setEmail("");
-  };
+  useEffect(() => {
+    setOrder(orderNumber());
+  }, []);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  // const resetState = () => {
+  //   setName("");
+  //   setEmail("");
+  // };
 
-    const postCharge = async (id, amount) => {
-      const stripeData = new FormData();
-      stripeData.append("id", id);
-      const [wholeNum, decimal] = amount.split(".");
-      const formattedNum = wholeNum + decimal;
-      console.log("formattedNum :", formattedNum);
-
-      stripeData.append("amount", formattedNum);
-
-      const response = await fetch("/charge", {
-        method: "POST",
-        body: stripeData,
-      });
-      const body = await response.text();
-      const parser = JSON.parse(body);
-      console.log("charge-parsed :", parser);
-    };
-
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: "card",
-      card: elements.getElement(CardElement),
-      billing_details: {
-        name,
-        email,
-      },
-    });
-
-    if (!error) {
-      console.log(paymentMethod);
-      const { id } = paymentMethod;
-      await Promise.all([postCharge(id, props.amount)]).catch((err) =>
-        console.log(err)
-      );
-      // resetState();
-
-      // try {
-      // await postCharge(id, props.amount);
-      // console.log(id);
-      // console.log(props.amount);
-      // postCharge(id, props.amount);
-      // } catch (error) {
-      // console.log("error :", error);
-      // }
-      // } else {
-      //   console.log("error :", error);
-      // }
-    }
-  };
   const handleName = (event) => {
     setName(event.target.value);
   };
@@ -97,8 +57,65 @@ const CheckoutForm = (props) => {
     setEmail(event.target.value);
   };
 
+  const postCharge = async (amount, id, orderNum) => {
+    const stripeData = new FormData();
+    stripeData.append("id", id);
+    stripeData.append("amount", formattedAmount(amount));
+    stripeData.append("description", orderNum);
+    const response = await fetch("/charge", {
+      method: "POST",
+      body: stripeData,
+    });
+    const body = await response.text();
+    const parser = JSON.parse(body);
+    if (!parser.success) {
+      setSripeMsg(parser.msg)
+      console.log('stripeMsg :', stripeMsg);
+    }
+    // else {
+    //   props.history.push("/confirmation")
+    // }
+  };
+
+  const postPurchase = async (order) => {
+    const { amount, items } = props;
+    const data = new FormData();
+    data.append("amount", amount);
+    data.append("itemsBought", JSON.stringify(items));
+    data.append("order", order);
+    await fetch("/checkout", {
+      method: "POST",
+      body: data,
+    });
+    
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card: elements.getElement(CardElement),
+      billing_details: {
+        name,
+        email,
+      },
+    });
+    if (!error) {
+      const { id } = paymentMethod;
+      await Promise.all([
+        postCharge(props.amount, id, order),
+        postPurchase(order),
+      ]).catch((err) => console.log(err));
+    } else {
+      setSripeMsg(error)
+      console.log(stripeMsg);
+    }
+  };
+
+
   return (
     <form onSubmit={handleSubmit} className="stripe-container">
+      <div className="stripe-header"><h1>CARD DETAIL</h1></div>
       <fieldset>
         <label className="stripe-label" htmlFor="name">
           Name
@@ -109,7 +126,7 @@ const CheckoutForm = (props) => {
           type="text"
           onChange={handleName}
           placeholder="Name on Card"
-          required
+          // required
           value={name}
         />
       </fieldset>
@@ -123,18 +140,48 @@ const CheckoutForm = (props) => {
           type="email"
           onChange={handleEmail}
           placeholder="Email"
-          required
+          // required
           value={email}
         />
       </fieldset>
       <fieldset>
+        
         <CardElement options={CARD_OPTIONS} />
       </fieldset>
-      <button type="submit" disabled={!stripe}>
-        Pay
+      <button type="submit" disabled={!stripe || props.loading}>
+        PURCHASE
+        <div className="stripe-spinner">
+        <Loader 
+        type="BallTriangle"
+        color="white"
+        height={30}
+        width={30}
+        visible={!props.loading}
+        />
+        </div>
       </button>
+      <div className="stripe-msg">
+
+      </div>
     </form>
   );
 };
 
-export default CheckoutForm;
+
+const mapStateToProps = (state) => {
+  return {
+    seatsAvail: state.seatsAvail,
+    loading: state.loading,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadingData: () => dispatch(loadingAction()),
+    loadedData: () => dispatch(loadedAction()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CheckoutForm);
+
+// export default CheckoutForm;

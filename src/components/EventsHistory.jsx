@@ -4,7 +4,6 @@ import { loadingAction, loadedAction } from "../actions/actions";
 import { connect } from "react-redux";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
-import {useEffect} from "react"
 
 
 export const EventsHistory = (props) => {
@@ -21,15 +20,16 @@ export const EventsHistory = (props) => {
     <>
       <h1 id="events-history-header">EVENTS HISTORY</h1>
       <div id="loading">
-        {props.loading && (
+        {/* {props.loading && ( */}
           <Loader 
           type="Triangle" 
           color="rgba(224, 151, 33, 0.7)" 
           height={loadingSize} 
           width={loadingSize}
+          visible={props.loading}
           />
           
-        )}
+        {/* )} */}
       </div>
       <div>
         {

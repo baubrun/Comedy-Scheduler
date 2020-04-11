@@ -39,7 +39,7 @@ const EventDetail = props => {
             <li>
               <Link to="/cart">
                 <button className="reserve-btn" onClick={dispatchAddToCart}>
-                  PURCHASE
+                  RESERVE
                 </button>
               </Link>
             </li>

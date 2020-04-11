@@ -164,7 +164,7 @@ class CalendarView extends Component {
 
   render() {
     return (
-      <div>
+      <div >
         <Calendar
           culture={this.state.culture}
           dayLayoutAlgorithm={this.state.dayLayoutAlgorithm}

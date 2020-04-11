@@ -11,6 +11,8 @@ export const compareDates = (a, b) => {
   return dateA - dateB;
 };
 
+
+
 class Events extends Component {
   constructor(props) {
     super(props);
@@ -25,18 +27,18 @@ class Events extends Component {
   }
 
   componentDidMount() {
-    // this.fetchEvents();
-    // this.fetchSeatsAvail();
     this.fetchData()
     this.eventsByVenue();
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.venue !== this.state.venue) {
-        // this.fetchData()
-
       this.eventsByVenue();
     }
+    if (prevState.listViewShow !== this.state.listViewShow) {
+      this.toggleBlockFlex(this.state.listViewShow)
+    }
+
   }
 
   dispatchGetEvents = events => {
@@ -106,6 +108,19 @@ class Events extends Component {
     });
   };
 
+  toggleBlockFlex = listView => {
+    const doc = document.getElementById("events-body")
+    if (!listView){
+      doc.style.display = "block"
+    } else {
+      doc.style.display = "flex"
+      doc.style.flexFlow = "row wrap"
+    }
+  }
+  
+  
+
+
   showEvents = () => {
     if (
       (!this.state.listViewShow && this.state.events.length < 1) ||
@@ -124,11 +139,13 @@ class Events extends Component {
             key={idx}
             seatsAvail={this.props.seatsAvail}
             venue={this.state.venue}
+            // listViewShow={this.state.listViewShow}
           />
         ));
     }
     if (this.state.calendarViewShow)
       return <CalendarView events={this.state.events} />;
+      // return <div className="events-calendar-view "><CalendarView events={this.state.events} /></div>;
     else {
       return <h1>NO EVENTS</h1>;
     }
@@ -167,7 +184,10 @@ class Events extends Component {
             />
           </div>
         </div>
-        <div className="events-body">{this.showEvents()}</div>
+        {/* <div className="events-body"> */}
+        <div id="events-body">
+          {this.showEvents()}         
+          </div>
       </>
     );
   }

@@ -7,8 +7,10 @@ import CheckoutForm from "./CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
-const PK_STRIPE = "pk_test_1jcRkbFeUYqVsCGYpNX51Ggv00oyStF042";
+export const PK_STRIPE = "pk_test_1jcRkbFeUYqVsCGYpNX51Ggv00oyStF042";
 const stripePromise = loadStripe(PK_STRIPE);
+
+
 
 class Checkout extends Component {
   constructor(props) {
@@ -49,8 +51,8 @@ class Checkout extends Component {
       ? this.setState({
           itemsBought: this.filterItemsBought(),
           subTotal: this.calcSubtotal(),
-          tps: this.tps(),
-          tvq: this.tvq(),
+          tps: this.tps().toFixed(2),
+          tvq: this.tvq().toFixed(2),
           total: this.total().toFixed(2),
         })
       : this.props.history.push("/events");
@@ -68,11 +70,16 @@ class Checkout extends Component {
     this.props.resetCheckout();
   };
 
-
-  tps = () => 0.05 * this.calcSubtotal().toFixed(2);
-  tvq = () => 0.09975 * this.calcSubtotal().toFixed(2);
+  tps = () => 0.05 * this.calcSubtotal();
+  tvq = () => 0.09975 * this.calcSubtotal();
   total = () => this.calcSubtotal() + this.tps() + this.tvq();
 
+  superscript = () => {
+    const s = this.state.total.toString()
+    const sp = s.split(".")
+    return sp
+  }
+  
   render() {
     const numTickets = () => {
       return this.props.checkout.length > 0
@@ -91,37 +98,47 @@ class Checkout extends Component {
             ? this.props.history.push("/events")
             : !this.props.checkedOut && (
                 <>
-                  <div className="total-checkout">
+                  <div className="checkout-summary">
                     <div>
                       <h2>SUMMARY</h2>
                     </div>
-                    <div>
+                    {/* <div>
                       {`${numTickets()} ticket${
                         numTickets() > 1 ? "s" : ""
                       } for:`}
+                    </div> */}
+                    <div  className="checkout-summary-items">
+                      {`${numTickets()} ticket${
+                        numTickets() > 1 ? "s" : ""
+                      } for:`}
+                    {/* </div> */}
+                    {/* <div> */}
+                      {this.state.itemsBought.map((item, idx) => (
+                        <ul key={idx}>
+                        {/* <ul className="checkout-summary-items" key={idx}> */}
+                          <li>{item.title}</li>
+                        </ul>
+                      ))}
                     </div>
-                    <div>
-                    {this.state.itemsBought.map((item, idx) => (
-                      <ul className="items-summary" key={idx}>
-                        <li>{item.title}</li>
-                      </ul>
-                    ))}
-                    </div>
-                    <div>
-                      <h2>{`TOTAL: $${this.state.total}`}</h2>
+                    <div className="checkout-summary-total-amount">
+                      <div className="checkout-summary-total">TOTAL </div>
+                      {/* <div>$ {this.state.total}</div> */}
+                      <div className="checkout-summary-amount"> 
+                        {`$ ${this.superscript()[0]}`}<sup>{this.superscript()[1]}</sup>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="payment-section">
-                    <div className="cc-cards">
-                      <img src="ax.png" alt="" />
-                      <img src="dc.png" alt="" />
-                      <img src="mc.png" alt="" />
-                      <img src="vs.png" alt="" />
+                  <div className="card-detail">
+                    <div>
+                      <Elements stripe={stripePromise}>
+                        <CheckoutForm
+                          amount={this.state.total}
+                          history={this.props.history}
+                          items={this.state.itemsBought}
+                        />
+                      </Elements>
                     </div>
-                    <Elements stripe={stripePromise}>
-                      <CheckoutForm amount={this.state.total}/>
-                    </Elements>
                   </div>
                 </>
               )}

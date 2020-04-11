@@ -2,49 +2,69 @@ import React from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
+// const toggleBlockFlex = listView => {
+//   const doc = document.getElementById("events-body")
+ 
+//   if (!listView){
+//     doc.style.display = "block"
+//   } else {
+//     doc.style.display = "flex"
+//     doc.style.flexFlow = "row wrap"
+//   }
+// }
 
-const Event = props => {
+
+
+
+const Event = (props) => {
+  const seatingLeft = (eventDate, seats, venue) => {
+    const seat = seats.find((i) => i.startDate === eventDate);
+    return seat.venue[venue];
+  };
+
+  // toggleBlockFlex(props.listViewShow)
+
   
-    const seatingLeft = (eventDate, seats, venue) => {
-      const seat = seats.find((i) => i.startDate === eventDate);
-      return seat.venue[venue];
-    };
-  
-  
-    
-    const { title, startDate, performer, startTime, image } = props.events;
+  const { title, startDate, performer, startTime, image } = props.events;
   return (
-    <>
+
+    <div className="events-list-view">
+    {/* <> */}
       {
-        <ul className="event">
-          <li>
-            <Link className="event-title" to={`/event/${title}`}>
+        <div className="event">
+          <div className="event-title">
+            <Link to={`/event/${title}`}>
+              {/* <Link className="event-title" to={`/event/${title}`}> */}
               {title}
             </Link>
-          </li>
-          <li>
+          </div>
+          <div id="performer-img-container">
             <img id="performer-img" src={`../../${image}`} alt="" />
-          </li>
-          <li>{performer}</li>
-          <li>
-            {moment(`${startDate}`).format("DD-MM-YYYY")}
-            <li>{startTime}</li>
-          </li>
-          <li>
-            Seats Available:{" "}
-            {seatingLeft(startDate, props.seatsAvail, props.venue) > 0 ? (
-              <img
-                id="seats-avail-img"
-                src="green-check-grn-wht-15px.png"
-                alt=""
-              />
-            ) : (
-              <img id="seats-avail-img" src="red-x-red-wht-15px.png" alt="" />
-            )}{" "}
-          </li>
-        </ul>
+          </div>
+          <div className="event-info">
+            <div id="performer-name">{performer}</div>
+            <div>
+              {moment(`${startDate}`).format("DD-MM-YYYY")}
+             
+            </div>
+            <div>{startTime}</div>
+            <div className="seats-avail-img-container">
+              Seats Available:{" "}
+              {seatingLeft(startDate, props.seatsAvail, props.venue) > 0 ? (
+                <img
+                  id="seats-avail-img"
+                  src="green-check-grn-wht-15px.png"
+                  alt=""
+                />
+              ) : (
+                <img id="seats-avail-img" src="red-x-red-wht-15px.png" alt="" />
+              )}{" "}
+            </div>
+          </div>
+        </div>
       }
-    </>
+    </div>
+    // </>
   );
 };
 

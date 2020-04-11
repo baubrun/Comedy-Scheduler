@@ -9,15 +9,15 @@ class Login extends Component {
     this.state = {
       username: "",
       password: "",
-      errors: []
+      errors: [],
     };
   }
 
-  dispatchLogin = hostId => {
+  dispatchLogin = (hostId) => {
     this.props.loginUser(hostId);
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     this.setState({ [name]: value });
@@ -27,14 +27,14 @@ class Login extends Component {
     this.props.history.push("/register");
   };
 
-  handleSubmit = async event => {
+  handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData();
     data.append("username", this.state.username);
     data.append("password", this.state.password);
     this.setState({
       username: "",
-      password: ""
+      password: "",
     });
     const response = await fetch("/login", { method: "POST", body: data });
     const body = await response.text();
@@ -51,22 +51,19 @@ class Login extends Component {
   };
 
   handleCloseErrors = () => {
-    this.setState({errors: []})
-  }
+    this.setState({ errors: [] });
+  };
 
   render() {
     return (
       <div className="modal login">
-          <form className="login-flex-container" onSubmit={this.handleSubmit}>
+        <form className="login-flex-container" onSubmit={this.handleSubmit}>
           <div className="login-form-container">
             {this.state.errors.map((err, idx) => {
               return (
                 <div key={idx} id="errors">
                   {err.msg}
-                  <span
-                    id="close-btn"
-                    onClick={this.handleCloseErrors}
-                  >
+                  <span id="close-btn" onClick={this.handleCloseErrors}>
                     &times;
                   </span>
                 </div>
@@ -114,9 +111,9 @@ class Login extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    loginUser: hostId => dispatch(logInAction(hostId))
+    loginUser: (hostId) => dispatch(logInAction(hostId)),
   };
 };
 

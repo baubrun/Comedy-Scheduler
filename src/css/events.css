@@ -1,33 +1,47 @@
 .calendar-header {
     border-bottom: 1px solid black;
-    display: flex;
-    flex-flow: row wrap;
-    width: 100%;
+    /* display: flex; */
+    /* flex-flow: row wrap; */
+    /* width: 100%; */
 }
+
 
 .event {
     background-color: #020202;
     border-top: 1px dotted #663A2B;
+    border-radius: 5px;
     color: white;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    margin: 15px 0;
+    /* display: flex; */
+    /* flex-flow: row wrap; */
+    /* justify-content: center; */
+    margin: 15px ;
+    padding: 20px ;
 }
 
 .event a {
     color: rgb(224, 151, 33);
+    font-size: 28px;
     padding-bottom: 2px;
     text-transform: uppercase;
+
 }
 
 .event div {
-    padding: 5px 60px;
+    /* padding: 5px 60px; */
+    text-align: center;
 }
 
 #performer-img {
-    height: 150px;
-    width: 150px;
+    border-radius: 5px;
+    height: 250px;
+    width: 250px;
+}
+
+
+#events-body {
+    display: flex;
+    flex-flow: row wrap;
+    margin-top: 15px;
 }
 
 .events-header {
@@ -56,7 +70,6 @@
 
 .event-detail {
     display:flex;
-    
     padding: 10px;
 }
 
@@ -75,13 +88,33 @@
     padding: 5px;
 }
 
+
+
+.event-info div{
+    /* display: flex; */
+    /* flex-flow: row wrap; */
+    /* font-size: 16px; */
+    /* padding: 10px 0; */
+    font-family: 'Courier Prime', monospace;
+    font-family: 'Courier Prime', monospace;
+    letter-spacing: 1PX;
+    padding-top: 20px;
+    /* width: 100%; */
+}
+
 #loading{
-    /* right: 50%; */
-    /* margin-top: 50px; */
-    /* padding-top: 50px; */
     text-align: center;
 
 }
+
+
+#performer-name {
+    font-size: 20px;
+    font-family: 'Courier Prime', monospace;
+    /* font-weight: bold; */
+    letter-spacing: 2PX;
+}
+
 .reserve-btn{
     background-color:  #663A2B;
     border: none;
@@ -146,11 +179,6 @@
     width: 30px;
 }
 
-tfoot {
-    color: rgb(224, 151, 33);
-    font-size: 0.7em;
-    font-style: italic;
-}
 
 
 
@@ -159,29 +187,36 @@ tfoot {
 new layout
 
 ======================*/
-
-.event-title {
-    font-size: 1.2em;
+.event {
+    /* display: flex; */
+    /* flex-flow: row wrap; */
+    /* justify-content: center; */
+    /* width: 25%; */
 }
 
-.event-title:hover {
+.event-title {
+    /* font-size: 38px; */
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    /* padding: 0 20px; */
+    text-align: center;
+    width: 100%
+}
+
+.event-title a:hover {
     color: white;
 }
 
-.event {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-}
 
-.event li {
-    width: 100%;
+.seats-avail-img-container {
+    position: relative;
 }
 
 #seats-avail-img {
-    height: 15px;
+    height: 20px;
     margin-left: 3px;
-    width: 15px;
+    position: absolute;
+    width: 20px;
 }
 
 #spinner {

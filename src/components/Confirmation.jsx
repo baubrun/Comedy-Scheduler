@@ -3,9 +3,6 @@ import { connect } from "react-redux";
 import { confirmCheckoutAction } from "../actions/actions";
 
 class Confirmation extends Component {
-  generateConfirmId = () => {
-    return "CB3" + Math.floor(Math.random() * 1000);
-  };
 
   seatsTaken = () => {
     return this.props.checkout.map(i => {
@@ -30,6 +27,8 @@ class Confirmation extends Component {
     this.updateSeating()
   }
 
+  
+
   render() {
     return (
       <div>
@@ -47,7 +46,7 @@ class Confirmation extends Component {
             </thead>
             <tfoot className="confirm-num">
               <tr>
-                <td>Confirmation #: {this.generateConfirmId()}</td>
+                {/* <td>Order #: {this.props.checkout.orderNumber}</td> */}
               </tr>
             </tfoot>
             <tbody>
