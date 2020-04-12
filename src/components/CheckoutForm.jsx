@@ -61,7 +61,7 @@ const CheckoutForm = (props) => {
     const stripeData = new FormData();
     stripeData.append("id", id);
     stripeData.append("amount", formattedAmount(amount));
-    stripeData.append("description", orderNum);
+    stripeData.append("order", orderNum);
     const response = await fetch("/charge", {
       method: "POST",
       body: stripeData,
@@ -72,9 +72,10 @@ const CheckoutForm = (props) => {
       setSripeMsg(parser.msg)
       console.log('stripeMsg :', stripeMsg);
     }
-    // else {
-    //   props.history.push("/confirmation")
-    // }
+    else {
+      console.log("go to /confirmation");
+      // props.history.push("/confirmation")
+    }
   };
 
   const postPurchase = async (order) => {

@@ -95,8 +95,8 @@
 }
 
 .performer-img-detail {
-    /* height: 450px;
-    width:  450px; */
+    /* height: 250px;
+    width:  250px; */
 }
 
 .remove-btn {
@@ -119,12 +119,22 @@
     width: 50%;
 }
 
-.event-detail-info {
-    margin-left: 50px;
-}
-
 tfoot {
     color: #663A2B;
     font-size: 0.7em;
     font-style: italic;
+}
+
+
+.social-media {
+    /* background-color: #fff; */
+    /* margin-left: 65%; */
+    /* width: 100%; */
+    
+}
+
+
+.social-media img {
+    cursor: pointer;
+    margin-right: 10px;
 }

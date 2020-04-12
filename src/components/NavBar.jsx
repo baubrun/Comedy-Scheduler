@@ -4,13 +4,12 @@ import { Link, useLocation } from "react-router-dom";
 import {
   logOutAction,
   resetSeatsAvailAction,
-  resetEventsAction
+  resetEventsAction,
 } from "../actions/actions";
 import Dropdown from "./Dropdown";
 
-const NavBar = props => {
-
-  const currentPage = useLocation().pathname
+const NavBar = (props) => {
+  const currentPage = useLocation().pathname;
 
   const logout = () => {
     props.logoutUser();
@@ -18,15 +17,14 @@ const NavBar = props => {
     props.resetEvents();
   };
 
-
   return (
     <div className="navbar">
       <div className="home-title">
         <h1>
           <Link to="/">LE COMEDY HUB</Link>
         </h1>
-        {!props.loggedIn && (currentPage !== "/login") ? (
-          <Link  to="/login">
+        {!props.loggedIn && currentPage !== "/login" ? (
+          <Link to="/login">
             <div id="login-link">LOGIN</div>
           </Link>
         ) : (
@@ -36,13 +34,11 @@ const NavBar = props => {
           {props.loggedIn ? `Salut ${props.hostId}!` : ""}
         </div>
       </div>
-      {props.loggedIn && (
-        <Dropdown logout={logout} />
-      )}
+      {props.loggedIn && <Dropdown logout={logout} />}
       {
         <div className="cart">
           <Link to="/cart">
-            <img src="ticket-blk-white.png" alt=""></img>
+            <img src="ticket-blk-white.png" alt="CART"></img>
             {props.cart.length > 0 ? (
               <span className="cart-length">{props.cart.length}</span>
             ) : (
@@ -55,20 +51,20 @@ const NavBar = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     loggedIn: state.auth.loggedIn,
     hostId: state.auth.hostId,
     cart: state.cart,
-    checkedOut: state.checkedOut
+    checkedOut: state.checkedOut,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     logoutUser: () => dispatch(logOutAction()),
     resetSeatsAvail: () => dispatch(resetSeatsAvailAction()),
-    resetEvents: () => dispatch(resetEventsAction())
+    resetEvents: () => dispatch(resetEventsAction()),
   };
 };
 

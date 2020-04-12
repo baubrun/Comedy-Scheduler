@@ -2,51 +2,29 @@ import React from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
-// const toggleBlockFlex = listView => {
-//   const doc = document.getElementById("events-body")
- 
-//   if (!listView){
-//     doc.style.display = "block"
-//   } else {
-//     doc.style.display = "flex"
-//     doc.style.flexFlow = "row wrap"
-//   }
-// }
-
-
-
-
 const Event = (props) => {
   const seatingLeft = (eventDate, seats, venue) => {
+    console.log('seats :', seats);
+
     const seat = seats.find((i) => i.startDate === eventDate);
+    console.log("seat :", seat.venue[venue]);
     return seat.venue[venue];
   };
 
-  // toggleBlockFlex(props.listViewShow)
-
-  
   const { title, startDate, performer, startTime, image } = props.events;
   return (
-
     <div className="events-list-view">
-    {/* <> */}
       {
         <div className="event">
           <div className="event-title">
-            <Link to={`/event/${title}`}>
-              {/* <Link className="event-title" to={`/event/${title}`}> */}
-              {title}
-            </Link>
+            <Link to={`/event/${title}`}>{title}</Link>
           </div>
           <div id="performer-img-container">
             <img id="performer-img" src={`../../${image}`} alt="" />
           </div>
           <div className="event-info">
             <div id="performer-name">{performer}</div>
-            <div>
-              {moment(`${startDate}`).format("DD-MM-YYYY")}
-             
-            </div>
+            <div>{moment(`${startDate}`).format("DD-MM-YYYY")}</div>
             <div>{startTime}</div>
             <div className="seats-avail-img-container">
               Seats Available:{" "}
@@ -64,7 +42,6 @@ const Event = (props) => {
         </div>
       }
     </div>
-    // </>
   );
 };
 

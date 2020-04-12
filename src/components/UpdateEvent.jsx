@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-
 const DEFAULT_STATE = {
   title: "",
   startDate: "",
@@ -12,16 +11,18 @@ const DEFAULT_STATE = {
   image: "",
   price: "",
   hostId: "",
-  id: ""
+  id: "",
+  facebook: "",
+  instagram: "",
+  twitter: "",
 };
 
 class UpdateEvent extends Component {
   constructor(props) {
     super(props);
 
-    this.state = 
-      DEFAULT_STATE  
-    }
+    this.state = DEFAULT_STATE;
+  }
 
   componentDidMount() {
     const {
@@ -34,8 +35,11 @@ class UpdateEvent extends Component {
       performer,
       image,
       price,
-      hostId
-    } = this.props.event;
+      hostId,
+      facebook,
+      instagram,
+      twitter,
+        } = this.props.event;
 
     this.setState({
       id: this.props.id,
@@ -48,12 +52,15 @@ class UpdateEvent extends Component {
       performer,
       image,
       price,
-      hostId
+      hostId,
+      facebook,
+      instagram,
+      twitter,
     });
     this.preFillVenueOption();
   }
 
-  handleSubmit = async event => {
+  handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData();
     data.append("id", this.props.id);
@@ -67,38 +74,41 @@ class UpdateEvent extends Component {
     data.append("image", this.state.image);
     data.append("price", this.state.price);
     data.append("hostId", this.state.hostId);
+    data.append("facebook", this.state.facebook);
+    data.append("instagram", this.state.instagram);
+    data.append("twitter", this.state.twitter);
     // this.setState(DEFAULT_STATE);
 
-    const delDup = new FormData()
-    delDup.append("delDup", true)
+    const delDup = new FormData();
+    delDup.append("delDup", true);
 
     await Promise.all([
       fetch("/setVenueSeating", { method: "POST", body: data }),
       fetch("/updateEvent", { method: "POST", body: data }),
-      fetch("/delOriginalImg")
+      // fetch("/delOriginalImg"),
     ]);
 
-    this.props.dispatchLoading()
+    this.props.dispatchLoading();
   };
 
-  handleImage = event => {
+  handleImage = (event) => {
     this.setState({ image: event.target.files[0] });
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     this.setState({ [name]: value });
   };
 
-  handleVenueChange = event => {
+  handleVenueChange = (event) => {
     this.setState({ venue: event.target.value });
   };
 
-  handleStartTime = event => {
+  handleStartTime = (event) => {
     this.setState({ startTime: event.target.value });
   };
-  handleEndTime = event => {
+  handleEndTime = (event) => {
     this.setState({ endTime: event.target.value });
   };
 
@@ -111,8 +121,8 @@ class UpdateEvent extends Component {
     return (
       <>
         <div className="update-event-header">
-        <h2 className="show-events-updatePage" onClick={this.props.fetchData}>
-          LOAD EVENTS
+          <h2 className="show-events-updatePage" onClick={this.props.fetchData}>
+            LOAD EVENTS
           </h2>
           <h2>UPDATE EVENT</h2>
         </div>
@@ -213,6 +223,36 @@ class UpdateEvent extends Component {
                 />
               </li>
               <li>
+                <label htmlFor="facebook">Facebook</label>
+                <input
+                  id="facebook"
+                  name="facebook"
+                  type="text"
+                  value={this.state.facebook}
+                  onChange={this.handleChange}
+                />
+              </li>
+              <li>
+                <label htmlFor="instagram">Instagram</label>
+                <input
+                  id="instagram"
+                  name="instagram"
+                  type="text"
+                  value={this.state.instagram}
+                  onChange={this.handleChange}
+                />
+              </li>
+              <li>
+                <label htmlFor="twitter">Twitter</label>
+                <input
+                  id="twitter"
+                  name="twitter"
+                  type="text"
+                  value={this.state.twitter}
+                  onChange={this.handleChange}
+                />
+              </li>
+              <li>
                 <label htmlFor="upload">Image</label>
                 <input
                   id="upload"
@@ -222,13 +262,17 @@ class UpdateEvent extends Component {
                 />
               </li>
               <li className="update-btns">
-                <button id="submit-update-btn" type="submit">UPDATE</button>
-                <button 
-                id="cancel-update-btn" 
-                onClick={this.props.dispatchLoading}
-                type="submit">CANCEL</button>
+                <button id="submit-update-btn" type="submit">
+                  UPDATE
+                </button>
+                <button
+                  id="cancel-update-btn"
+                  onClick={this.props.dispatchLoading}
+                  type="button"
+                >
+                  CANCEL
+                </button>
               </li>
-
             </ul>
           </form>
         </div>

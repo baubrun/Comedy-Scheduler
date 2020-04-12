@@ -78,6 +78,7 @@ CHECKOUT
 .checkout-summary h2 {
     border-bottom: 1px solid #663A2B ;
     color: #663A2B ;
+    font-size: 20px;
     letter-spacing: 2px;
     padding: 10px;
     text-align: center;
@@ -136,7 +137,7 @@ CARD DETAIL
 .stripe-header {
     background-color: #663A2B;
     color: rgba(245, 245, 245, 0.911);
-    font-size: 25px;
+    font-size: 20px;
     letter-spacing: 8px;
     margin-bottom: 50px;
     padding: 30px;

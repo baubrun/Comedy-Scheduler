@@ -28,7 +28,6 @@ app.use("/", express.static("uploads"))
 
 MongoClient.connect(
     process.env.DB_URI,
-    // "mongodb://localhost:27017/Comedy-hub", 
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -163,6 +162,10 @@ const venueSeatingInit = venue => {
     }
 }
 
+// const validSocialMedia = obj => {
+//     return Object.keys(obj).length > 0 ? obj : ""
+// } 
+
 
 /* ==================
 DELETE
@@ -235,11 +238,90 @@ app.get("/getSeatsAvail", async (req, res) => {
 POST 
 ========================*/
 
+app.post("/addEvent", upload.single("image"), async (req, res) => {
+    const {
+        title,
+        startDate,
+        startTime,
+        endDate,
+        endTime,
+        venue,
+        performer,
+        price,
+        hostId,
+        facebook,
+        instagram,
+        twitter,
+
+    } = req.body
+
+
+    await dbo.collection("events").findOne({
+        "startDate": startDate,
+        "venue": venue
+    }, (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(400).json({
+                success: false
+            })
+        }
+        if (result) {
+            let overlaps = true
+            overlaps = isOverlap(
+                startTime,
+                endTime,
+                result)
+
+            if (!overlaps) {
+                dbo.collection("events").insertOne({
+                    title: title,
+                    startDate: startDate,
+                    startTime: startTime,
+                    endDate: endDate,
+                    endTime: endTime,
+                    venue: venue,
+                    performer: performer,
+                    image: !req.file ? "" : req.file.originalname,
+                    price: price,
+                    hostId: hostId,
+                    allDay: "false",
+                    facebook: facebook,
+                    instagram: instagram,
+                    twitter: twitter,
+                    dateAdded: new Date()
+                })
+                return res.json({success: true})
+            }
+            // return res.json({
+            //     ans: ans,
+            //     success: true
+            // })
+        } else {
+            dbo.collection("events").insertOne({
+                title: title,
+                startDate: startDate,
+                startTime: startTime,
+                endDate: endDate,
+                endTime: endTime,
+                venue: venue,
+                performer: performer,
+                image: !req.file ? "" : req.file.originalname,
+                price: price,
+                hostId: hostId,
+                allDay: "false",
+                facebook: facebook,
+                instagram: instagram,
+                twitter: twitter,
+                dateAdded: new Date()
+            })
+        }
+    })
+})
 
 
 app.post("/checkout", upload.none(), async (req, res) => {
     const {amount, itemsBought} = req.body
-    // console.log("\n", "/checkout req.body: ", req.body)
     await dbo.collection("purchases").insertOne({
         amount,
         itemsBought: JSON.parse(itemsBought),
@@ -268,7 +350,7 @@ app.post("/deleteEvents", upload.none(), async (req, res) => {
                 })
             }
             // deleteImg(result, req)
-            console.log(result)
+            // console.log(result)
         })
     return res.json({
         success: true
@@ -453,75 +535,6 @@ app.post("/setVenueSeating", upload.single("image"), async (req, res) => {
     })
 })
 
-app.post("/slotsTaken", upload.single("image"), async (req, res) => {
-    const {
-        title,
-        startDate,
-        startTime,
-        endDate,
-        endTime,
-        venue,
-        performer,
-        price,
-        hostId,
-    } = req.body
-
-    await dbo.collection("events").findOne({
-        "startDate": startDate,
-        "venue": venue
-    }, (err, result) => {
-        if (err) {
-            console.log(err)
-            return res.status(400).json({
-                success: false
-            })
-        }
-        if (result) {
-            let overlaps = true
-            overlaps = isOverlap(
-                startTime,
-                endTime,
-                result)
-
-            if (!overlaps) {
-                dbo.collection("events").insertOne({
-                    title: title,
-                    startDate: startDate,
-                    startTime: startTime,
-                    endDate: endDate,
-                    endTime: endTime,
-                    venue: venue,
-                    performer: performer,
-                    image: !req.file ? "" : req.file.originalname,
-                    price: price,
-                    hostId: hostId,
-                    allDay: "false",
-                    dateAdded: new Date()
-                })
-                // return res.json({success: true})
-            }
-            // return res.json({
-            //     ans: ans,
-            //     success: true
-            // })
-        } else {
-            dbo.collection("events").insertOne({
-                title: title,
-                startDate: startDate,
-                startTime: startTime,
-                endDate: endDate,
-                endTime: endTime,
-                venue: venue,
-                performer: performer,
-                image: !req.file ? "" : req.file.originalname,
-                price: price,
-                hostId: hostId,
-                allDay: "false",
-                dateAdded: new Date()
-            })
-        }
-    })
-})
 
 app.post("/updateSeatsAvail", upload.none(), async (req, res) => {
 
@@ -566,9 +579,15 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
         venue,
         performer,
         price,
-        id
+        id,
+        facebook,
+        instagram,
+        twitter,
+  
     } = req.body
 
+    // const socialMedia = JSON.parse(req.body.socialMedia)
+    // console.log(' /updateEvent socialMedia', socialMedia)
     // if (req.file !== undefined) {
     if (req.file) {
         img = renameImg(req.file.originalname)
@@ -594,9 +613,10 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
                 venue: venue,
                 performer: performer,
                 price: price,
-                // image: !req.file ? "" : req.file.originalname,
-                // image: !req.file ? "" : renameImg(req.file.originalname),
                 image: !req.file ? "" : img,
+                facebook: facebook,
+                instagram: instagram,
+                twitter: twitter,
             }
         },
         (err) => {
@@ -626,7 +646,7 @@ app.post("/charge", upload.none(), async (req, res) => {
     const {
         id,
         amount,
-        description
+        order
     } = req.body
 
     try {
@@ -634,8 +654,9 @@ app.post("/charge", upload.none(), async (req, res) => {
             amount: amount,
             currency: "cad",
             confirm: true,
-            description,
+            description: "ticket",
             payment_method: id,
+            metadata: {order: order}
         })
         return res.json({
             success: true

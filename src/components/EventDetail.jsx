@@ -4,7 +4,9 @@ import { addToCartAction } from "../actions/actions";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
-const EventDetail = props => {
+
+const EventDetail = (props) => {
+
   const dispatchAddToCart = () => {
     props.addToCart(props.event);
   };
@@ -17,7 +19,10 @@ const EventDetail = props => {
     startTime,
     image,
     price,
-    _id
+    _id,
+    facebook,
+    instagram,
+    twitter,
   } = props.event;
 
   return (
@@ -43,10 +48,8 @@ const EventDetail = props => {
                 </button>
               </Link>
             </li>
-
             <li className="event-detail-info">Title: {title}</li>
             <li className="event-detail-info">
-              {" "}
               Date: {moment(`${startDate}`).format("DD-MM-YYYY")}
             </li>
             <li className="event-detail-info">Time: {startTime}</li>
@@ -55,6 +58,25 @@ const EventDetail = props => {
             </li>
             <li className="event-detail-info">Performer: {performer}</li>
             <li className="event-detail-info">Price: {price} $</li>
+            <li className="event-detail-info">
+              <div className="social-media">
+                {facebook && (
+                  <Link to={`facebook.com/${facebook}`}>
+                    <img src="../../fb-chUpload-0.png" alt="facebook" />
+                  </Link>
+                )}
+                {instagram && (
+                  <Link to={`instagram.com/${instagram}`}>
+                    <img src="../../ig-chUpload-0.png" alt="instagram" />
+                  </Link>
+                )}
+                {twitter && (
+                  <Link to={`instagram.com/${twitter}`}>
+                    <img src="../../tt-chUpload-0.png" alt="twitter" />
+                  </Link>
+                )}
+              </div>
+            </li>
           </li>
         </ul>
       </div>
@@ -62,24 +84,24 @@ const EventDetail = props => {
   );
 };
 
-const RenderEvent = props => {
+const RenderEvent = (props) => {
   const eventTitle = props.match.params.title;
-  const selectedTitle = props.events.find(event => {
+  const selectedTitle = props.events.find((event) => {
     return event.title === eventTitle;
   });
   return <EventDetail event={selectedTitle} addToCart={props.addToCart} />;
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     events: state.events,
-    cart: state.cart
+    cart: state.cart,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    addToCart: item => dispatch(addToCartAction(item))
+    addToCart: (item) => dispatch(addToCartAction(item)),
   };
 };
 

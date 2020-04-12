@@ -206,6 +206,7 @@ select#start-time,
 select#end-time {
   flex: 3 1 261px;
   margin: 10px 0 10px 0 ;
+  padding: 5px 0;
 }
 
 #submit-update-btn {
@@ -255,6 +256,7 @@ select#end-time {
 .update-event-form-container input{
   flex: 3 1 261px;
   margin: 10px 0 10px 0 ;
+  padding: 5px 0 ;
 }
 
 .update-event-header {

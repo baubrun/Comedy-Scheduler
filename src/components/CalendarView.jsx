@@ -50,6 +50,9 @@ class CalendarView extends Component {
       performer: "",
       image: "",
       price: "",
+      facebook: "",
+      instagram: "",
+      twitter: "",
       dayLayoutAlgorithm: "no-overlap"
     };
   }
@@ -135,11 +138,17 @@ class CalendarView extends Component {
     data.append("startTime", this.state.startTime);
     data.append("endDate", this.state.endDate);
     data.append("endTime", this.state.endTime);
-    data.append("hostId", this.props.hostId);
     data.append("venue", this.state.venue);
-
+    data.append("performer", this.state.performer);
+    data.append("image", this.state.image);
+    data.append("price", this.state.price);
+    data.append("hostId", this.props.hostId);
+    data.append("facebook", this.state.facebook);
+    data.append("instagram", this.state.instagram);
+    data.append("twitter", this.state.twitter);
+    
     await Promise.all([
-      fetch("/slotsTaken", { method: "POST", body: data }),
+      fetch("/addEvent", { method: "POST", body: data }),
       fetch("/setVenueSeating", { method: "POST", body: data })
     ]).catch( err => console.log(err));
   };

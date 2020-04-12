@@ -5,12 +5,15 @@ import { connect } from "react-redux";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 
+const seatingEmpty = null
+
 
 export const EventsHistory = (props) => {
 
   const seatingLeft = (eventDate, seats, venue) => {
+    
     const seat = seats.find((i) => i.startDate === eventDate);
-    return seat.venue[venue];
+    return !seat ? seatingEmpty === true : seat.venue[venue]
   };
 
 
@@ -44,7 +47,9 @@ export const EventsHistory = (props) => {
               <li>Performer: {event.performer}</li>
               <li className="seatsAvail">
                 Seats Available:{" "}
-                {seatingLeft(event.startDate, props.seatsAvail, event.venue)}
+                { seatingEmpty ? "" :
+                seatingLeft(event.startDate, props.seatsAvail, event.venue)
+                }
               </li>
               <li>Price: {event.price} </li>
               <li>
@@ -67,7 +72,7 @@ export const EventsHistory = (props) => {
             </ul>
           ))
         ) : (
-          <h1>No Events</h1>
+          <h1 className="no-events">NO EVENTS</h1>
         )
       )
         }

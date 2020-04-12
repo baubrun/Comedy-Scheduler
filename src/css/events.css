@@ -15,7 +15,9 @@
     /* flex-flow: row wrap; */
     /* justify-content: center; */
     margin: 15px ;
-    padding: 20px ;
+    padding: 20px 30px;
+    /* width: 310px;
+    height: 507px; */
 }
 
 .event a {
@@ -27,7 +29,6 @@
 }
 
 .event div {
-    /* padding: 5px 60px; */
     text-align: center;
 }
 
@@ -41,10 +42,11 @@
 #events-body {
     display: flex;
     flex-flow: row wrap;
-    margin-top: 15px;
+
 }
 
 .events-header {
+    border-bottom: 1px solid #663A2B;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
@@ -61,23 +63,6 @@
     border-bottom: 1px dotted #663A2B;
 }
 
-.event-detail-body {
-    background-color: #020202;
-    display: flex;
-    justify-content: center;
-    height: 100vh;
-}
-
-.event-detail {
-    display:flex;
-    padding: 10px;
-}
-
-.event-detail li {
-    color: white;
-    padding: 8px;
-    /* width: 100%; */
-}
 
 .events-btn {
     background-color: rgb(224, 151, 33);
@@ -91,27 +76,35 @@
 
 
 .event-info div{
-    /* display: flex; */
-    /* flex-flow: row wrap; */
-    /* font-size: 16px; */
-    /* padding: 10px 0; */
-    font-family: 'Courier Prime', monospace;
     font-family: 'Courier Prime', monospace;
     letter-spacing: 1PX;
     padding-top: 20px;
-    /* width: 100%; */
 }
 
 #loading{
-    text-align: center;
-
+    margin-left: 42%;
+    margin-top: 100px;
+    position: absolute;
 }
 
+.events-no-events {
+    margin-left: 50%;
+}
 
+.events-no-events {
+    font-size: 18px;
+    margin-top: 100px;
+    margin-left: 47%;
+}
+
+.no-events {
+    font-size: 18px;
+    margin-top: 100px;
+    text-align: center;
+}
 #performer-name {
     font-size: 20px;
     font-family: 'Courier Prime', monospace;
-    /* font-weight: bold; */
     letter-spacing: 2PX;
 }
 
@@ -122,8 +115,16 @@
     color: whitesmoke;
     cursor: pointer;
     font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 2px;
     margin-left: 50px;
     padding: 10px;
+}
+
+.reserve-btn:hover{
+    background-color: whitesmoke;
+    color:  rgb(224, 151, 33);
+    /* color: #663A2B; */
 }
 
 #calendar-view {
@@ -187,12 +188,6 @@
 new layout
 
 ======================*/
-.event {
-    /* display: flex; */
-    /* flex-flow: row wrap; */
-    /* justify-content: center; */
-    /* width: 25%; */
-}
 
 .event-title {
     /* font-size: 38px; */
@@ -221,4 +216,37 @@ new layout
 
 #spinner {
     text-align: center;
+}
+
+
+/*=====================
+EVENT DETAIL
+
+=======================*/
+
+
+.event-detail-body {
+    background-color: #020202;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    height: 100vh;
+}
+
+.event-detail-info {
+    font-family: 'Courier Prime', monospace;
+    /* font-size: 18px; */
+    letter-spacing: 2px;
+    margin-left: 50px;
+}
+
+.event-detail {
+    display:flex;
+    padding: 10px;
+}
+
+.event-detail li {
+    color: white;
+    padding: 10px;
+    /* width: 100%; */
 }

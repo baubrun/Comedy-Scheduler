@@ -120,7 +120,7 @@ class Profile extends Component {
           fetch("/deleteEvents", { method: "POST", body: dataEvents }),
           fetch("/deleteSeating", { method: "POST", body: dataSeating }),
         ]);
-        this.fetchEvents();
+        this.dispatchLoading();
       }
     }
   };

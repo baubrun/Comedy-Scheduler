@@ -11,6 +11,16 @@ export const compareDates = (a, b) => {
   return dateA - dateB;
 };
 
+const toggleBlockFlex = state => {
+  const doc = document.getElementById("events-body")
+  if (!state){
+    doc.style.display = "block"
+  } else {
+    doc.style.display = "flex"
+    doc.style.flexFlow = "row wrap"
+  }
+}
+
 
 
 class Events extends Component {
@@ -36,7 +46,7 @@ class Events extends Component {
       this.eventsByVenue();
     }
     if (prevState.listViewShow !== this.state.listViewShow) {
-      this.toggleBlockFlex(this.state.listViewShow)
+      toggleBlockFlex(this.state.listViewShow)
     }
 
   }
@@ -108,17 +118,6 @@ class Events extends Component {
     });
   };
 
-  toggleBlockFlex = listView => {
-    const doc = document.getElementById("events-body")
-    if (!listView){
-      doc.style.display = "block"
-    } else {
-      doc.style.display = "flex"
-      doc.style.flexFlow = "row wrap"
-    }
-  }
-  
-  
 
 
   showEvents = () => {
@@ -126,7 +125,7 @@ class Events extends Component {
       (!this.state.listViewShow && this.state.events.length < 1) ||
       !this.state.venue
     ) {
-      return <h1>NO EVENTS</h1>;
+      return <h1 className="events-no-events">NO EVENTS</h1>;
     }
     if (this.state.listViewShow && this.state.events.length > 0) {
       return this.state.events
@@ -139,15 +138,13 @@ class Events extends Component {
             key={idx}
             seatsAvail={this.props.seatsAvail}
             venue={this.state.venue}
-            // listViewShow={this.state.listViewShow}
           />
         ));
     }
     if (this.state.calendarViewShow)
       return <CalendarView events={this.state.events} />;
-      // return <div className="events-calendar-view "><CalendarView events={this.state.events} /></div>;
     else {
-      return <h1>NO EVENTS</h1>;
+    return <h1 className="events-no-events">NO EVENTS</h1>
     }
   };
 
@@ -184,7 +181,6 @@ class Events extends Component {
             />
           </div>
         </div>
-        {/* <div className="events-body"> */}
         <div id="events-body">
           {this.showEvents()}         
           </div>
