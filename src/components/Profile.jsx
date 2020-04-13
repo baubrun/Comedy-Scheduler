@@ -27,11 +27,11 @@ class Profile extends Component {
 
   dispatchLoading = async () => {
     this.props.loadingData();
-    await this.fetchData()
+    await this.fetchData();
     setTimeout(() => {
-      this.dispatchLoaded()
-    }, 2000)
-    this.showEvents()
+      this.dispatchLoaded();
+    }, 2000);
+    this.showEvents();
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -79,8 +79,7 @@ class Profile extends Component {
       showUpdateEvent: false,
       selectedOption: "",
     });
-
-  }
+  };
 
   dispatchGetEvents = (events) => {
     this.props.getEvents(events);
@@ -181,35 +180,40 @@ class Profile extends Component {
     }
   };
 
+  renderProfileButtons = () => {
+    return (
+      <ul id="profile-btns">
+        <li>
+          <div id="add-event-btn" onClick={this.showAddEvent}>
+            ADD EVENT
+          </div>
+        </li>
+        <li>
+          <div id="delete-event-btn" onClick={this.deleteEvent}>
+            DELETE EVENT
+          </div>
+        </li>
+        <li>
+          <div id="events-history-btn" onClick={this.dispatchLoading}>
+            LOAD EVENTS
+          </div>
+        </li>
+
+        <li>
+          <div id="update-event-btn" onClick={this.showUpdateEventForm}>
+            UPDATE EVENT
+          </div>
+        </li>
+      </ul>
+    );
+  };
+
   render() {
     return (
       <div>
         <div className="profile-header">
           <h1>PROFILE</h1>
-
-          <ul id="profile-btns">
-            <li>
-              <div id="add-event-btn" onClick={this.showAddEvent}>
-                ADD EVENT
-              </div>
-            </li>
-            <li>
-              <div id="delete-event-btn" onClick={this.deleteEvent}>
-                DELETE EVENT
-              </div>
-            </li>
-            <li>
-              <div id="events-history-btn" onClick={this.dispatchLoading}>
-                LOAD EVENTS
-              </div>
-            </li>
-
-            <li>
-              <div id="update-event-btn" onClick={this.showUpdateEventForm}>
-                UPDATE EVENT
-              </div>
-            </li>
-          </ul>
+          {this.renderProfileButtons()}
         </div>
         <div className="profile-body">
           {this.state.showHistory && (
@@ -230,7 +234,6 @@ class Profile extends Component {
               event={this.state.selectedEvent}
               id={this.state.selectedOption}
               dispatchLoading={this.dispatchLoading}
-
             />
           )}
         </div>

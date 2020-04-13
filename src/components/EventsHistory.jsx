@@ -5,81 +5,119 @@ import { connect } from "react-redux";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 
-const seatingEmpty = null
-
+const seatingEmpty = null;
 
 export const EventsHistory = (props) => {
-
   const seatingLeft = (eventDate, seats, venue) => {
-    
     const seat = seats.find((i) => i.startDate === eventDate);
-    return !seat ? seatingEmpty === true : seat.venue[venue]
+    return !seat ? seatingEmpty === true : seat.venue[venue];
   };
 
-
-
-  const loadingSize = 200
+  const loadingSize = 200;
   return (
     <>
       <h1 id="events-history-header">EVENTS HISTORY</h1>
-      <div id="loading">
-        {/* {props.loading && ( */}
-          <Loader 
-          type="Triangle" 
-          color="rgba(224, 151, 33, 0.7)" 
-          height={loadingSize} 
-          width={loadingSize}
-          visible={props.loading}
+      <div className="events-history-body">
+        <div id="loading">
+          <Loader
+            type="Triangle"
+            color="rgba(224, 151, 33, 0.7)"
+            height={loadingSize}
+            width={loadingSize}
+            visible={props.loading}
           />
-          
-        {/* )} */}
+        </div>
+        <div className="blackbox"></div>
+        <div className="events-history-container">
+          {!props.loading &&
+            (props.userEvents.length > 0 ? (
+              props.userEvents.map((event, idx) => (
+                <div className="events-history" key={idx}>
+
+                  <div className="events-history-delUpt-container">
+                    <label
+                      className="checkbox"
+                      htmlFor={`checkbox${event._id}`}
+                    >
+                      <input
+                        className="checkbox-input"
+                        id={`checkbox${event._id}`}
+                        checked={props.selectedOption === event._id}
+                        type="radio"
+                        onChange={props.handleOptionChange}
+                        value={event._id}
+                      />
+                      <div id="custom-checkbox"></div>
+                      Delete / Update
+                    </label>
+                  </div>
+                  <div className="events-history-info-container">
+                    <div>
+                      <b>Title: </b>
+                      {event.title}
+                    </div>
+                    <div>
+                      <b>Date: </b>
+                      {moment(event.startDate).format("DD-MM-YYYY")}
+                    </div>
+                    <div>
+                      <b>Time: </b>
+                      {event.startTime}
+                    </div>
+                    <div>
+                      <b>Venue: </b>
+                      {event.venue.split("_").join(" ")}
+                    </div>
+                    <div>
+                      <b>Performer: </b>
+                      {event.performer}
+                    </div>
+                    <div className="seatsAvail">
+                      <b>Seats Available: </b>
+                      {seatingEmpty
+                        ? ""
+                        : seatingLeft(
+                            event.startDate,
+                            props.seatsAvail,
+                            event.venue
+                          )}
+                    </div>
+                    <div>
+                      <b>Price: </b>
+                      {event.price}
+                    </div>
+                    <div>
+                      <b>Facebook: </b>
+                      {event.facebook}
+                    </div>
+                    <div>
+                      <b>Instagram: </b>
+                      {event.instagram}
+                    </div>
+                    <div>
+                      <b>Twitter: </b>
+                      {event.twitter}
+                    </div>
+                  </div>
+                  <div className="events-history-img-container">
+                    <div>
+                      <b>Image</b>
+                    </div>
+                    <div id="performer-img-container">
+                      <img src={`../../${event.image}`} alt="" />
+                    </div>
+                  </div>
+                  {/* <br/> */}
+                </div>
+              ))
+            ) : (
+              <h1 className="no-events">NO EVENTS</h1>
+            ))}
+        </div>
       </div>
-      <div>
-        {
-        !props.loading && (
-          props.userEvents.length > 0 ? (
-          props.userEvents.map((event, idx) => (
-            <ul className="events-history" key={idx}>
-              <li>{event.title}</li>
-              <li>Start: {moment(event.startDate).format("DD-MM-YYYY")}</li>
-              <li>Time: {event.startTime}</li>
-              <li>Venue: {event.venue.split("_").join(" ")}</li>
-              <li>Performer: {event.performer}</li>
-              <li className="seatsAvail">
-                Seats Available:{" "}
-                { seatingEmpty ? "" :
-                seatingLeft(event.startDate, props.seatsAvail, event.venue)
-                }
-              </li>
-              <li>Price: {event.price} </li>
-              <li>
-                <img id="performer-img" src={`../../${event.image}`} alt="" />
-              </li>
-              <li>
-                <label className="checkbox" htmlFor={`checkbox${event._id}`}>
-                  <input
-                    className="checkbox-input"
-                    id={`checkbox${event._id}`}
-                    checked={props.selectedOption === event._id}
-                    type="radio"
-                    onChange={props.handleOptionChange}
-                    value={event._id}
-                  />
-                  <div id="custom-checkbox"></div>
-                  Delete / Update
-                </label>
-              </li>
-            </ul>
-          ))
-        ) : (
-          <h1 className="no-events">NO EVENTS</h1>
-        )
-      )
-        }
-      </div> 
     </>
   );
-}
+};
 
 const mapStateToProps = (state) => {
   return {

@@ -14,23 +14,69 @@
     background-color: rgb(224, 39, 33) ;
 }
 
-.events-history {
-    text-align: center;
-    width: 100%;
+#loading{
+    margin-left: 42%;
+    margin-top: 100px;
+    position: absolute;
 }
 
-#events-history-btn {
+.blackbox {
+    display: block;
     background-color: #020202;
-    color: white;
+    height: auto;
+    width: 129.91px;
+    z-index: -1;
+}
+
+.events-history-body {
+    display: flex;
+    
+}
+
+
+.events-history-container {
+    width: 92%;
+}
+
+.events-history {
+    border-bottom: 5px double #663A2B;
+    display: flex;
+}
+
+
+.events-history-delUpt-container {
+    border-right: 5px double #663A2B;
+    padding-left: 50px;
+    padding-right: 50px;
+
+}
+
+.events-history-info-container {
+    border-right: 5px double #663A2B;
+    padding-left: 130px;
+    width: 40%;
+}
+
+.events-history-img-container {
+    padding-left: 100px;
+}
+
+
+.events-history-info-container div {
+    margin: 10px 0;
+}
+
+
+#events-history-btn {
+    background-color: white;
+    color: black;
 }
 
 #events-history-header {
     background-color: rgba(2, 2, 2, 1);
-    border-bottom: 1px solid white;
     color: white;
     padding: 5px 0;
     text-align: center;
-    width: 100%;
 }
 
 .profile-body{
@@ -39,20 +85,25 @@
 }
 
 #profile-btns  {
-    border: 1px solid black;
-    background-color: white;
+    /* border: 1px solid black; */
+    /* background-color: white; */
+    background-color: #020202;
     color: white;
+    /* height: 100%; */
     justify-content: space-between;
-    margin-top: 25px;
+    /* margin-top: 25px; */
     position: fixed;
-    top: 150px;
-    z-index: 100;
-    /* visibility: hidden; */
+    /* padding-left: 15px; */
+    top: 148px;
+    z-index: 10;
+    height: 100vh;
 }
 
 #profile-btns li {
     cursor: pointer;
-    padding: 10px 2px;
+    font-size: 18px;
+    /* padding: 30px 10px; */
+    padding: 30px 0;
 }
 
 #profile-btns li div {
@@ -106,9 +157,12 @@ Events history
 ==================*/
 
 .checkbox {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     cursor: pointer;
+    margin-top: 150px;
+    /* padding-right: 100px; */
+    padding: 10px;
 } 
 
 .checkbox-input {

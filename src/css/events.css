@@ -32,10 +32,15 @@
     text-align: center;
 }
 
-#performer-img {
-    border-radius: 5px;
+#performer-img-container {
     height: 250px;
     width: 250px;
+}
+
+#performer-img-container img {
+    border-radius: 5px;
+    height: 100%;
+    width: 100%;
 }
 
 
@@ -59,11 +64,6 @@
     width: 100%;
 }
 
-.events-history {
-    border-bottom: 1px dotted #663A2B;
-}
-
-
 .events-btn {
     background-color: rgb(224, 151, 33);
     border: none;
@@ -81,11 +81,6 @@
     padding-top: 20px;
 }
 
-#loading{
-    margin-left: 42%;
-    margin-top: 100px;
-    position: absolute;
-}
 
 .events-no-events {
     margin-left: 50%;

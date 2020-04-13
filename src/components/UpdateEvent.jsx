@@ -1,5 +1,41 @@
 import React, { Component } from "react";
 
+
+const timeToNumber = time => {
+  const h = parseInt(time.split(":")[0]) 
+  const m = parseInt(time.split(":")[1]) 
+  return [h, m]
+}
+
+const timeFixed15 = givenTime => {
+  console.log('givenTime :', givenTime);
+  const [givenHour, givenMinute] = timeToNumber(givenTime)
+  let hour = givenHour
+  let minute = 0
+  let time = []
+  if (givenMinute % 15 === 0) {
+      time[0] = givenHour;
+      time[1] = givenMinute
+      return time.join(":")
+  }
+  if (givenMinute > 0 && givenMinute < 15) {
+      minute = 15
+  }
+  if (givenMinute > 15 && givenMinute < 30) {
+      minute = 30
+  }
+  if (givenMinute > 30 && givenMinute < 45) {
+      minute = 45
+  }
+  if (givenMinute > 45) {
+      minute = 0
+      hour += 1
+  }
+  time[0] = hour
+  time[1] = minute === 0 ? "00" : minute
+  return time.join(":")
+}
+
 const DEFAULT_STATE = {
   title: "",
   startDate: "",
@@ -66,9 +102,17 @@ class UpdateEvent extends Component {
     data.append("id", this.props.id);
     data.append("title", this.state.title);
     data.append("startDate", this.state.startDate);
-    data.append("startTime", this.state.startTime);
+
+    data.append("startTime", timeFixed15(this.state.startTime));
+    console.log('timeFixed15 startTime:', timeFixed15(this.state.startTime));
+    // data.append("startTime", this.state.startTime);
+
     data.append("endDate", this.state.endDate);
-    data.append("endTime", this.state.endTime);
+
+    data.append("endTime", timeFixed15(this.state.endTime));
+    console.log('timeFixed15 endTime:', timeFixed15(this.state.endTime));
+
+    // data.append("endTime", this.state.endTime);
     data.append("venue", this.state.venue);
     data.append("performer", this.state.performer);
     data.append("image", this.state.image);
@@ -77,7 +121,6 @@ class UpdateEvent extends Component {
     data.append("facebook", this.state.facebook);
     data.append("instagram", this.state.instagram);
     data.append("twitter", this.state.twitter);
-    // this.setState(DEFAULT_STATE);
 
     const delDup = new FormData();
     delDup.append("delDup", true);

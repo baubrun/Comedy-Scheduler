@@ -583,24 +583,18 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
         facebook,
         instagram,
         twitter,
-  
     } = req.body
 
-    // const socialMedia = JSON.parse(req.body.socialMedia)
-    // console.log(' /updateEvent socialMedia', socialMedia)
-    // if (req.file !== undefined) {
     if (req.file) {
         img = renameImg(req.file.originalname)
 
         sharp(req.file.path)
             .resize(450, 450)
             .toFile(`./uploads/${img}`, (err) => {
-                console.log("err in sharp:", err)
+                if(err){console.log(err)}
             })
     }
 
-
-    console.log(img)
     await dbo.collection("events").updateOne({
             _id: ObjectID(id)
         }, {

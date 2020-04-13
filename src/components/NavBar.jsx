@@ -30,23 +30,24 @@ const NavBar = (props) => {
         ) : (
           ""
         )}
-        <div className="hostId">
-          {props.loggedIn ? `Salut ${props.hostId}!` : ""}
-        </div>
       </div>
+
       {props.loggedIn && <Dropdown logout={logout} />}
-      {
-        <div className="cart">
-          <Link to="/cart">
-            <img src="ticket-blk-white.png" alt="CART"></img>
-            {props.cart.length > 0 ? (
-              <span className="cart-length">{props.cart.length}</span>
-            ) : (
-              ""
-            )}
-          </Link>
-        </div>
-      }
+
+      <div className="hostId">
+        {props.loggedIn ? `Salut ${props.hostId}!` : ""}
+      </div>
+
+      <div className="cart">
+        <Link to="/cart">
+          <img src="ticket-blk-white.png" alt="CART"></img>
+          {props.cart.length > 0 ? (
+            <span className="cart-length">{props.cart.length}</span>
+          ) : (
+            ""
+          )}
+        </Link>
+      </div>
     </div>
   );
 };

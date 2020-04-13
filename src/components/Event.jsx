@@ -20,7 +20,7 @@ const Event = (props) => {
             <Link to={`/event/${title}`}>{title}</Link>
           </div>
           <div id="performer-img-container">
-            <img id="performer-img" src={`../../${image}`} alt="" />
+            <img src={`../../${image}`} alt="" />
           </div>
           <div className="event-info">
             <div id="performer-name">{performer}</div>
