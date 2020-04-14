@@ -27,7 +27,9 @@ class Confirmation extends Component {
     this.updateSeating()
   }
 
-  
+  handlePrint = () => {
+    window.print()
+  }
 
   render() {
     return (

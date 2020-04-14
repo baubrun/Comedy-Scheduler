@@ -27,7 +27,7 @@ export const EventsHistory = (props) => {
             visible={props.loading}
           />
         </div>
-        <div className="blackbox"></div>
+        {/* <div className="blackbox"></div> */}
         <div className="events-history-container">
           {!props.loading &&
             (props.userEvents.length > 0 ? (

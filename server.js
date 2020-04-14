@@ -27,8 +27,7 @@ app.use("/", express.static("uploads"))
 
 
 MongoClient.connect(
-    process.env.DB_URI,
-    {
+    process.env.DB_URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     }).then(client => {
@@ -57,38 +56,41 @@ const deleteEmptySeating = async (startDate, req, res) => {
 }
 
 const deleteImg = result => {
+    console.log('deleteImg result', result.value.image)
     process.chdir("./uploads")
 
-    fs.unlink(result.img, err => {
+    fs.unlink(result.value.image, err => {
         if (err) {
-            console.log(err)
+            console.log("deleteImg:", err)
         }
     })
 }
 
-const delOriginalImg = () => {
+const delOriginalImg = (res) => {
 
     const regex = /[\w+-]*chUpload-\w+\.\w+/
     process.chdir("./uploads")
 
     fs.readdir(process.cwd(), (err, files) => {
         if (err) {
-            console.log(err)
+            console.log("delOriginalImg err:",err)
+            return res.status(400)
         }
 
         const excludedFiles = files.filter(f =>
             f.indexOf(f.match(regex)) === -1
         )
-
-        if (excludedFiles.length > 0) {
-            excludedFiles.forEach(f => {
-                fs.unlink(f, err => {
-                    if (err) {
-                        console.log(err)
-                    }
-                })
-            })
-        }
+        console.log("in delOriginalImg excludedFiles:", excludedFiles)
+    //     if (excludedFiles.length > 0) {
+    //         excludedFiles.forEach(f => {
+    //             fs.unlink(f, err => {
+    //                 if (err) {
+    //                     console.log(err)
+    //                     return res.status(400)
+    //                 }
+    //             })
+    //         })
+    //     }
     })
 }
 
@@ -113,6 +115,7 @@ const isOverlap = (start, end, result) => {
     if ((givenStart >= eventStart && givenEnd <= eventEnd) ||
         (givenStart < eventStart && givenEnd > eventEnd) ||
         (givenStart < eventStart && givenEnd <= eventEnd) ||
+        (givenStart > givenEnd) ||
         ((givenStart > eventStart && givenStart < eventEnd) &&
             (givenEnd > eventEnd)
         )) {
@@ -162,17 +165,21 @@ const venueSeatingInit = venue => {
     }
 }
 
-// const validSocialMedia = obj => {
-//     return Object.keys(obj).length > 0 ? obj : ""
-// } 
 
 
 /* ==================
 DELETE
 ====================*/
 
-app.delete("/delOriginalImg", (req, res) => {
-    delOriginalImg()
+app.post("/delOriginalImg", (req, res) => {
+    // try {
+    //     delOriginalImg(res)
+    //     return res.status(200)
+    // } catch (error) {
+    //     console.log(error)
+    //     return res.status(400)
+    // }
+    delOriginalImg(res)
 })
 
 
@@ -291,7 +298,9 @@ app.post("/addEvent", upload.single("image"), async (req, res) => {
                     twitter: twitter,
                     dateAdded: new Date()
                 })
-                return res.json({success: true})
+                return res.json({
+                    success: true
+                })
             }
             // return res.json({
             //     ans: ans,
@@ -321,7 +330,10 @@ app.post("/addEvent", upload.single("image"), async (req, res) => {
 
 
 app.post("/checkout", upload.none(), async (req, res) => {
-    const {amount, itemsBought} = req.body
+    const {
+        amount,
+        itemsBought
+    } = req.body
     await dbo.collection("purchases").insertOne({
         amount,
         itemsBought: JSON.parse(itemsBought),
@@ -344,13 +356,12 @@ app.post("/deleteEvents", upload.none(), async (req, res) => {
             _id: ObjectID(req.body.id)
         }, (err, result) => {
             if (err) {
-                console.log(err)
+                console.log("/deleteEvents:", err)
                 return res.json({
                     success: false
                 })
             }
-            // deleteImg(result, req)
-            // console.log(result)
+            deleteImg(result, req)
         })
     return res.json({
         success: true
@@ -375,7 +386,7 @@ app.post("/deleteSeating", upload.none(), async (req, res) => {
             }
         }, (err, result) => {
             if (err) {
-                console.log(err)
+                console.log("/deleteSeating:",err)
                 return res.json({
                     success: false
                 })
@@ -400,7 +411,7 @@ app.post("/login", upload.none(), async (req, res) => {
         username: givenUsername
     }, async (err, user) => {
         if (err) {
-            console.log(err)
+            console.log("/user db:", err)
             return res.json({
                 success: false
             })
@@ -427,7 +438,7 @@ app.post("/login", upload.none(), async (req, res) => {
                 )
             }
         } catch (err) {
-            console.log(err)
+            console.log("/login:",err)
             return res.json({
                 success: false
             })
@@ -452,7 +463,7 @@ app.post("/register", upload.none(), async (req, res) => {
         username: username
     }, async (err, user) => {
         if (err) {
-            console.log(err)
+            console.log("user /register:",err)
             return res.status(400).json({
                 success: false
             })
@@ -591,7 +602,9 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
         sharp(req.file.path)
             .resize(450, 450)
             .toFile(`./uploads/${img}`, (err) => {
-                if(err){console.log(err)}
+                if (err) {
+                    console.log("sharp:",err)
+                }
             })
     }
 
@@ -615,7 +628,7 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
         },
         (err) => {
             if (err) {
-                console.log(err)
+                console.log("events db /updateEvent:",err)
                 return res.status(400).json({
                     success: false
                 })
@@ -650,17 +663,19 @@ app.post("/charge", upload.none(), async (req, res) => {
             confirm: true,
             description: "ticket",
             payment_method: id,
-            metadata: {order: order}
+            metadata: {
+                order: order
+            }
         })
         return res.json({
             success: true
         })
     } catch (error) {
-         return res.json({
+        return res.json({
             success: false,
             msg: error
         })
-        }
+    }
 
 })
 

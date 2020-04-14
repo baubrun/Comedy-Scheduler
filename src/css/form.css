@@ -2,13 +2,15 @@
 Form 
 ===============*/
 
-#errors{
+.errors{
   background-color: rgba(243, 60, 60, 0.856);
+  border-radius: 5px;
   display: flex;
   color: white;
   padding: 5px;
   width: 100%;
 }
+
 
 
 #close-btn{
@@ -221,6 +223,10 @@ select#end-time {
   padding: 10px;
 }
 
+.time-format {
+  margin-left: 235px;
+}
+
 .update-btns button:first-child {
   margin-right: auto;
 }
@@ -256,7 +262,8 @@ select#end-time {
 .update-event-form-container input{
   flex: 3 1 261px;
   margin: 10px 0 10px 0 ;
-  padding: 5px 0 ;
+  padding: 5px 5px ;
+  font-size: 14px;
 }
 
 .update-event-header {

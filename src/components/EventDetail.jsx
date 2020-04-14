@@ -63,16 +63,19 @@ const EventDetail = (props) => {
                 {facebook && (
                   <Link to={`facebook.com/${facebook}`}>
                     <img src="../../fb-chUpload-0.png" alt="facebook" />
+                    {/* <img src="fb.png" alt="facebook" /> */}
                   </Link>
                 )}
                 {instagram && (
                   <Link to={`instagram.com/${instagram}`}>
                     <img src="../../ig-chUpload-0.png" alt="instagram" />
+                    {/* <img src="ig.png" alt="instagram" /> */}
                   </Link>
                 )}
                 {twitter && (
                   <Link to={`instagram.com/${twitter}`}>
                     <img src="../../tt-chUpload-0.png" alt="twitter" />
+                    {/* <img src="tt.png" alt="twitter" /> */}
                   </Link>
                 )}
               </div>

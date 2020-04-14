@@ -89,16 +89,16 @@ class Profile extends Component {
     this.props.getSeatsAvail(seats);
   };
 
-  toDelete = () => {
-    const found = this.state.userEvents.find(
-      (event) => event._id === this.state.selectedOption
-    );
-    return {
-      startDate: found.startDate,
-      venue: found.venue,
-      image: found.image,
-    };
-  };
+  // toDelete = () => {
+  //   const found = this.state.userEvents.find(
+  //     (event) => event._id === this.state.selectedOption
+  //   );
+  //   return {
+  //     startDate: found.startDate,
+  //     venue: found.venue,
+  //     image: found.image,
+  //   };
+  // };
 
   deleteEvent = async () => {
     if (this.state.selectedOption === "") {
@@ -109,16 +109,15 @@ class Profile extends Component {
       if (confirm) {
         const dataEvents = new FormData();
         dataEvents.append("id", this.state.selectedOption);
-        dataEvents.append("image", this.toDelete().image);
+        // dataEvents.append("image", this.toDelete().image);
 
-        const dataSeating = new FormData();
-        dataSeating.append("startDate", this.toDelete().startDate);
-        dataSeating.append("venue", this.toDelete().venue);
+        // const dataSeating = new FormData();
+        // dataSeating.append("startDate", this.toDelete().startDate);
+        // dataSeating.append("venue", this.toDelete().venue);
 
         await Promise.all([
-          fetch("/deleteEvents", { method: "POST", body: dataEvents }),
-          fetch("/deleteSeating", { method: "POST", body: dataSeating }),
-        ]);
+          fetch("/deleteEvents", { method: "POST", body: dataEvents })
+        ]).catch(err => console.log(err));
         this.dispatchLoading();
       }
     }
@@ -213,6 +212,8 @@ class Profile extends Component {
       <div>
         <div className="profile-header">
           <h1>PROFILE</h1>
+          {/* <div className="blackbox"></div> */}
+
           {this.renderProfileButtons()}
         </div>
         <div className="profile-body">

@@ -61,7 +61,7 @@ class Login extends Component {
           <div className="login-form-container">
             {this.state.errors.map((err, idx) => {
               return (
-                <div key={idx} id="errors">
+                <div key={idx} className="errors">
                   {err.msg}
                   <span id="close-btn" onClick={this.handleCloseErrors}>
                     &times;

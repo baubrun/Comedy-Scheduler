@@ -24,8 +24,9 @@
     display: block;
     background-color: #020202;
     height: auto;
-    width: 129.91px;
+    width: 135px;
     z-index: -1;
+    /* height: 100vh; */
 }
 
 .events-history-body {
@@ -41,6 +42,7 @@
 .events-history {
     border-bottom: 5px double #663A2B;
     display: flex;
+    margin-left: 135px;
 }
 
 
@@ -96,7 +98,7 @@
     /* padding-left: 15px; */
     top: 148px;
     z-index: 10;
-    height: 100vh;
+    /* height: 100vh; */
 }
 
 #profile-btns li {
@@ -121,6 +123,7 @@
     flex-flow: row wrap;
     width: 100%;
     background-color: white;
+    /* height: auto; */
 }
 
 .profile-header h1{
