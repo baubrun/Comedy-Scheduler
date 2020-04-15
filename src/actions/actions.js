@@ -16,15 +16,42 @@ import {
     LOADED
 } from "./actionTypes"
 
+export const addToCartAction = item => ({
+    type: ADDED_TO_CART,
+    payload: item
+})
 
+export const confirmCheckoutAction = () => ({
+    type: CONFIRMED_CHECKOUT,
+    payload: true
+})
+
+export const deleteFromCartAction = itemIdx => ({
+    type: DELETED_FROM_CART,
+    payload: itemIdx
+})
+
+export const emptyCartAction = () => ({
+    type: EMPTIED_CART,
+    payload: []
+})
+
+export const getCartAction = items => ({
+    type: GOT_CART,
+    payload: items
+})
 export const getEventsAction = events => ({
     type: GOT_EVENTS,
     payload: events
 })
 
-export const loadingAction = () => ({
-    type: LOADING,
-    payload: true
+export const getItemsBoughtAction = items => ({
+    type: GOT_ITEMS_BOUGHT,
+    payload: items
+})
+export const getSeatsAvailAction = seats => ({
+    type: GOT_SEATS_AVAIL,
+    payload: seats
 })
 
 export const loadedAction = () => ({
@@ -32,23 +59,10 @@ export const loadedAction = () => ({
     payload: false
 })
 
-export const getSeatsAvailAction = seats => ({
-    type: GOT_SEATS_AVAIL,
-    payload: seats
+export const loadingAction = () => ({
+    type: LOADING,
+    payload: true
 })
-
-// export const getSeatsAvailAction = seats => ({
-//     type: GOT_SEATS_AVAIL,
-//     payload: {
-//         venue: seats
-//     }
-// })
-
-export const resetSeatsAvailAction = () => ({
-    type: RESET_SEATS_AVAIL,
-    payload: []
-})
-
 
 export const logInAction = hostId => ({
     type: LOGGED_IN,
@@ -66,30 +80,11 @@ export const logOutAction = () => ({
     }
 })
 
-export const getCartAction = items => ({
-    type: GOT_CART,
-    payload: items
+export const resetCheckoutAction = () => ({
+    type: RESET_CHECKOUT,
+    payload: false
 })
 
-export const getItemsBoughtAction = items => ({
-    type: GOT_ITEMS_BOUGHT,
-    payload: items
-})
-
-export const addToCartAction = item => ({
-    type: ADDED_TO_CART,
-    payload: item
-})
-
-export const deleteFromCartAction = itemIdx => ({
-    type: DELETED_FROM_CART,
-    payload: itemIdx
-})
-
-export const emptyCartAction = () => ({
-    type: EMPTIED_CART,
-    payload: []
-})
 
 export const resetEventsAction = () => ({
     type: RESET_EVENTS,
@@ -97,13 +92,14 @@ export const resetEventsAction = () => ({
 
 })
 
-export const confirmCheckoutAction = () => ({
-    type: CONFIRMED_CHECKOUT,
-    payload: true
+export const resetSeatsAvailAction = () => ({
+    type: RESET_SEATS_AVAIL,
+    payload: []
 })
 
-export const resetCheckoutAction = () => ({
-    type: RESET_CHECKOUT,
-    payload: false
-})
-
+// export const getSeatsAvailAction = seats => ({
+//     type: GOT_SEATS_AVAIL,
+//     payload: {
+//         venue: seats
+//     }
+// })

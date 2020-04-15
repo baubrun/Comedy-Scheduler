@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
-import { loadingAction, loadedAction } from "../actions/actions";
+import {
+  loadingAction,
+  loadedAction,
+  emptyCartAction,
+} from "../actions/actions";
 import { connect } from "react-redux";
 
 const CARD_OPTIONS = {
@@ -28,7 +32,6 @@ const orderNumber = () => {
 
 const formattedAmount = (amount) => {
   const [wholeNum, decimal] = amount.split(".");
-  console.log("formattedNum :", wholeNum + decimal);
   return wholeNum + decimal;
 };
 
@@ -38,16 +41,19 @@ const CheckoutForm = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [order, setOrder] = useState("");
-  const [stripeMsg, setSripeMsg] = useState("")
+  const [errors, setErrors] = useState([]);
 
   useEffect(() => {
     setOrder(orderNumber());
   }, []);
 
-  // const resetState = () => {
-  //   setName("");
-  //   setEmail("");
-  // };
+  const dispatchLoaded = () => {
+    props.loadedData();
+  };
+
+  const dispatchLoading = async () => {
+    props.loadingData();
+  };
 
   const handleName = (event) => {
     setName(event.target.value);
@@ -62,6 +68,7 @@ const CheckoutForm = (props) => {
     stripeData.append("id", id);
     stripeData.append("amount", formattedAmount(amount));
     stripeData.append("order", orderNum);
+    stripeData.append("customer", name);
     const response = await fetch("/charge", {
       method: "POST",
       body: stripeData,
@@ -69,12 +76,7 @@ const CheckoutForm = (props) => {
     const body = await response.text();
     const parser = JSON.parse(body);
     if (!parser.success) {
-      setSripeMsg(parser.msg)
-      console.log('stripeMsg :', stripeMsg);
-    }
-    else {
-      console.log("go to /confirmation");
-      // props.history.push("/confirmation")
+      return setErrors([parser.msg]);
     }
   };
 
@@ -88,7 +90,14 @@ const CheckoutForm = (props) => {
       method: "POST",
       body: data,
     });
-    
+  };
+
+  const handleCloseErrors = () => {
+    setErrors([]);
+  };
+
+  const dispatchEmptyCart = () => {
+    props.emptyCart();
   };
 
   const handleSubmit = async (event) => {
@@ -103,20 +112,28 @@ const CheckoutForm = (props) => {
     });
     if (!error) {
       const { id } = paymentMethod;
+      dispatchLoading(id);
+    
       await Promise.all([
         postCharge(props.amount, id, order),
         postPurchase(order),
-      ]).catch((err) => console.log(err));
+        setTimeout(() => {
+          dispatchLoaded();
+        }, 2000),
+      ]);
+  
+      dispatchEmptyCart();
+      props.history.push("/confirmation");
     } else {
-      setSripeMsg(error)
-      console.log(stripeMsg);
+      console.log(error);
     }
   };
 
-
   return (
-    <form onSubmit={handleSubmit} className="stripe-container">
-      <div className="stripe-header"><h1>CARD DETAIL</h1></div>
+    <form className="stripe-container" onSubmit={handleSubmit}>
+      <div className="stripe-header">
+        <h1>CARD DETAIL</h1>
+      </div>
       <fieldset>
         <label className="stripe-label" htmlFor="name">
           Name
@@ -127,7 +144,7 @@ const CheckoutForm = (props) => {
           type="text"
           onChange={handleName}
           placeholder="Name on Card"
-          // required
+          required
           value={name}
         />
       </fieldset>
@@ -141,37 +158,44 @@ const CheckoutForm = (props) => {
           type="email"
           onChange={handleEmail}
           placeholder="Email"
-          // required
+          required
           value={email}
         />
       </fieldset>
       <fieldset>
-        
         <CardElement options={CARD_OPTIONS} />
       </fieldset>
+      <div className="stripe-error-msg">
+        {errors.map((err, idx) => {
+          return (
+            <div key={idx} className="errors">
+              {err}
+              <span id="close-btn" onClick={handleCloseErrors}>
+                &times;
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
       <button type="submit" disabled={!stripe || props.loading}>
         PURCHASE
         <div className="stripe-spinner">
-        <Loader 
-        type="BallTriangle"
-        color="white"
-        height={30}
-        width={30}
-        visible={!props.loading}
-        />
+          <Loader
+            type="BallTriangle"
+            color="white"
+            height={30}
+            width={30}
+            visible={props.loading}
+          />
         </div>
       </button>
-      <div className="stripe-msg">
-
-      </div>
     </form>
   );
 };
 
-
 const mapStateToProps = (state) => {
   return {
-    seatsAvail: state.seatsAvail,
     loading: state.loading,
   };
 };
@@ -180,9 +204,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     loadingData: () => dispatch(loadingAction()),
     loadedData: () => dispatch(loadedAction()),
+    emptyCart: () => dispatch(emptyCartAction()),
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CheckoutForm);
-
-// export default CheckoutForm;

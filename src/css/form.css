@@ -8,6 +8,7 @@ Form
   display: flex;
   color: white;
   padding: 5px;
+  /* padding-left: 45%; */
   width: 100%;
 }
 
@@ -20,6 +21,7 @@ Form
   font-size: 30px;
   font-weight: bold;
   margin-left: auto;
+  /* width: 50%; */
 }
 
 #close-btn:hover {
@@ -130,8 +132,8 @@ Form
   padding: 5px 0;
 }
 
-.register-btn,
-.login-btn {
+.register-btn
+{
   background-color:  #663A2B;
   border: none;
   border-radius: 5px;
@@ -151,10 +153,6 @@ Form
 }
 
 
-.events-btn {
-  color: white
-}
-
 
 .show-events-addPage {
   color:  rgb(224, 151, 33);
@@ -172,14 +170,6 @@ Form
 UpdateEvent
 ======================*/
 
-.add-event-header {
-  background-color: #020202;
-  color: white;
-  display: flex;
-  padding: 5px 0;
-  justify-content: space-evenly;
-  width: 100%;
-}
 
 #cancel-update-btn {
   background-color:  rgba(243, 60, 60, 0.856);
@@ -266,13 +256,13 @@ select#end-time {
   font-size: 14px;
 }
 
-.update-event-header {
+/* .update-event-header {
   background-color: #020202;
   display: flex;
   color: white;
   justify-content: space-evenly;
   padding: 5px 0;  
-}
+} */
 
 #update-event-btn {
   background-color: rgb(224, 151, 33) ;

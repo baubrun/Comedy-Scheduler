@@ -28,7 +28,10 @@ class App extends Component {
         <Route exact={true} path="/event/:title" component={RenderEvent}/>
         <Route exact={true} path="/cart" component={RenderCart}/>
         <Route exact={true} path="/checkout" component={Checkout}/>
-        <Route exact={true} path="/confirmation" component={Confirmation}/>
+        {/* <Route exact={true} path="/confirmation" component={Confirmation}/> */}
+        <Route exact={true} path="/confirmation">
+          {this.props.checkout.length < 1 ? <Redirect to="/events" /> : <Confirmation />}
+        </Route>
         <Route exact={true} path="/profile">
           {!this.props.loggedIn ? <Redirect to="/login" /> : <Profile/>}
         </Route >
@@ -43,7 +46,8 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    loggedIn: state.auth.loggedIn
+    loggedIn: state.auth.loggedIn,
+    checkout: state.checkout
   }
 }
 

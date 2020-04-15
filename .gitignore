@@ -25,6 +25,8 @@ yarn-error.log*
 notes.txt
 prac.html
 
-reIm.js
+
 src/data
 public/toResize
+
+/uploads

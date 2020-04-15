@@ -1,15 +1,22 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { confirmCheckoutAction } from "../actions/actions";
+import { confirmCheckoutAction, emptyCartAction } from "../actions/actions";
 
 class Confirmation extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      orderNum: "",
+    };
+  }
 
   seatsTaken = () => {
-    return this.props.checkout.map(i => {
+    return this.props.checkout.map((i) => {
       return {
         venue: i.venue,
         qty: i.qty,
-        startDate: i.startDate
+        startDate: i.startDate,
       };
     });
   };
@@ -23,18 +30,36 @@ class Confirmation extends Component {
     });
   };
 
-  componentDidMount(){
-    this.updateSeating()
+
+  componentDidMount() {
+    this.updateSeating();
+    this.fetchOrderNum();
   }
 
   handlePrint = () => {
-    window.print()
-  }
+    window.print();
+  };
+
+  fetchOrderNum = async () => {
+    const response = await fetch("/orderNum");
+    const body = await response.text();
+    const parser = JSON.parse(body);
+    if (parser.success) {
+      this.setState({ orderNum: parser.order });
+    }
+  };
 
   render() {
     return (
-      <div>
-        {this.props.checkout.length > 0 ? (
+      <>
+        <div className="confirmation-header">
+          <h1>CONFIRMATION</h1>
+        </div>
+        <div id="print" onClick={this.handlePrint}>
+          <img src="print-40.png" alt="" />
+        </div>
+
+        <div className="confirmation-body">
           <table className="confirm">
             <thead>
               <tr>
@@ -46,11 +71,6 @@ class Confirmation extends Component {
                 <th># of tickets</th>
               </tr>
             </thead>
-            <tfoot className="confirm-num">
-              <tr>
-                {/* <td>Order #: {this.props.checkout.orderNumber}</td> */}
-              </tr>
-            </tfoot>
             <tbody>
               {this.props.checkout.map((item, idx) => {
                 return (
@@ -66,24 +86,28 @@ class Confirmation extends Component {
               })}
             </tbody>
           </table>
-        ) : (
-          <h1>Purchase a ticket!</h1>
-        )}
-      </div>
+          <div className="order-number">
+            <h2>Confirmation #:</h2> {this.state.orderNum}
+          </div>
+        </div>
+      </>
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    checkout: state.checkout
+    checkout: state.checkout,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    confirmCheckout: () => dispatch(confirmCheckoutAction())
+    confirmCheckout: () => dispatch(confirmCheckoutAction()),
+    emptyCart: () => dispatch(emptyCartAction()),
+
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Confirmation);
+

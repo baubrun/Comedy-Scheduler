@@ -68,8 +68,8 @@ class RenderCart extends Component {
     return (
       <>
         <div className="cart-header">
-          <Link to="/events">MORE TICKETS</Link>
-          <div className="cart-title">CART</div>
+          <Link to="/events"><h1>MORE TICKETS</h1></Link>
+          <div className="cart-title"><h1>CART</h1></div>
         </div>
         <div className="cart-body">
           {this.state.cartItems.length > 0 ? (

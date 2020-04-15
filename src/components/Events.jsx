@@ -154,7 +154,7 @@ class Events extends Component {
     return (
       <>
         <div className="events-header">
-          <h2>EVENTS</h2>
+          <h1>EVENTS</h1>
           <div className="venue-select">
             <h2>{venueFormatted ? venueFormatted : "CHOOSE A VENUE"}</h2>
             <select onChange={this.handleVenueChange} name="venue">

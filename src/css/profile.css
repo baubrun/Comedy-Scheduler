@@ -4,10 +4,26 @@
     justify-content: space-around;
 }
 
-.login-btn,
-#add-event-btn,
+.update-event-header,
+.add-event-header {
+    background-color: #663A2B;
+    color: white;
+    display: flex;
+    padding: 5px 0; 
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.hostId {
+    margin-left: 100px;
+    margin-top: 10px;
+}
+  
+
+  
 #remove-btn {
-    background-color: #663A2B ;
+    background-color: #663A2B;
+    color: white;
 }
 
 #delete-event-btn {
@@ -55,7 +71,8 @@
 
 .events-history-info-container {
     border-right: 5px double #663A2B;
-    padding-left: 130px;
+    /* padding-left: 130px; */
+    padding: 15px;
     width: 40%;
 }
 
@@ -74,12 +91,12 @@
     color: black;
 }
 
-#events-history-header {
+/* #events-history-header {
     background-color: rgba(2, 2, 2, 1);
     color: white;
     padding: 5px 0;
     text-align: center;
-}
+} */
 
 .profile-body{
     position: relative;
@@ -119,25 +136,23 @@
 }
 
 .profile-header {
-    display: flex;
-    flex-flow: row wrap;
-    width: 100%;
-    background-color: white;
+    /* display: flex; */
+    /* flex-flow: row wrap; */
+    /* width: 100%; */
+    /* background-color: white; */
     /* height: auto; */
 }
 
 .profile-header h1{
     background-color: #663A2B ;
     color: white;
+    letter-spacing: 2px;
     /* margin-bottom: 10px; */
     padding: 5px 0;
     text-align: center;
     width: 100%;
 }
 
-#add-event-btn {
-    color: white;
-}
 
 #remove-btn  {
     border: none;

@@ -1,0 +1,9 @@
+@media print {
+    .cart,
+    #print,
+    #login-link 
+    {
+        display: none
+    }
+    
+}

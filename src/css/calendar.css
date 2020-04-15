@@ -1,34 +1,27 @@
 .rbc-calendar,
 .rbc-day-bg.rbc-off-range-bg 
  {
-    background-color: black;
+    background-color: #020202;
 }
 
 .rbc-calendar,
-/* .rbc-btn-group button, */
-.rbc-btn-group,
-.rbc-toolbar,
 .rbc-date-cell.rbc-off-range a
 {
 color: white;
 }
 
 .rbc-day-bg.rbc-today,
-.rbc-header.rbc-today,
-.rbc-day-slot.rbc-time-column.rbc-now.rbc-today
+.rbc-header.rbc-today, 
+ .rbc-day-slot.rbc-time-column.rbc-now.rbc-today
 {
    background-color: rgb(224, 151, 33)
-}
+} 
 
-/* .rbc-slot-selection {
+.rbc-slot-selection {
    background-color: #663A2B;
-}
- */
- .rbc-show-more {
+} 
+
+.rbc-show-more {
    color: #663A2B;
-
- }
-
-.rbc-btn-group > button {
-   color: white;
-}
+ } 
+ 

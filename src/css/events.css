@@ -11,13 +11,8 @@
     border-top: 1px dotted #663A2B;
     border-radius: 5px;
     color: white;
-    /* display: flex; */
-    /* flex-flow: row wrap; */
-    /* justify-content: center; */
     margin: 15px ;
     padding: 20px 30px;
-    /* width: 310px;
-    height: 507px; */
 }
 
 .event a {
@@ -57,22 +52,11 @@
     justify-content: space-around;
 }
 
-.events-header h2 {
-    background-color: #020202;
-    color: white;
-    text-align: center;
-    width: 100%;
-}
 
-.events-btn {
-    background-color: rgb(224, 151, 33);
-    border: none;
-    border-radius: 5px;
-    color: whitesmoke;
-    cursor: pointer;
-    padding: 5px;
-}
 
+.events-btn:hover {
+    background-color: #663A2B ;
+}
 
 
 .event-info div{
@@ -159,17 +143,17 @@
     justify-content: center;
 }
 
-.venue-select h2 {
+/* .venue-select h2 {
     background-color: #663A2B;
     color: white;
     margin-bottom: 5px;
     text-align: center;
     width: 100%;
-}
+} */
 
 .venue-select > select {
-    border-color: #663A2B;
-    color: #663A2B;
+    border-color: #020202;
+    color: #020202;
     cursor: pointer;
     height: 20px;
     margin: 5px 0 10px 0;

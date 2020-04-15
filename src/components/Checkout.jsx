@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { confirmCheckoutAction } from "../actions/actions";
-import { emptyCartAction } from "../actions/actions";
-import { resetCheckoutAction } from "../actions/actions";
+// import { confirmCheckoutAction } from "../actions/actions";
+// import { emptyCartAction } from "../actions/actions";
+// import { resetCheckoutAction } from "../actions/actions";
 import CheckoutForm from "./CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
@@ -32,6 +32,7 @@ class Checkout extends Component {
     return subTotal;
   };
 
+
   filterItemsBought = () => {
     return this.props.checkout.map((i) => {
       return {
@@ -58,9 +59,9 @@ class Checkout extends Component {
       : this.props.history.push("/events");
   }
 
-  dispatchConfirmCheckout = () => {
-    this.props.confirmCheckout();
-  };
+  // dispatchConfirmCheckout = () => {
+  //   this.props.confirmCheckout();
+  // };
 
   dispatchEmptyCart = () => {
     this.props.emptyCart();
@@ -91,7 +92,7 @@ class Checkout extends Component {
 
     return (
       <div className="checkout">
-        <div className="checkout-header">CHECKOUT</div>
+        <div className="checkout-header"><h1>CHECKOUT</h1></div>
 
         <div className="checkout-body">
           {this.props.checkout === []
@@ -102,27 +103,18 @@ class Checkout extends Component {
                     <div>
                       <h2>SUMMARY</h2>
                     </div>
-                    {/* <div>
-                      {`${numTickets()} ticket${
-                        numTickets() > 1 ? "s" : ""
-                      } for:`}
-                    </div> */}
                     <div  className="checkout-summary-items">
                       {`${numTickets()} ticket${
                         numTickets() > 1 ? "s" : ""
                       } for:`}
-                    {/* </div> */}
-                    {/* <div> */}
                       {this.state.itemsBought.map((item, idx) => (
                         <ul key={idx}>
-                        {/* <ul className="checkout-summary-items" key={idx}> */}
                           <li>{item.title}</li>
                         </ul>
                       ))}
                     </div>
                     <div className="checkout-summary-total-amount">
                       <div className="checkout-summary-total">TOTAL </div>
-                      {/* <div>$ {this.state.total}</div> */}
                       <div className="checkout-summary-amount"> 
                         {`$ ${this.superscript()[0]}`}<sup>{this.superscript()[1]}</sup>
                       </div>
@@ -157,9 +149,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    confirmCheckout: () => dispatch(confirmCheckoutAction()),
-    emptyCart: () => dispatch(emptyCartAction()),
-    resetCheckout: () => dispatch(resetCheckoutAction()),
+    // confirmCheckout: () => dispatch(confirmCheckoutAction()),
+    // emptyCart: () => dispatch(emptyCartAction()),
+    // resetCheckout: () => dispatch(resetCheckoutAction()),
   };
 };
 

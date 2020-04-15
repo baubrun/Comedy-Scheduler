@@ -4,8 +4,6 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { connect } from "react-redux";
 import "moment/locale/en-gb";
-// import { getEventsAction, getSeatsAvailAction } from "../actions/actions";
-// import { loadingAction, loadedAction } from "../actions/actions";
 
 
 
@@ -22,14 +20,8 @@ const eventStyleGetter = (event, start, end, isSelected) => {
   };
 };
 
-const formats = {
-  eventTimeRangeStartFormat: ({ start }, culture, localizer) =>
-    localizer.format(start, { date: "short" }, culture),
-  eventTimeRangeEndFormat: ({ end }, culture, localizer) =>
-    localizer.format(end, { date: "short" }, culture)
-};
 
-const DateTimeFormatter = (date, time) => {
+const r = (date, time) => {
   return moment(`${date} ${time}`).format();
 };
 class CalendarView extends Component {
@@ -92,8 +84,8 @@ class CalendarView extends Component {
       return {
         // works for non overnight events
         title: event.title,
-        start: new Date(DateTimeFormatter(event.startDate, event.startTime)),
-        end: new Date(DateTimeFormatter(event.endDate, event.endTime))
+        start: new Date(r(event.startDate, event.startTime)),
+        end: new Date(r(event.endDate, event.endTime))
       };
     });
     return filterEventProps;
@@ -180,12 +172,10 @@ class CalendarView extends Component {
           endAccessor="end"
           eventPropGetter={eventStyleGetter}
           events={this.state.events}
-          formats={formats}
           localizer={localizer}
-          // min={new Date(0, 0, 0, 21, 0, 0)}
-          // max={new Date(0, 0, 0, 6, 0, 0)}
           onSelectEvent={event => alert(event.title)}
           onSelectSlot={this.props.loggedIn ? this.handleSelect : ""}
+          showMultiDayTimes={true}
           selectable
           startAccessor="start"
           step={15}
@@ -203,16 +193,6 @@ const mapStateToProps = state => {
     hostId: state.auth.hostId
   };
 };
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     getEvents: events => dispatch(getEventsAction(events)),
-//     getSeatsAvail: seats => dispatch(getSeatsAvailAction(seats)),
-//     loadData: () => dispatch(loadingAction())
-//   };
-// };
-
-// export default connect(mapStateToProps, mapDispatchToProps)(CalendarView);
 
 
 export default connect(mapStateToProps)(CalendarView);

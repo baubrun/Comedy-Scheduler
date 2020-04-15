@@ -6,7 +6,7 @@ Mobile Styles: 0 to 480px
 @media only screen and (max-width: 480px) {
 
     * {
-        font-size: 1.2em;
+        font-size: 1.1em;
     }
 
      .dropdown img {
@@ -14,8 +14,9 @@ Mobile Styles: 0 to 480px
         height: 50px;
       } 
 
-    .event {
-        display: block;
+    
+    .event a {
+        font-size: 20px;
     }
 
     .events-header {
@@ -64,6 +65,9 @@ Mobile Styles: 0 to 480px
     .profile-header h1 {
         margin-bottom: 0;
     }
+
+
+
 
     .venue-select select {
         padding: 10px;

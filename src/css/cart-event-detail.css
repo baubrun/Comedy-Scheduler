@@ -1,3 +1,40 @@
+.events-header h1,
+.profile-header h1 ,
+.confirmation-header,
+.cart-header,
+.checkout-header
+/* .event-detail-header  */
+{
+    /* background-color: #663A2B; */
+    background-color: #020202;
+    display: flex;
+    color: white;
+    flex-flow: row wrap;
+    justify-content: center;
+    letter-spacing: 1px;
+    padding: 5px 0;
+    width: 100%;
+}
+
+.checkout-header ,
+/* .cart-header, */
+.event-detail-header,
+.venue-select h2 ,
+#events-history-header 
+ {
+    background-color: #663A2B;
+    display: flex;
+    color: white;
+    /* flex-flow: row wrap; */
+    justify-content: center;
+    letter-spacing: 1px;
+    padding: 5px 0;
+    width: 100%;
+}
+
+
+
+
 .cart-length {
     align-items: center;
     border-radius: 50%;
@@ -7,15 +44,6 @@
     width: 25px;
 }
 
-.cart-header,
-.checkout-header,
-.event-detail-header {
-    background-color: #663A2B;
-    display: flex;
-    color: white;
-    padding: 5px 0;
-    width: 100%;
-}
 
 .cart-header a,
 .event-detail-header a {
@@ -79,12 +107,6 @@
 }
 
 
-#events-btn,
-#add-event-btn {
-    justify-content: center;
-}
-
-
 
 .event li {
     display: flex;
@@ -95,8 +117,8 @@
 }
 
 .performer-img-detail {
-    /* height: 250px;
-    width:  250px; */
+   border-radius: 1000px;
+   margin-right: 150px;
 }
 
 .remove-btn {
@@ -105,8 +127,8 @@
 
 
 .total {
-    /* border: 3px solid rgb(224, 151, 33); */
-    border: 3px solid #663A2B;
+    /* border: 3px solid #020202; */
+    border: 3px solid#663A2B ;
     border-radius: 5px;
     display: flex;
     flex-flow: row wrap;
@@ -123,14 +145,6 @@ tfoot {
     color: #663A2B;
     font-size: 0.7em;
     font-style: italic;
-}
-
-
-.social-media {
-    /* background-color: #fff; */
-    /* margin-left: 65%; */
-    /* width: 100%; */
-    
 }
 
 

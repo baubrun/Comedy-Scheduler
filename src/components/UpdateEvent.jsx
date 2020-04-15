@@ -9,11 +9,12 @@ const validTime = (start, end) => {
 };
 
 const validTimeFormat = (start, end) => {
-  const time = validTime(start, end);
+  // const time = validTime(start, end);
   const regex = RegExp(/([0-1]?\d|2[0-3]):[0-5]\d$/);
   const startFormat = regex.test(start);
   const endFormat = regex.test(end);
-  return startFormat && endFormat && time ? true : false;
+  // return startFormat && endFormat && time ? true : false;
+  return startFormat && endFormat  ? true : false;
 };
 
 const minutesToTenDigits = (min) => {
@@ -193,9 +194,9 @@ class UpdateEvent extends Component {
     return (
       <>
         <div className="update-event-header">
-          <h2 className="show-events-updatePage" onClick={this.props.fetchData}>
+          {/* <h2 className="show-events-updatePage" onClick={this.props.fetchData}>
             LOAD EVENTS
-          </h2>
+          </h2> */}
           <h2>UPDATE EVENT</h2>
         </div>
         <div className="update-body">

@@ -1,18 +1,20 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import Dropdown from "./Dropdown";
 import {
   logOutAction,
   resetSeatsAvailAction,
   resetEventsAction,
+  emptyCartAction, 
 } from "../actions/actions";
-import Dropdown from "./Dropdown";
 
 const NavBar = (props) => {
   const currentPage = useLocation().pathname;
 
   const logout = () => {
     props.logoutUser();
+    props.emptyCart()
     props.resetSeatsAvail();
     props.resetEvents();
   };
@@ -25,7 +27,7 @@ const NavBar = (props) => {
         </h1>
         {!props.loggedIn && currentPage !== "/login" ? (
           <Link to="/login">
-            <div id="login-link">LOGIN</div>
+            <div id="login-link"><h1>LOGIN</h1></div>
           </Link>
         ) : (
           ""
@@ -66,6 +68,8 @@ const mapDispatchToProps = (dispatch) => {
     logoutUser: () => dispatch(logOutAction()),
     resetSeatsAvail: () => dispatch(resetSeatsAvailAction()),
     resetEvents: () => dispatch(resetEventsAction()),
+    emptyCart: () => dispatch(emptyCartAction()),
+
   };
 };
 

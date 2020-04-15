@@ -13,10 +13,9 @@ const validateRegisterForm = require("./validators").validateRegisterForm
 const SALT_FACTOR = 10
 let dbo = undefined
 const stripe = require("stripe")(process.env.STRIPE_SECRET)
-const uuid = require("uuid/v4")
 const sharp = require("sharp")
 const fs = require('fs')
-
+let orderNum = ""
 /*=============
  Middleware 
  ==============*/
@@ -73,7 +72,7 @@ const delOriginalImg = (res) => {
 
     fs.readdir(process.cwd(), (err, files) => {
         if (err) {
-            console.log("delOriginalImg err:",err)
+            console.log("delOriginalImg err:", err)
             return res.status(400)
         }
 
@@ -81,16 +80,16 @@ const delOriginalImg = (res) => {
             f.indexOf(f.match(regex)) === -1
         )
         console.log("in delOriginalImg excludedFiles:", excludedFiles)
-    //     if (excludedFiles.length > 0) {
-    //         excludedFiles.forEach(f => {
-    //             fs.unlink(f, err => {
-    //                 if (err) {
-    //                     console.log(err)
-    //                     return res.status(400)
-    //                 }
-    //             })
-    //         })
-    //     }
+        //     if (excludedFiles.length > 0) {
+        //         excludedFiles.forEach(f => {
+        //             fs.unlink(f, err => {
+        //                 if (err) {
+        //                     console.log(err)
+        //                     return res.status(400)
+        //                 }
+        //             })
+        //         })
+        //     }
     })
 }
 
@@ -241,6 +240,13 @@ app.get("/getSeatsAvail", async (req, res) => {
 })
 
 
+app.get("/orderNum", (req, res) => {
+    return res.json({
+        success: true,
+        order: orderNum
+    })
+})
+
 /* =====================
 POST 
 ========================*/
@@ -332,12 +338,15 @@ app.post("/addEvent", upload.single("image"), async (req, res) => {
 app.post("/checkout", upload.none(), async (req, res) => {
     const {
         amount,
-        itemsBought
+        itemsBought,
+        order
     } = req.body
     await dbo.collection("purchases").insertOne({
-        amount,
+        amount: amount,
         itemsBought: JSON.parse(itemsBought),
+        order: order,
         dateAdded: new Date()
+
     }, err => {
         if (err) {
             return res.json({
@@ -386,7 +395,7 @@ app.post("/deleteSeating", upload.none(), async (req, res) => {
             }
         }, (err, result) => {
             if (err) {
-                console.log("/deleteSeating:",err)
+                console.log("/deleteSeating:", err)
                 return res.json({
                     success: false
                 })
@@ -438,7 +447,7 @@ app.post("/login", upload.none(), async (req, res) => {
                 )
             }
         } catch (err) {
-            console.log("/login:",err)
+            console.log("/login:", err)
             return res.json({
                 success: false
             })
@@ -463,7 +472,7 @@ app.post("/register", upload.none(), async (req, res) => {
         username: username
     }, async (err, user) => {
         if (err) {
-            console.log("user /register:",err)
+            console.log("user /register:", err)
             return res.status(400).json({
                 success: false
             })
@@ -603,7 +612,7 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
             .resize(450, 450)
             .toFile(`./uploads/${img}`, (err) => {
                 if (err) {
-                    console.log("sharp:",err)
+                    console.log("sharp:", err)
                 }
             })
     }
@@ -628,7 +637,7 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
         },
         (err) => {
             if (err) {
-                console.log("events db /updateEvent:",err)
+                console.log("events db /updateEvent:", err)
                 return res.status(400).json({
                     success: false
                 })
@@ -653,8 +662,11 @@ app.post("/charge", upload.none(), async (req, res) => {
     const {
         id,
         amount,
-        order
+        order,
+        name
     } = req.body
+
+    orderNum = order
 
     try {
         await stripe.paymentIntents.create({
@@ -663,6 +675,7 @@ app.post("/charge", upload.none(), async (req, res) => {
             confirm: true,
             description: "ticket",
             payment_method: id,
+            customer: name,
             metadata: {
                 order: order
             }
@@ -671,9 +684,10 @@ app.post("/charge", upload.none(), async (req, res) => {
             success: true
         })
     } catch (error) {
+        console.log("stripe error:", error.raw.message)
         return res.json({
             success: false,
-            msg: error
+            msg: error.raw.message
         })
     }
 
