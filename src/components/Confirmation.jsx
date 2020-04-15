@@ -8,6 +8,7 @@ class Confirmation extends Component {
 
     this.state = {
       orderNum: "",
+      total: "",
     };
   }
 
@@ -30,22 +31,24 @@ class Confirmation extends Component {
     });
   };
 
-
   componentDidMount() {
     this.updateSeating();
-    this.fetchOrderNum();
+    this.fetchConfirmation();
   }
 
   handlePrint = () => {
     window.print();
   };
 
-  fetchOrderNum = async () => {
+  fetchConfirmation = async () => {
     const response = await fetch("/orderNum");
     const body = await response.text();
     const parser = JSON.parse(body);
     if (parser.success) {
-      this.setState({ orderNum: parser.order });
+      this.setState({
+        orderNum: parser.order,
+        total: parser.amount,
+      });
     }
   };
 
@@ -77,7 +80,7 @@ class Confirmation extends Component {
                   <tr key={idx}>
                     <td>{item.title}</td>
                     <td>{item.performer}</td>
-                    <td>{item.venue}</td>
+                    <td>{item.venue.split("_").join(" ")}</td>
                     <td>{item.startDate}</td>
                     <td>{item.startTime}</td>
                     <td>{item.qty}</td>
@@ -87,7 +90,12 @@ class Confirmation extends Component {
             </tbody>
           </table>
           <div className="order-number">
-            <h2>Confirmation #:</h2> {this.state.orderNum}
+            <div>
+              <h2>Confirmation #: </h2> {this.state.orderNum}
+            </div>
+          </div>
+          <div className="order-total">
+            <h2>Total Paid: </h2> ${parseInt(this.state.total) / 100}
           </div>
         </div>
       </>
@@ -105,9 +113,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     confirmCheckout: () => dispatch(confirmCheckoutAction()),
     emptyCart: () => dispatch(emptyCartAction()),
-
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Confirmation);
-

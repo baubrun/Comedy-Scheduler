@@ -41,7 +41,7 @@ const CheckoutForm = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [order, setOrder] = useState("");
-  const [errors, setErrors] = useState([]);
+  const [pmtErrors, setPmtErrors] = useState([]);
 
   useEffect(() => {
     setOrder(orderNumber());
@@ -51,10 +51,6 @@ const CheckoutForm = (props) => {
     props.loadedData();
   };
 
-  const dispatchLoading = async () => {
-    props.loadingData();
-  };
-
   const handleName = (event) => {
     setName(event.target.value);
   };
@@ -62,8 +58,39 @@ const CheckoutForm = (props) => {
   const handleEmail = (event) => {
     setEmail(event.target.value);
   };
+  const handleCloseErrors = () => {
+    setPmtErrors([]);
+  };
 
-  const postCharge = async (amount, id, orderNum) => {
+  const dispatchEmptyCart = () => {
+    props.emptyCart();
+  };
+
+  const dispatchLoading = () => {
+    props.loadingData();
+  };
+
+  const storePay = async (order) => {
+    console.log("in storePay");
+    const { amount, items } = props;
+    const data = new FormData();
+    data.append("amount", amount);
+    data.append("itemsBought", JSON.stringify(items));
+    data.append("order", order);
+    const response = await fetch("/checkout", {
+      method: "POST",
+      body: data,
+    });
+    const body = await response.text();
+    const parser = JSON.parse(body);
+    console.log("in storePay parser.success", parser.success);
+    if (parser.success) {
+      dispatchEmptyCart();
+      props.history.push("/confirmation");
+    }
+  };
+  
+  const pay = async (amount, id, orderNum) => {
     const stripeData = new FormData();
     stripeData.append("id", id);
     stripeData.append("amount", formattedAmount(amount));
@@ -75,29 +102,12 @@ const CheckoutForm = (props) => {
     });
     const body = await response.text();
     const parser = JSON.parse(body);
+    dispatchLoaded();
     if (!parser.success) {
-      return setErrors([parser.msg]);
+      setPmtErrors([parser.msg]);
+    } else {
+      storePay(order);
     }
-  };
-
-  const postPurchase = async (order) => {
-    const { amount, items } = props;
-    const data = new FormData();
-    data.append("amount", amount);
-    data.append("itemsBought", JSON.stringify(items));
-    data.append("order", order);
-    await fetch("/checkout", {
-      method: "POST",
-      body: data,
-    });
-  };
-
-  const handleCloseErrors = () => {
-    setErrors([]);
-  };
-
-  const dispatchEmptyCart = () => {
-    props.emptyCart();
   };
 
   const handleSubmit = async (event) => {
@@ -112,18 +122,8 @@ const CheckoutForm = (props) => {
     });
     if (!error) {
       const { id } = paymentMethod;
-      dispatchLoading(id);
-    
-      await Promise.all([
-        postCharge(props.amount, id, order),
-        postPurchase(order),
-        setTimeout(() => {
-          dispatchLoaded();
-        }, 2000),
-      ]);
-  
-      dispatchEmptyCart();
-      props.history.push("/confirmation");
+      dispatchLoading();
+      pay(props.amount, id, order);
     } else {
       console.log(error);
     }
@@ -162,11 +162,10 @@ const CheckoutForm = (props) => {
           value={email}
         />
       </fieldset>
-      <fieldset>
-        <CardElement options={CARD_OPTIONS} />
-      </fieldset>
+      <fieldset>{<CardElement options={CARD_OPTIONS} />}</fieldset>
+
       <div className="stripe-error-msg">
-        {errors.map((err, idx) => {
+        {pmtErrors.map((err, idx) => {
           return (
             <div key={idx} className="errors">
               {err}

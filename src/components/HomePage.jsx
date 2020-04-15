@@ -22,13 +22,13 @@ class HomePage extends Component {
           <img src="club-2.jpg" alt="" />
           <Link className="home-events btn" to="/events">
             <div>
-              <h1>EVENTS</h1>
+              <h1>TICKETS</h1>
             </div>
           </Link>
           <div className="break"></div>
           <Link className="home-add btn" to="/login">
             <div>
-              <h1>ADD EVENT</h1>
+              <h1>HOST AN EVENT</h1>
             </div>
           </Link>
         </div>

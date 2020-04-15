@@ -16,6 +16,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET)
 const sharp = require("sharp")
 const fs = require('fs')
 let orderNum = ""
+let total = ""
 /*=============
  Middleware 
  ==============*/
@@ -243,7 +244,8 @@ app.get("/getSeatsAvail", async (req, res) => {
 app.get("/orderNum", (req, res) => {
     return res.json({
         success: true,
-        order: orderNum
+        order: orderNum,
+        amount: total
     })
 })
 
@@ -659,15 +661,16 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
 
 
 app.post("/charge", upload.none(), async (req, res) => {
+    console.log("/charge")
     const {
         id,
         amount,
         order,
-        name
+        
     } = req.body
 
     orderNum = order
-
+    total = amount
     try {
         await stripe.paymentIntents.create({
             amount: amount,
@@ -675,7 +678,6 @@ app.post("/charge", upload.none(), async (req, res) => {
             confirm: true,
             description: "ticket",
             payment_method: id,
-            customer: name,
             metadata: {
                 order: order
             }

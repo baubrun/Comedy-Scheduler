@@ -66,15 +66,11 @@
 }
 
 
-/* .events-no-events {
-    margin-left: 50%;
+.events-no-events {
+    margin-top: 10px;
+    margin-left: 10px;
 }
 
-.events-no-events {
-    font-size: 18px;
-    margin-top: 100px;
-    margin-left: 47%;
-} */
 
 
 .no-events {
@@ -219,9 +215,11 @@ EVENT DETAIL
 
 .event-detail-info {
     font-family: 'Courier Prime', monospace;
-    /* font-size: 18px; */
+    font-size: 18px;
     letter-spacing: 2px;
     margin-left: 50px;
+    margin-top: 10px;
+    padding: 10px 0;
 }
 
 .event-detail {

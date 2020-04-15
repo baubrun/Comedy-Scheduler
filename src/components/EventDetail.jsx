@@ -4,9 +4,7 @@ import { addToCartAction } from "../actions/actions";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
-
 const EventDetail = (props) => {
-
   const dispatchAddToCart = () => {
     props.addToCart(props.event);
   };
@@ -28,7 +26,9 @@ const EventDetail = (props) => {
   return (
     <div>
       <div className="event-detail-header">
-        <Link to="/events"><h1>EVENTS</h1></Link>
+        <Link to="/events">
+          <h1>EVENTS</h1>
+        </Link>
       </div>
       <div className="event-detail-body">
         <ul className="event-detail" key={_id}>
@@ -39,26 +39,25 @@ const EventDetail = (props) => {
               alt=""
             />
           </li>
-
           <li>
-            <li>
+            <div>
               <Link to="/cart">
                 <button className="reserve-btn" onClick={dispatchAddToCart}>
                   RESERVE
                 </button>
               </Link>
-            </li>
-            <li className="event-detail-info">Title: {title}</li>
-            <li className="event-detail-info">
+            </div>
+            <div className="event-detail-info">Title: {title}</div>
+            <div className="event-detail-info">
               Date: {moment(`${startDate}`).format("DD-MM-YYYY")}
-            </li>
-            <li className="event-detail-info">Time: {startTime}</li>
-            <li className="event-detail-info">
+            </div>
+            <div className="event-detail-info">Time: {startTime}</div>
+            <div className="event-detail-info">
               Venue: {venue.split("_").join(" ")}
-            </li>
-            <li className="event-detail-info">Performer: {performer}</li>
-            <li className="event-detail-info">Price: {price} $</li>
-            <li className="event-detail-info">
+            </div>
+            <div className="event-detail-info">Performer: {performer}</div>
+            <div className="event-detail-info">Price: {price} $</div>
+            <div className="event-detail-info">
               <div className="social-media">
                 {facebook && (
                   <Link to={`facebook.com/${facebook}`}>
@@ -76,7 +75,7 @@ const EventDetail = (props) => {
                   </Link>
                 )}
               </div>
-            </li>
+            </div>
           </li>
         </ul>
       </div>

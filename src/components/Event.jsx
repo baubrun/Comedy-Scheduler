@@ -4,10 +4,8 @@ import moment from "moment";
 
 const Event = (props) => {
   const seatingLeft = (eventDate, seats, venue) => {
-    console.log('seats :', seats);
 
     const seat = seats.find((i) => i.startDate === eventDate);
-    console.log("seat :", seat.venue[venue]);
     return seat.venue[venue];
   };
 
