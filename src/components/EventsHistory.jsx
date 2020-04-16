@@ -27,7 +27,6 @@ export const EventsHistory = (props) => {
             visible={props.loading}
           />
         </div>
-        {/* <div className="blackbox"></div> */}
         <div className="events-history-container">
           {!props.loading &&
             (props.userEvents.length > 0 ? (
@@ -107,7 +106,6 @@ export const EventsHistory = (props) => {
                       <img src={`../../${event.image}`} alt="" />
                     </div>
                   </div>
-                  {/* <br/> */}
                 </div>
               ))
             ) : (

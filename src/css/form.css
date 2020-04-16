@@ -2,26 +2,23 @@
 Form 
 ===============*/
 
-.errors{
+.errors {
   background-color: rgba(243, 60, 60, 0.856);
   border-radius: 5px;
   display: flex;
   color: white;
   padding: 5px;
-  /* padding-left: 45%; */
   width: 100%;
 }
 
 
 
-#close-btn{
+#close-btn {
   color: white;
   cursor: pointer;
-  /* float: right; */
   font-size: 30px;
   font-weight: bold;
   margin-left: auto;
-  /* width: 50%; */
 }
 
 #close-btn:hover {
@@ -29,10 +26,11 @@ Form
 }
 
 .login {
-  background-image: url("./images/door-lock.jpg") ;
+  background-image: url("./images/door-lock.jpg");
   background-size: cover;
   height: 100vh;
 }
+
 .modal {
   overflow: auto;
   position: fixed;
@@ -41,9 +39,7 @@ Form
 
 
 .login-flex-container,
-.register-flex-container
-/* .modal-content  */
-{
+.register-flex-container {
   background-color: #fefefe;
   border: 1px solid #888;
   border-radius: 5px;
@@ -59,9 +55,7 @@ Form
 }
 
 .login-form-container,
-.register-form-container
-/* .modal-img-container  */
-{
+.register-form-container {
   position: relative;
   display: flex;
   flex-flow: row wrap;
@@ -69,9 +63,7 @@ Form
 }
 
 .login-form-container img,
-.register-form-container img
-/* .modal-img-container img  */
-{
+.register-form-container img {
   height: 95px;
   width: 95px;
 }
@@ -96,7 +88,7 @@ Form
   display: flex;
 }
 
-.cancel-btn{
+.cancel-btn {
   background-color: rgba(243, 60, 60, 0.856);
   border: none;
   border-radius: 5px;
@@ -116,9 +108,8 @@ Form
 }
 
 
-.not-registered-btn
- {
-  background-color:  rgb(224, 151, 33);
+.not-registered-btn {
+  background-color: rgb(224, 151, 33);
   border: none;
   border-radius: 5px;
   color: white;
@@ -132,9 +123,9 @@ Form
   padding: 5px 0;
 }
 
-.register-btn
-{
-  background-color:  #663A2B;
+.login-btn,
+.register-btn {
+  background-color: #663A2B;
   border: none;
   border-radius: 5px;
   color: white;
@@ -148,14 +139,14 @@ Form
   padding: 5px 0;
 }
 
-.register-btn{
+.register-btn {
   margin: 5px 0;
 }
 
 
 
 .show-events-addPage {
-  color:  rgb(224, 151, 33);
+  color: rgb(224, 151, 33);
   cursor: pointer;
 }
 
@@ -166,105 +157,34 @@ Form
 }
 
 
-/* ====================
-UpdateEvent
-======================*/
+
+/* =============================
+Mobile Styles: 0 to 480px
+=============================== */
 
 
-#cancel-update-btn {
-  background-color:  rgba(243, 60, 60, 0.856);
-  border: none;
-  border-radius: 5px;
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1.1em;
-  letter-spacing: 1px;
-  padding: 10px;
+@media only screen and (max-width: 480px) {
+
+
+
+
+  .login-flex-container {
+    margin-top: 100px;
+
+  }
+
+  .register-flex-container {
+    margin-top: 45px;
+
+  }
+
+
+
+
+
+
+
+
+
+
 }
-
-.show-events-updatePage:hover {
-  color: white;
-  font-size: 1.1em;
-}
-
-.show-events-updatePage {
-  color:rgb(224, 151, 33);
-  cursor: pointer;
-}
-
-select#venue,
-select#start-time,
-select#end-time {
-  flex: 3 1 261px;
-  margin: 10px 0 10px 0 ;
-  padding: 5px 0;
-}
-
-#submit-update-btn {
-  background-color: rgb(224, 151, 33);
-  border: none;
-  border-radius: 5px;
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1.1em;
-  letter-spacing: 1px;
-  padding: 10px;
-}
-
-.time-format {
-  margin-left: 235px;
-}
-
-.update-btns button:first-child {
-  margin-right: auto;
-}
-
-.update-body {
-  background-color: black;
-  color: white;
-}
-
-.update-event-flex-container{
-  display: flex;
-  flex-flow: row wrap;
-  margin: 20px 0 0 20%;
-  width: 60%;
-}
-
-.update-event-form-container {
-  padding: 20px 5px;
-  width: 100%;
-}
-
-.update-event-form-container li{
-  display: flex;
-  margin-right: 50px;
-}
-
-.update-event-form-container label {
-  color: white ;
-  flex: 1 1 120px;
-  margin-top: 10px;
-}
-
-.update-event-form-container input{
-  flex: 3 1 261px;
-  margin: 10px 0 10px 0 ;
-  padding: 5px 5px ;
-  font-size: 14px;
-}
-
-/* .update-event-header {
-  background-color: #020202;
-  display: flex;
-  color: white;
-  justify-content: space-evenly;
-  padding: 5px 0;  
-} */
-
-#update-event-btn {
-  background-color: rgb(224, 151, 33) ;
-}
-

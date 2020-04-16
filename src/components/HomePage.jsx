@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 class HomePage extends Component {
   render() {
     return (
-      <div className="home">
+      <>
         <div className="home-header">
           <div className="venues">
             <div>
-              <h1>LE FOU FOU</h1>{" "}
+              <h1>LE FOU FOU</h1>
             </div>
             <div>
               <h1>RIRE NOW</h1>
@@ -32,7 +32,7 @@ class HomePage extends Component {
             </div>
           </Link>
         </div>
-      </div>
+      </>
     );
   }
 }

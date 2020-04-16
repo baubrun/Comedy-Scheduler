@@ -17,69 +17,58 @@ const EventDetail = (props) => {
     startTime,
     image,
     price,
-    _id,
     facebook,
     instagram,
     twitter,
   } = props.event;
 
   return (
-    <div>
+    <>
       <div className="event-detail-header">
         <Link to="/events">
           <h1>EVENTS</h1>
         </Link>
       </div>
       <div className="event-detail-body">
-        <ul className="event-detail" key={_id}>
+        <div className="performer-img-detail">
+          <img src={`../../${image}`} alt="" />
+        </div>
+        <ul className="event-detail-info">
           <li>
-            <img
-              className="performer-img-detail"
-              src={`../../${image}`}
-              alt=""
-            />
+            <Link to="/cart">
+              <button className="reserve-btn" onClick={dispatchAddToCart}>
+                RESERVE
+              </button>
+            </Link>
           </li>
+          <li>Title: {title}</li>
+          <li>Date: {moment(`${startDate}`).format("DD-MM-YYYY")}</li>
+          <li>Time: {startTime}</li>
+          <li>Venue: {venue.split("_").join(" ")}</li>
+          <li>Performer: {performer}</li>
+          <li>Price: {price} $</li>
           <li>
-            <div>
-              <Link to="/cart">
-                <button className="reserve-btn" onClick={dispatchAddToCart}>
-                  RESERVE
-                </button>
-              </Link>
-            </div>
-            <div className="event-detail-info">Title: {title}</div>
-            <div className="event-detail-info">
-              Date: {moment(`${startDate}`).format("DD-MM-YYYY")}
-            </div>
-            <div className="event-detail-info">Time: {startTime}</div>
-            <div className="event-detail-info">
-              Venue: {venue.split("_").join(" ")}
-            </div>
-            <div className="event-detail-info">Performer: {performer}</div>
-            <div className="event-detail-info">Price: {price} $</div>
-            <div className="event-detail-info">
-              <div className="social-media">
-                {facebook && (
-                  <Link to={`facebook.com/${facebook}`}>
-                    <img src="../../fb-chUpload-0.png" alt="facebook" />
-                  </Link>
-                )}
-                {instagram && (
-                  <Link to={`instagram.com/${instagram}`}>
-                    <img src="../../ig-chUpload-0.png" alt="instagram" />
-                  </Link>
-                )}
-                {twitter && (
-                  <Link to={`instagram.com/${twitter}`}>
-                    <img src="../../tt-chUpload-0.png" alt="twitter" />
-                  </Link>
-                )}
-              </div>
+            <div className="social-media">
+              {facebook && (
+                <Link to={`facebook.com/${facebook}`}>
+                  <img src="../../fb-chUpload-0.png" alt="facebook" />
+                </Link>
+              )}
+              {instagram && (
+                <Link to={`instagram.com/${instagram}`}>
+                  <img src="../../ig-chUpload-0.png" alt="instagram" />
+                </Link>
+              )}
+              {twitter && (
+                <Link to={`instagram.com/${twitter}`}>
+                  <img src="../../tt-chUpload-0.png" alt="twitter" />
+                </Link>
+              )}
             </div>
           </li>
         </ul>
       </div>
-    </div>
+    </>
   );
 };
 

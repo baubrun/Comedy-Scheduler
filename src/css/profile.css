@@ -18,9 +18,8 @@
     margin-left: 100px;
     margin-top: 10px;
 }
-  
 
-  
+#add-event-btn,
 #remove-btn {
     background-color: #663A2B;
     color: white;
@@ -30,73 +29,16 @@
     background-color: rgb(224, 39, 33) ;
 }
 
-#loading{
-    margin-left: 42%;
-    margin-top: 100px;
-    position: absolute;
-}
-
-.blackbox {
-    display: block;
-    background-color: #020202;
-    height: auto;
-    width: 135px;
-    z-index: -1;
-    /* height: 100vh; */
-}
-
-.events-history-body {
-    display: flex;
-    
-}
-
-
-.events-history-container {
-    width: 92%;
-}
-
-.events-history {
-    border-bottom: 5px double #663A2B;
-    display: flex;
-    margin-left: 135px;
-}
-
-
-.events-history-delUpt-container {
-    border-right: 5px double #663A2B;
-    padding-left: 50px;
-    padding-right: 50px;
-
-}
-
-.events-history-info-container {
-    border-right: 5px double #663A2B;
-    /* padding-left: 130px; */
-    padding: 15px;
-    width: 40%;
-}
-
-.events-history-img-container {
-    padding-left: 100px;
-}
-
-
-.events-history-info-container div {
-    margin: 10px 0;
-}
-
-
 #events-history-btn {
     background-color: white;
     color: black;
 }
 
-/* #events-history-header {
-    background-color: rgba(2, 2, 2, 1);
-    color: white;
-    padding: 5px 0;
-    text-align: center;
-} */
+#loading{
+    margin-left: 42%;
+    margin-top: 100px;
+    position: absolute;
+}
 
 .profile-body{
     position: relative;
@@ -104,24 +46,17 @@
 }
 
 #profile-btns  {
-    /* border: 1px solid black; */
-    /* background-color: white; */
     background-color: #020202;
     color: white;
-    /* height: 100%; */
     justify-content: space-between;
-    /* margin-top: 25px; */
     position: fixed;
-    /* padding-left: 15px; */
     top: 148px;
     z-index: 10;
-    /* height: 100vh; */
 }
 
 #profile-btns li {
     cursor: pointer;
     font-size: 18px;
-    /* padding: 30px 10px; */
     padding: 30px 0;
 }
 
@@ -135,79 +70,8 @@
     opacity: 1;
 }
 
-.profile-header {
-    /* display: flex; */
-    /* flex-flow: row wrap; */
-    /* width: 100%; */
-    /* background-color: white; */
-    /* height: auto; */
-}
 
-.profile-header h1{
-    background-color: #663A2B ;
-    color: white;
-    letter-spacing: 2px;
-    /* margin-bottom: 10px; */
-    padding: 5px 0;
-    text-align: center;
-    width: 100%;
-}
-
-
-#remove-btn  {
-    border: none;
-    border-radius: 5px;
-    color: white;
-    cursor: pointer;
-    opacity: 0.7;
-    padding: 10px 5px;
-}
-
-#remove-btn:hover  {
-opacity: 1;
-}
-
-
-/*================
-
-Events history       
-
-==================*/
-
-.checkbox {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    margin-top: 150px;
-    /* padding-right: 100px; */
-    padding: 10px;
-} 
-
-.checkbox-input {
-    display: none;
-}
-
-#custom-checkbox {
-    align-items: center;
-    border: 2px solid  rgb(224, 151, 33);
-    border-radius: 5px;
-    display: flex;
-    flex-shrink: 0;
-    height: 1.25em;
-    justify-content: center;
-    margin-right: 5px;
-    width: 1.25em;
-}
-
-#custom-checkbox::after {
-    color: white;
-    content: "\2714";
-}
-
-.checkbox-input:checked + #custom-checkbox {
-    background-color: rgb(224, 151, 33);
-} 
-
+/* 
 .venues-avail {
     border: 1px solid  #663A2B;
     display: flex;
@@ -215,7 +79,61 @@ Events history
     justify-content: space-evenly;
     margin-top: 10px;
     width: 100%;
+} */
+
+
+/* =============================
+Mobile Styles: 0 to 480px
+=============================== */
+
+
+
+@media only screen and (max-width: 480px) {
+
+    
+    .add-event-header {
+        background-color: #020202;
+    }
+
+    #loading{
+        margin-left: 20%;
+        margin-top: 40px;
+        position: absolute;
+    }
+
+    .profile-header h1 {
+        background-color:#663A2B;
+    }
+
+    #profile-btns {
+        background-color: #fff;
+        margin-bottom: 20px;
+        text-align: center;
+        top: auto;
+        position: relative;
+        width: 100%;
+    }
+
+    #profile-btns li {
+        font-size: 18px;
+        padding: 10px 0;
+    }
+    
+    #events-history-btn {
+        background-color: #020202;
+        color: white;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
-
-
-

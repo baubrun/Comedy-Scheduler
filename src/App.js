@@ -17,7 +17,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div>
 
         <BrowserRouter>
         <NavBar />
@@ -28,7 +28,6 @@ class App extends Component {
         <Route exact={true} path="/event/:title" component={RenderEvent}/>
         <Route exact={true} path="/cart" component={RenderCart}/>
         <Route exact={true} path="/checkout" component={Checkout}/>
-        {/* <Route exact={true} path="/confirmation" component={Confirmation}/> */}
         <Route exact={true} path="/confirmation">
           {this.props.checkout.length < 1 ? <Redirect to="/events" /> : <Confirmation />}
         </Route>

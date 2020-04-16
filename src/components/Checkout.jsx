@@ -59,10 +59,6 @@ class Checkout extends Component {
       : this.props.history.push("/events");
   }
 
-  // dispatchConfirmCheckout = () => {
-  //   this.props.confirmCheckout();
-  // };
-
   dispatchEmptyCart = () => {
     this.props.emptyCart();
   };

@@ -92,10 +92,6 @@ class Events extends Component {
     this.setState({ events: eventsSorted });
   };
 
-  // seatsAvail = () => {
-  //   this.setState({ seatsAvail: this.props.seatsAvail });
-  // };
-
   handleSearchInput = event => {
     this.setState({ searchInput: event.target.value });
   };

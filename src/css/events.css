@@ -1,10 +1,6 @@
 .calendar-header {
     border-bottom: 1px solid black;
-    /* display: flex; */
-    /* flex-flow: row wrap; */
-    /* width: 100%; */
 }
-
 
 .event {
     background-color: #020202;
@@ -38,11 +34,9 @@
     width: 100%;
 }
 
-
 #events-body {
     display: flex;
     flex-flow: row wrap;
-
 }
 
 .events-header {
@@ -52,12 +46,9 @@
     justify-content: space-around;
 }
 
-
-
 .events-btn:hover {
     background-color: #663A2B ;
 }
-
 
 .event-info div{
     font-family: 'Courier Prime', monospace;
@@ -199,36 +190,33 @@ new layout
 }
 
 
-/*=====================
-EVENT DETAIL
 
-=======================*/
+/* =============================
+Mobile Styles: 0 to 480px
+=============================== */
 
 
-.event-detail-body {
-    background-color: #020202;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    height: 100vh;
+
+
+
+@media only screen and (max-width: 480px) {
+
+    #events-body {
+        justify-content: center;
+    }
+
+    #performer-img-container {
+        display: inline-block;
+        height: 150px;
+        width: 150px;
+        text-align: center;
+    }
+    
+    #performer-img-container img {
+       margin-top: 5px;
+    }
+    
 }
-
-.event-detail-info {
-    font-family: 'Courier Prime', monospace;
-    font-size: 18px;
-    letter-spacing: 2px;
-    margin-left: 50px;
-    margin-top: 10px;
-    padding: 10px 0;
-}
-
-.event-detail {
-    display:flex;
-    padding: 10px;
-}
-
-.event-detail li {
-    color: white;
-    padding: 10px;
-    /* width: 100%; */
-}
+  
+  
+  

@@ -82,7 +82,6 @@ class CalendarView extends Component {
   formattedEventsFromDB = () => {
     const filterEventProps = this.props.events.map(event => {
       return {
-        // works for non overnight events
         title: event.title,
         start: new Date(r(event.startDate, event.startTime)),
         end: new Date(r(event.endDate, event.endTime))
@@ -156,7 +155,6 @@ class CalendarView extends Component {
       });
       this.formatAddedEvents(start, end, title);
       this.storeCalendarEvent();
-      // this.dispatchLoading()
     }
   };
 

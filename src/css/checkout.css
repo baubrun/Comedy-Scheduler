@@ -1,6 +1,4 @@
-/*==============
-CHECKOUT
-=================*/
+
 .checkout{
     display: flex;
     flex-flow: row wrap;
@@ -28,7 +26,6 @@ CHECKOUT
     /* background-color: rgb(224, 151, 33); */
     background-color: #020202;
     display: flex;
-    /* flex-flow: row wrap; */
     height: 100vh;
     /* height: 100%; */
     margin-top: 5px;
@@ -96,29 +93,6 @@ CHECKOUT
     text-align: center;
 }
 
-/*==============
-CONFIRMATION
-=================*/
-.confirmation-body {
-    display: flex;
-    flex-flow: row wrap;
-    margin: 10px 0;
-    padding: 10px;
-    /* width: 100%; */
-}
-
-.confirm {
-    border-bottom: 1px solid #663A2B ;
-    margin: 10px;
-    padding: 10px 0 ;
-    width: 90%;
-}
-
-
-.confirm tbody td {
-    padding: 10px;
-    text-align: center;
-}
 
 
 
@@ -241,6 +215,31 @@ CARD DETAIL
 }
 
 
-/*==============
-    CHECKOUT
-=================*/
+/* =============================
+Mobile Styles: 0 to 480px
+=============================== */
+
+
+
+
+@media only screen and (max-width: 480px) {
+
+    .checkout-body {
+    flex-flow: row wrap;
+    height: 100%;
+    }
+    
+    .checkout-summary {
+        width: 100%;
+    }
+    
+    .card-detail{
+        margin-left: 5px;
+        margin-top: 10px;
+        width: 100%;
+    }
+    
+
+
+
+}

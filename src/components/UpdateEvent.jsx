@@ -194,9 +194,6 @@ class UpdateEvent extends Component {
     return (
       <>
         <div className="update-event-header">
-          {/* <h2 className="show-events-updatePage" onClick={this.props.fetchData}>
-            LOAD EVENTS
-          </h2> */}
           <h2>UPDATE EVENT</h2>
         </div>
         <div className="update-body">

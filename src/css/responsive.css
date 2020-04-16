@@ -1,20 +1,22 @@
-
-/*=============================
+/* =============================
 Mobile Styles: 0 to 480px
 =============================== */
 
+
+
+
+
 @media only screen and (max-width: 480px) {
 
-    * {
-        font-size: 1.1em;
-    }
 
-     .dropdown img {
+
+
+    .dropdown img {
         width: 50px;
         height: 50px;
-      } 
+    }
 
-    
+
     .event a {
         font-size: 20px;
     }
@@ -27,47 +29,28 @@ Mobile Styles: 0 to 480px
         width: 100%;
     }
 
-    .event > li a {
+    .event>li a {
         text-align: center;
         width: 100%;
     }
 
-    .event > li a:hover {
-        color: white;   
+    .event>li a:hover {
+        color: white;
     }
-
+/* 
     #events-history-header {
         margin: 0;
-    }
+    } */
 
-    .home-body img {
-        background-size: contain;
-        /* background-position: center center; */
-        height: 100vh;
-        /* width: 100vw; */
-    }
 
+    .navbar {
+        width: 100%;
+    }
 
     #performer-img {
         height: 150px;
         width: 150px;
     }
-
-    .profile-btns {
-        display: block;
-    }
-
-    .profile-header {
-        margin: 0;
-        position: relative;
-    }
-
-    .profile-header h1 {
-        margin-bottom: 0;
-    }
-
-
-
 
     .venue-select select {
         padding: 10px;

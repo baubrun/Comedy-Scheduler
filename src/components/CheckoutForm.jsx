@@ -71,7 +71,6 @@ const CheckoutForm = (props) => {
   };
 
   const storePay = async (order) => {
-    console.log("in storePay");
     const { amount, items } = props;
     const data = new FormData();
     data.append("amount", amount);
@@ -83,13 +82,14 @@ const CheckoutForm = (props) => {
     });
     const body = await response.text();
     const parser = JSON.parse(body);
-    console.log("in storePay parser.success", parser.success);
     if (parser.success) {
       dispatchEmptyCart();
       props.history.push("/confirmation");
+    } else {
+      console.log(parser.msg);
     }
   };
-  
+
   const pay = async (amount, id, orderNum) => {
     const stripeData = new FormData();
     stripeData.append("id", id);

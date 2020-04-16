@@ -25,3 +25,8 @@ color: white;
    color: #663A2B;
  } 
  
+ .rbc-btn-group button :active{
+   color: #020202 !important;
+}
+
+

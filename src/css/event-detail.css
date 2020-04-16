@@ -1,0 +1,138 @@
+.events-header h1,
+.profile-header h1,
+.confirmation-header,
+.cart-header,
+.checkout-header {
+    background-color: #020202;
+    display: flex;
+    color: white;
+    flex-flow: row wrap;
+    justify-content: center;
+    letter-spacing: 1px;
+    padding: 5px 0;
+    width: 100%;
+}
+
+.checkout-header,
+.event-detail-header,
+.venue-select h2,
+#events-history-header {
+    background-color: #663A2B;
+    display: flex;
+    color: white;
+    justify-content: center;
+    letter-spacing: 1px;
+    padding: 5px 0;
+    width: 100%;
+}
+
+.cart-header a,
+.event-detail-header a {
+    color: rgb(224, 151, 33);
+    margin-right: 37%;
+}
+
+.cart-header a:hover,
+.event-detail-header a:hover {
+    color: white;
+    font-size: 1.1em;
+}
+
+
+
+/*====================
+EVENT DETAIL
+=======================*/
+
+
+.event li {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    padding: 10px;
+    width: 100%;
+}
+
+.event-detail-body {
+    background-color: #020202;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    height: 100vh;
+}
+
+.event-detail-info {
+    color: white;
+    font-family: 'Courier Prime', monospace;
+    font-size: 18px;
+    letter-spacing: 2px;
+    margin-left: 50px;
+    margin-top: 20px;
+    padding: 10px 0;
+}
+
+.event-detail-info li {
+    padding: 20px;
+}
+
+.performer-img-detail {
+    margin-top: 20px;
+    width: 45%;
+}
+
+.performer-img-detail img {
+    border-radius: 1000px;
+    margin-right: 150px;
+}
+
+.social-media img {
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+
+
+
+/* =============================
+Mobile Styles: 0 to 480px
+=============================== */
+
+@media only screen and (max-width: 480px) {
+
+    .event-detail-body {
+        margin: 0;
+    }
+
+    .event-detail-info{
+        margin-top: -100px;
+    }
+
+    .event-detail-info li {
+        margin: 0;
+        padding: 5px;
+    }
+
+    .performer-img-detail  {
+        height: 150px;
+        width: 150px;
+    }
+
+    .performer-img-detail img {
+        margin: 0;
+        width: 100%;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

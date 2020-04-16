@@ -35,9 +35,6 @@ class Profile extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    // if (prevProps.seatsAvail !== this.props.seatsAvail) {
-    //   this.fetchData();
-    // }
     if (
       prevState.showAddEvent !== this.state.showAddEvent ||
       prevState.showUpdateEvent !== this.state.showUpdateEvent
@@ -150,10 +147,14 @@ class Profile extends Component {
     const addEventShown = this.state.showAddEvent;
     const updateEventShown = this.state.showUpdateEvent;
     if (addEventShown || updateEventShown) {
-      doc.style.visibility = "hidden";
+      doc.style.display = "none";
     } else {
-      doc.style.visibility = "visible";
+      doc.style.display = "block";
     }
+    //   doc.style.visibility = "hidden";
+    // } else {
+    //   doc.style.visibility = "visible";
+    // }
   };
 
   showAddEvent = () => {
@@ -212,8 +213,6 @@ class Profile extends Component {
       <div>
         <div className="profile-header">
           <h1>PROFILE</h1>
-          {/* <div className="blackbox"></div> */}
-
           {this.renderProfileButtons()}
         </div>
         <div className="profile-body">

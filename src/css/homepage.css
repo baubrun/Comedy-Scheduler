@@ -30,7 +30,6 @@ Home Header
     letter-spacing: 2px;
     padding: 15px;
     text-align: center;
-    width: 10%;
 
  }
  .home-add {
@@ -80,6 +79,7 @@ Home Header
   display: flex;
   justify-content: space-between;
   padding: 0 5px;
+  /* margin: 0 5px; */
   width: 100%;
 }
 
@@ -187,5 +187,51 @@ color: black}
     color: #663A2B;
 }
 
+
+
+/* =============================
+Mobile Styles: 0 to 480px
+=============================== */
+
+@media only screen and (max-width: 480px) {
+
+  .dropdown-content li{
+    padding: 10px 0;
+  }
+  
+  .home-add,
+  .home-events {
+      margin: 70px;
+  }
+
+  .venues {
+    justify-content: space-around;
+  }
+
+  .home-body img {
+    height: 100vh;
+}
+
+
+
+
+
+
+
+
+
+/* =============================
+Tables & Desktop Styles: 481px > *
+=============================== */
+
+
+
+
+} 
+
+
+@media only screen and (min-width: 481px) {
+  
+}
 
 

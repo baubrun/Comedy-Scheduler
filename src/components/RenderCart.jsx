@@ -5,10 +5,10 @@ import { getCartAction } from "../actions/actions";
 import { deleteFromCartAction } from "../actions/actions";
 import { getItemsBoughtAction } from "../actions/actions";
 
-export const currencyFormat = amount => {
+export const currencyFormat = (amount) => {
   return new Intl.NumberFormat("decimal", {
     style: "currency",
-    currency: "CAD"
+    currency: "CAD",
   }).format(amount);
 };
 
@@ -17,25 +17,25 @@ class RenderCart extends Component {
     super(props);
 
     this.state = {
-      cartItems: []
+      cartItems: [],
     };
   }
 
   componentDidMount() {
-    const cart = this.props.cart.map(i => Object.assign(i, { qty: 1 }));
+    const cart = this.props.cart.map((i) => Object.assign(i, { qty: 1 }));
     this.setState({ cartItems: cart });
   }
 
-  handleQtyChange = event => {
+  handleQtyChange = (event) => {
     const id = event.target.name;
     const qty = event.target.value;
-    const idx = this.state.cartItems.findIndex(i => i._id === id);
+    const idx = this.state.cartItems.findIndex((i) => i._id === id);
     const copyCart = [...this.state.cartItems];
     copyCart[idx].qty = parseInt(qty);
     this.setState({ cartItems: copyCart });
   };
 
-  dispatchDelItem = item => {
+  dispatchDelItem = (item) => {
     this.props.delItem(item);
   };
 
@@ -48,19 +48,18 @@ class RenderCart extends Component {
     this.props.history.push("/checkout");
   };
 
-  deleteCartItem = event => {
+  deleteCartItem = (event) => {
     const id = event.target.name;
-    const item = this.state.cartItems.findIndex(i => i._id === id);
+    const item = this.state.cartItems.findIndex((i) => i._id === id);
     const copyCart = [...this.state.cartItems];
     copyCart.splice(item, 1);
     this.setState({ cartItems: copyCart });
     this.dispatchDelItem(item);
   };
 
-
   render() {
     let subtotal = 0;
-    this.state.cartItems.forEach(pr => (subtotal += pr.price * pr.qty));
+    this.state.cartItems.forEach((pr) => (subtotal += pr.price * pr.qty));
 
     let tps = subtotal * 0.05;
     let tvq = subtotal * 0.09975;
@@ -68,8 +67,12 @@ class RenderCart extends Component {
     return (
       <>
         <div className="cart-header">
-          <Link to="/events"><h1>MORE TICKETS</h1></Link>
-          <div className="cart-title"><h1>CART</h1></div>
+          <Link to="/events">
+            <h1>MORE TICKETS</h1>
+          </Link>
+          <div className="cart-title">
+            <h1>CART</h1>
+          </div>
         </div>
         <div className="cart-body">
           {this.state.cartItems.length > 0 ? (
@@ -80,21 +83,16 @@ class RenderCart extends Component {
                     <th>Event</th>
                     <th>Venue</th>
                     <th>Price</th>
-                    <th>Quantity</th>
+                    <th>Qty</th>
                     <th></th>
                   </tr>
                 </thead>
-                <tfoot>
-                  <tr>
-                    <td>Maximum of 6 tickets per show.</td>
-                  </tr>
-                </tfoot>
                 <tbody>
                   {this.state.cartItems.map((item, idx) => {
                     return (
                       <tr key={idx}>
                         <td>{item.title}</td>
-                        <td>{item.venue}</td>
+                        <td>{item.venue.split("_").join(" ")}</td>
                         <td>{item.price}</td>
                         <td>
                           <input
@@ -120,6 +118,7 @@ class RenderCart extends Component {
                   })}
                 </tbody>
               </table>
+              <div className="tfoot">Maximum of 6 tickets per show</div>
               <ul className="total">
                 <li>Sub-Total:</li>
                 <li>{subtotal.toFixed(2)}</li>
@@ -129,12 +128,9 @@ class RenderCart extends Component {
                 <li>{tvq.toFixed(2)}</li>
                 <li>Total:</li>
                 <li>{total.toFixed(2)} $</li>
-                <button 
-                id="checkout-btn" 
-                onClick={this.handleCheckout}>
+                <button id="checkout-btn" onClick={this.handleCheckout}>
                   Checkout
-                  </button>
-
+                </button>
               </ul>
             </>
           ) : (
@@ -148,17 +144,17 @@ class RenderCart extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    cart: state.cart
+    cart: state.cart,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getCart: items => dispatch(getCartAction(items)),
-    delItem: item => dispatch(deleteFromCartAction(item)),
-    getBoughtItems: items => dispatch(getItemsBoughtAction(items))
+    getCart: (items) => dispatch(getCartAction(items)),
+    delItem: (item) => dispatch(deleteFromCartAction(item)),
+    getBoughtItems: (items) => dispatch(getItemsBoughtAction(items)),
   };
 };
 

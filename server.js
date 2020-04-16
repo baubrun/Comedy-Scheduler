@@ -352,7 +352,8 @@ app.post("/checkout", upload.none(), async (req, res) => {
     }, err => {
         if (err) {
             return res.json({
-                success: false
+                success: false,
+                msg: err
             })
         }
     })
