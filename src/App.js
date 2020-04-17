@@ -12,13 +12,23 @@ import Confirmation from "./components/Confirmation"
 import RenderCart from "./components/RenderCart"
 import { connect } from "react-redux";
 
-
 class App extends Component {
+
+  // audio = () => {
+  //   const audio = new Audio("./../public/LW-Ab.mp3")
+  //   audio.play()
+  // }
+  
+  
+
+  // componentDidMount(){
+  //   this.audio()
+  // }
+
 
   render() {
     return (
       <div>
-
         <BrowserRouter>
         <NavBar />
         <Route exact={true} path="/" component={HomePage}/>

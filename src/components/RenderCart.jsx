@@ -77,6 +77,8 @@ class RenderCart extends Component {
         <div className="cart-body">
           {this.state.cartItems.length > 0 ? (
             <>
+              {/* <div className="tfoot">Maximum of 6 tickets per show</div> */}
+
               <table>
                 <thead>
                   <tr>
@@ -99,7 +101,7 @@ class RenderCart extends Component {
                             type="number"
                             defaultValue="1"
                             min="1"
-                            max="6"
+                            max="100"
                             name={item._id}
                             onChange={this.handleQtyChange}
                           />
@@ -118,7 +120,6 @@ class RenderCart extends Component {
                   })}
                 </tbody>
               </table>
-              <div className="tfoot">Maximum of 6 tickets per show</div>
               <ul className="total">
                 <li>Sub-Total:</li>
                 <li>{subtotal.toFixed(2)}</li>
@@ -127,10 +128,12 @@ class RenderCart extends Component {
                 <li>TVQ:</li>
                 <li>{tvq.toFixed(2)}</li>
                 <li>Total:</li>
-                <li>{total.toFixed(2)} $</li>
-                <button id="checkout-btn" onClick={this.handleCheckout}>
-                  Checkout
-                </button>
+                <li><b>{total.toFixed(2)}</b></li>
+                <li>
+                  <button id="checkout-btn" onClick={this.handleCheckout}>
+                    Checkout
+                  </button>
+                </li>
               </ul>
             </>
           ) : (

@@ -136,7 +136,8 @@ seatsPerVenue.RIRE_NOW = 80
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "uploads/")
+        // cb(null, "uploads")
+        cb(null, "/uploads/")
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname)
@@ -254,6 +255,7 @@ POST
 ========================*/
 
 app.post("/addEvent", upload.single("image"), async (req, res) => {
+    console.log("/addEvent")
     const {
         title,
         startDate,
@@ -267,9 +269,7 @@ app.post("/addEvent", upload.single("image"), async (req, res) => {
         facebook,
         instagram,
         twitter,
-
     } = req.body
-
 
     await dbo.collection("events").findOne({
         "startDate": startDate,
@@ -287,35 +287,15 @@ app.post("/addEvent", upload.single("image"), async (req, res) => {
                 startTime,
                 endTime,
                 result)
-
-            if (!overlaps) {
-                dbo.collection("events").insertOne({
-                    title: title,
-                    startDate: startDate,
-                    startTime: startTime,
-                    endDate: endDate,
-                    endTime: endTime,
-                    venue: venue,
-                    performer: performer,
-                    image: !req.file ? "" : req.file.originalname,
-                    price: price,
-                    hostId: hostId,
-                    allDay: "false",
-                    facebook: facebook,
-                    instagram: instagram,
-                    twitter: twitter,
-                    dateAdded: new Date()
-                })
+            // if (!overlaps) {
+            if (overlaps) {
                 return res.json({
-                    success: true
-                })
-            }
-            // return res.json({
-            //     ans: ans,
-            //     success: true
-            // })
-        } else {
-            dbo.collection("events").insertOne({
+                    success: false,
+                    msg: "Time slot unavailable."
+                })}
+        }
+        else {
+                dbo.collection("events").insertOne({
                 title: title,
                 startDate: startDate,
                 startTime: startTime,
@@ -335,6 +315,7 @@ app.post("/addEvent", upload.single("image"), async (req, res) => {
         }
     })
 })
+        
 
 
 app.post("/checkout", upload.none(), async (req, res) => {
@@ -614,6 +595,7 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
         sharp(req.file.path)
             .resize(450, 450)
             .toFile(`./uploads/${img}`, (err) => {
+            // .toFile(`/uploads/${img}`, (err) => {
                 if (err) {
                     console.log("sharp:", err)
                 }

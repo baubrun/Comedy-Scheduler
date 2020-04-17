@@ -7,8 +7,9 @@
     border-top: 1px dotted #663A2B;
     border-radius: 5px;
     color: white;
-    margin: 15px ;
+    margin: 15px 0;
     padding: 20px 30px;
+    /* width: 25%; */
 }
 
 .event a {
@@ -16,23 +17,27 @@
     font-size: 28px;
     padding-bottom: 2px;
     text-transform: uppercase;
-
 }
 
 .event div {
     text-align: center;
 }
 
-#performer-img-container {
+
+
+/* .performer-img-events-container {
     height: 250px;
     width: 250px;
+    margin-bottom: 15px;
+    width: 10px;
 }
 
-#performer-img-container img {
+.performer-img-events-container img {
     border-radius: 5px;
-    height: 100%;
     width: 100%;
-}
+
+}  */
+
 
 #events-body {
     display: flex;
@@ -57,11 +62,17 @@
 }
 
 
+.event-info img {
+    border-radius: 5px;
+    height: 250px;
+    width: 250px;
+}
+
+
 .events-no-events {
     margin-top: 10px;
     margin-left: 10px;
 }
-
 
 
 .no-events {
@@ -195,28 +206,64 @@ new layout
 Mobile Styles: 0 to 480px
 =============================== */
 
-
-
-
-
 @media only screen and (max-width: 480px) {
 
+    .event {
+        /* justify-content: center;  */
+        width: 100%;
+    }
+    
+
     #events-body {
-        justify-content: center;
+        /* justify-content: center; */
     }
 
     #performer-img-container {
-        display: inline-block;
-        height: 150px;
-        width: 150px;
-        text-align: center;
+        /* text-align: center; */
+        /* margin-left: 25px; */
+        /* margin-bottom: 15px; */
+
     }
+
     
-    #performer-img-container img {
-       margin-top: 5px;
+    .events-list-view {
+        width: 100%;
     }
+
     
+
 }
   
   
-  
+/* =============================
+Tablet Styles: 481px to 768px
+=============================== */
+
+
+@media only screen and (min-width: 481px) {
+     
+    #events-body {
+        justify-content: center;
+    }
+    
+    .event {
+        margin: 15px;
+    }
+    
+
+
+}
+
+
+    /* =============================
+Desktop Styles: 768px and greater
+=============================== */
+
+
+
+@media only screen and (min-width: 769px) {
+
+
+
+}
+

@@ -35,6 +35,11 @@ class Events extends Component {
       events: []
     };
   }
+  audio = () => {
+    const audio = new Audio("LW-Ab/mp3")
+    audio.play()
+  }
+
 
   componentDidMount() {
     this.fetchData()
@@ -146,9 +151,9 @@ class Events extends Component {
 
   render() {
     const venueFormatted = this.state.venue.split("_").join(" ");
-
     return (
       <>
+        
         <div className="events-header">
           <h1>EVENTS</h1>
           <div className="venue-select">

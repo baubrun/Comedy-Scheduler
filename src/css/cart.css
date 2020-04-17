@@ -24,12 +24,10 @@
     border-bottom: 1px solid rgb(224, 151, 33);
     text-align: center;
     padding: 10px;
-    width: 150px;
+    flex: 3 1 361px;
 }
 
 .cart-body table {
-    margin-left: 10px;
-    margin-right: 5%;
     width: 60%;
 }
 
@@ -49,7 +47,7 @@
     margin: 10px 0;
     opacity: 0.7;
     padding: 10px 10px;
-    margin-left: 50%;
+    margin-left: 75%;
 }
 
 #checkout-btn:hover {
@@ -61,6 +59,8 @@
     color: #663A2B;
     font-size: 0.7em;
     font-style: italic;
+    margin-bottom: 15px ;
+    width: 100%;
 }
 
 .total li {
@@ -74,7 +74,9 @@
     display: flex;
     flex-flow: row wrap;
     padding: 10px;
-    width: 30%;
+    /* width: 30%; */
+    flex: 1 1 120px;
+
 }
 
 
@@ -93,18 +95,22 @@
 
 #remove-btn:hover  {
     opacity: 1;
-    }
+}
     
 /* =============================
 Mobile Styles: 0 to 480px
 =============================== */
 
-
-
-
 @media only screen and (max-width: 480px) {
 
+    .cart-body table {
+        width: 100%;
+    }
+    
+
+
     .total {
+        margin-top: 15px;
         width: 100%;
     }
 
@@ -112,18 +118,39 @@ Mobile Styles: 0 to 480px
         border-bottom: 1px solid rgb(224, 151, 33);
         padding: 25px 7px;
         text-align: start;
-        width: 0;
     }
         
     .tfoot {
         font-size: 1em;
-        margin: 15px 0;
+    }
+    
+  
+}
+
+
+
+/* =============================
+Tablet Styles: 481px to 768px
+=============================== */
+
+
+@media only screen and (min-width: 481px) {
+
+
+    .total {
+        width: 100%;
     }
     
     
-    
+}
+
+/* =============================
+Desktop Styles: 768px and greater
+=============================== */
 
 
+
+@media only screen and (min-width: 769px) {
 
 
 }

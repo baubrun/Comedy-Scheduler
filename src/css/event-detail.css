@@ -26,10 +26,13 @@
     width: 100%;
 }
 
-.cart-header a,
-.event-detail-header a {
+.cart-header a {
     color: rgb(224, 151, 33);
     margin-right: 37%;
+}
+
+.event-detail-header a {
+    color: rgb(224, 151, 33);
 }
 
 .cart-header a:hover,
@@ -105,11 +108,17 @@ Mobile Styles: 0 to 480px
 
     .event-detail-info{
         margin-top: -100px;
+        margin-left: 35px;
+        padding: 0 5px;
     }
 
     .event-detail-info li {
         margin: 0;
         padding: 5px;
+    }
+
+    .event-detail-info li:first-of-type {
+        margin-bottom: 15px;
     }
 
     .performer-img-detail  {
@@ -122,16 +131,45 @@ Mobile Styles: 0 to 480px
         width: 100%;
     }
 
+    #events-history-header {
+        background-color: #020202;
+    }
+
+}
+
+/* =============================
+Tablet Styles: 481px to 768px
+=============================== */
+
+
+@media only screen and (min-width: 481px) {
+
+    .performer-img-detail  {
+        height: 250px;
+        width: 250px;
+    }
+
+    .performer-img-detail img {
+        width: 100%;
+    }
+
+    .event-detail-info {    
+    padding: 2px 0;
+}
+
+}
+
+/* =============================
+Desktop Styles: 768px and greater
+=============================== */
 
 
 
-
-
-
-
-
-
-
+@media only screen and (min-width: 769px) {
+    .performer-img-detail  {
+        height: 450px;
+        width: 450px;
+    }
 
 
 

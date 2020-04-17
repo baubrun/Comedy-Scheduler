@@ -29,4 +29,23 @@ color: white;
    color: #020202 !important;
 }
 
+.rbc-toolbar button:active, 
+.rbc-toolbar button.rbc-active {
+   color: #020202 !important;
 
+}
+
+
+/* =============================
+Mobile Styles: 0 to 480px
+=============================== */
+
+
+@media only screen and (max-width: 480px) {
+
+
+   .rbc-btn-group {
+      padding: 0;
+   }
+  
+}

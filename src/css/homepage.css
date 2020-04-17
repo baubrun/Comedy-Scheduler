@@ -69,10 +69,12 @@ Home Header
 
 .home-body img {
   background-size: cover;
+  height: 100vh;
   order: 100;
   width: 100%;
   position: absolute;
   z-index: -100;
+
 }
 
 .venues {
@@ -208,30 +210,7 @@ Mobile Styles: 0 to 480px
     justify-content: space-around;
   }
 
-  .home-body img {
-    height: 100vh;
+
+
 }
-
-
-
-
-
-
-
-
-
-/* =============================
-Tables & Desktop Styles: 481px > *
-=============================== */
-
-
-
-
-} 
-
-
-@media only screen and (min-width: 481px) {
-  
-}
-
 

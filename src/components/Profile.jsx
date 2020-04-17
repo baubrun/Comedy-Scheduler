@@ -149,7 +149,7 @@ class Profile extends Component {
     if (addEventShown || updateEventShown) {
       doc.style.display = "none";
     } else {
-      doc.style.display = "block";
+      doc.style.display = "flex";
     }
     //   doc.style.visibility = "hidden";
     // } else {
@@ -185,7 +185,7 @@ class Profile extends Component {
       <ul id="profile-btns">
         <li>
           <div id="add-event-btn" onClick={this.showAddEvent}>
-            ADD EVENT
+            ADD EVENTS
           </div>
         </li>
         <li>

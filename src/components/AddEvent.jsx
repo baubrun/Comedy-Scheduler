@@ -113,7 +113,7 @@ class AddEvent extends Component {
           >
             LOAD EVENTS
           </h2>
-          <h2>ADD EVENT</h2>
+          <h2>ADD EVENTS</h2>
         </div>
         <div className="add-event-body">
           <div className="venue-select">

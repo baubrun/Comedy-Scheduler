@@ -5,21 +5,18 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { connect } from "react-redux";
 import "moment/locale/en-gb";
 
-
-
-const allViews = Object.keys(Views).map(k => Views[k]);
+const allViews = Object.keys(Views).map((k) => Views[k]);
 const localizer = momentLocalizer(moment);
 
 const eventStyleGetter = (event, start, end, isSelected) => {
   const style = {
     backgroundColor: "#663A2B",
-    color: "white"
+    color: "white",
   };
   return {
-    style: style
+    style: style,
   };
 };
-
 
 const r = (date, time) => {
   return moment(`${date} ${time}`).format();
@@ -45,7 +42,7 @@ class CalendarView extends Component {
       facebook: "",
       instagram: "",
       twitter: "",
-      dayLayoutAlgorithm: "no-overlap"
+      dayLayoutAlgorithm: "no-overlap",
     };
   }
 
@@ -60,7 +57,7 @@ class CalendarView extends Component {
         venue:
           this.props.events[0] === undefined
             ? this.props.selectedVenue
-            : this.props.events[0].venue
+            : this.props.events[0].venue,
       });
     }
   }
@@ -68,9 +65,9 @@ class CalendarView extends Component {
   eventsByVenueHostId = () => {
     const filter = {
       hostId: this.props.hostId,
-      venue: this.state.venue
+      venue: this.state.venue,
     };
-    const userEvents = this.props.userEvents.filter(item => {
+    const userEvents = this.props.userEvents.filter((item) => {
       for (const key in filter) {
         if (item[key] !== filter[key] || !item[key]) return false;
       }
@@ -80,11 +77,11 @@ class CalendarView extends Component {
   };
 
   formattedEventsFromDB = () => {
-    const filterEventProps = this.props.events.map(event => {
+    const filterEventProps = this.props.events.map((event) => {
       return {
         title: event.title,
         start: new Date(r(event.startDate, event.startTime)),
-        end: new Date(r(event.endDate, event.endTime))
+        end: new Date(r(event.endDate, event.endTime)),
       };
     });
     return filterEventProps;
@@ -99,28 +96,37 @@ class CalendarView extends Component {
       .toString()
       .split(" ")
       .slice(1, 5);
-    const regexTime = time =>
-      time
-        .split(/[d+:]/)
-        .slice(0, 2)
-        .join(":");
-    const formatMonth = month =>
-      moment()
-        .month(month)
-        .format("MM");
+    const regexTime = (time) => time.split(/[d+:]/).slice(0, 2).join(":");
+    const formatMonth = (month) => moment().month(month).format("MM");
     this.setState({
       startDate: `${yearSt}-${formatMonth(monthSt)}-${dateSt}`,
       startTime: regexTime(timeSt),
       endDate: `${yearEnd}-${formatMonth(monthEnd)}-${dateEnd}`,
       endTime: regexTime(timeEnd),
-      title: title
+      title: title,
     });
   };
 
   dispatchLoading = () => {
-    this.props.loadData()
-  }
+    this.props.loadData();
+  };
 
+  fetchAddData = async (data) => {
+    const response = await fetch("/addEvent", { method: "POST", body: data });
+    const body = await response.text();
+    const parser = JSON.parse(body);
+    return parser;
+  };
+
+  fetchSeatsAvail = async (data) => {
+    const response = await fetch("/setVenueSeating", {
+      method: "POST",
+      body: data,
+    });
+    const body = await response.text();
+    const parser = JSON.parse(body);
+    return parser;
+  };
 
   storeCalendarEvent = async () => {
     const data = new FormData();
@@ -137,33 +143,41 @@ class CalendarView extends Component {
     data.append("facebook", this.state.facebook);
     data.append("instagram", this.state.instagram);
     data.append("twitter", this.state.twitter);
-    
-    await Promise.all([
-      fetch("/addEvent", { method: "POST", body: data }),
-      fetch("/setVenueSeating", { method: "POST", body: data })
-    ]).catch( err => console.log(err));
+
+    //   await Promise.all([
+    //     fetch("/addEvent", { method: "POST", body: data }),
+    //     fetch("/setVenueSeating", { method: "POST", body: data })
+    //   ]).catch( err => console.log(err));
+    // };
+
+    const eventAdded = this.fetchAddData(data);
+
+    if (!eventAdded.success) {
+      window.prompt(eventAdded.msg);
+    }
+    const seatsAvail = this.fetchSeatsAvail(data);
+    if (!seatsAvail.success) {
+      console.log(seatsAvail.msg);
+    }
   };
 
   handleSelect = ({ start, end }) => {
-    if (this.state.venue === "") {
+=    if (this.state.venue === "") {
       return;
     }
     const title = window.prompt("New event title?");
     if (title) {
       this.setState({
-        events: [...this.state.events, { start, end, title }]
+        events: [...this.state.events, { start, end, title }],
       });
       this.formatAddedEvents(start, end, title);
       this.storeCalendarEvent();
     }
   };
 
-
-
-
   render() {
     return (
-      <div >
+      <div>
         <Calendar
           culture={this.state.culture}
           dayLayoutAlgorithm={this.state.dayLayoutAlgorithm}
@@ -171,7 +185,8 @@ class CalendarView extends Component {
           eventPropGetter={eventStyleGetter}
           events={this.state.events}
           localizer={localizer}
-          onSelectEvent={event => alert(event.title)}
+          // longPressThreshold={10}
+          onSelectEvent={(event) => alert(event.title)}
           onSelectSlot={this.props.loggedIn ? this.handleSelect : ""}
           showMultiDayTimes={true}
           selectable
@@ -185,12 +200,11 @@ class CalendarView extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     loggedIn: state.auth.loggedIn,
-    hostId: state.auth.hostId
+    hostId: state.auth.hostId,
   };
 };
-
 
 export default connect(mapStateToProps)(CalendarView);

@@ -39,30 +39,26 @@
 
 
 .events-history-container {
-    width: 92%;
+    width: 100%;
 }
 
 .events-history {
     border-bottom: 5px double #663A2B;
     display: flex;
-    margin-left: 135px;
+    /* margin-left: 135px; */
 }
 
 .events-history-delUpt-container {
     border-right: 5px double #663A2B;
-    padding-left: 50px;
-    padding-right: 50px;
+    /* padding-left: 50px; */
+    /* padding-right: 50px; */
 
 }
 
 .events-history-info-container {
     border-right: 5px double #663A2B;
-    padding: 15px;
-    width: 40%;
-}
-
-.events-history-img-container {
-    padding-left: 100px;
+    text-align: center;
+    flex: 2 1 261px;
 }
 
 
@@ -71,6 +67,46 @@
 }
 
 
+/* .performer-img-event-history {
+    width: 250px;
+    height: 250px;
+
+}
+
+.performer-img-event-history img {
+    border-radius: 5px;
+} */
+
+
+
+#performer-img-events-history-container {
+    display: flex;
+    /* height: 250px; */
+    /* width: 250px; */
+    /* margin: 15px 0; */
+    /* margin-left: 35px; */
+    /* text-align: center; */
+    justify-content: center;
+    width: 100%;
+
+
+}
+
+#performer-img-events-history-container img {
+    border-radius: 5px;
+    /* width: 100%; */
+    justify-content: center;
+    height: 250px;
+    width: 250px;
+
+}
+
+
+
+.events-history-img-title {
+    text-align: center;
+}
+
 
 /* =============================
 Mobile Styles: 0 to 480px
@@ -78,11 +114,11 @@ Mobile Styles: 0 to 480px
 
 @media only screen and (max-width: 480px) {
 
+    
     .checkbox {
-        margin-left: 80px;
         margin-top: 15px;
         padding: 0;
-        text-align: center;
+        justify-content: center;
     } 
     
 
@@ -114,21 +150,104 @@ Mobile Styles: 0 to 480px
         width: 100%;
     }
     
-    .events-history-img-container {
-        padding-left: 0;
+    .events-history-img-container  {
+      display: flex;
+      flex-flow: row wrap;
+      /* margin-left: 100px; */
+      /* justify-content: center; */
+      width: 100%;
+    }
+
+    .events-history-img-title {
+        text-align: center;
+        margin-bottom: 10px;
+        width: 100%;
     }
     
+    
+
+        
     .events-history-info-container div {
         margin: 0;
         padding: 10px 0;
     }
+   
+}
+
+/* =============================
+Tablet Styles: 481px to 768px
+=============================== */
+
+
+@media only screen and (min-width: 481px) {
+
+    #events-history-header {
+        margin-top: 90px;
+
+    }
+       
+    #performer-img-events-history-container {
+        /* height: 250px;
+        width: 250px;
+        margin-bottom: 15px; */
+        padding: 0 10px;
+    }
+    
+    #performer-img-events-history-container img {
+        border-radius: 10px;
+        /* width: 100%; */
+        /* text-align: center; */
+        justify-content: center;
+        /* padding: 0 15px; */
+    }
+    
+    #performer-img-events-history-container:first-of-type {
+        text-align: center;
+    }
+
+
+   
+
+
+    .events-history-delUpt-container {
+        border-right: 5px double #663A2B;
+        /* padding-left: 50px; */
+        /* padding-right: 50px; */
+        /* margin-left: 50px; */
+    
+    }
     
 
 
-    
-    
-    
-    
-    
     
 }
+
+
+/* =============================
+Desktop Styles: 768px and greater
+=============================== */
+
+
+
+@media only screen and (min-width: 769px) {
+
+    #events-history-header {
+        margin-top: 70px;
+
+    }
+   
+
+
+    .events-history-delUpt-container {
+        border-right: 5px double #663A2B;
+        /* padding-left: 50px; */
+        /* padding-right: 50px; */
+        /* margin-left: 50px; */
+    
+    }
+    
+
+
+    
+}
+    

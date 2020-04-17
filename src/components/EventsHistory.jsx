@@ -99,10 +99,10 @@ export const EventsHistory = (props) => {
                     </div>
                   </div>
                   <div className="events-history-img-container">
-                    <div>
+                    <div className="events-history-img-title">
                       <b>Image</b>
                     </div>
-                    <div id="performer-img-container">
+                    <div id="performer-img-events-history-container">
                       <img src={`../../${event.image}`} alt="" />
                     </div>
                   </div>

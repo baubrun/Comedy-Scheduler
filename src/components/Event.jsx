@@ -4,7 +4,6 @@ import moment from "moment";
 
 const Event = (props) => {
   const seatingLeft = (eventDate, seats, venue) => {
-
     const seat = seats.find((i) => i.startDate === eventDate);
     return seat.venue[venue];
   };
@@ -17,10 +16,16 @@ const Event = (props) => {
           <div className="event-title">
             <Link to={`/event/${title}`}>{title}</Link>
           </div>
-          <div id="performer-img-container">
+          {/* <div id="performer-img-container">
             <img src={`../../${image}`} alt="" />
-          </div>
+          </div> */}
           <div className="event-info">
+            <div id="performer-img-events-container">
+              {/* <div id="performer-img-container"> */}
+              {/* <div id="performer-img-events"> */}
+              <img src={`../../${image}`} alt="" />
+            </div>
+
             <div id="performer-name">{performer}</div>
             <div>{moment(`${startDate}`).format("DD-MM-YYYY")}</div>
             <div>{startTime}</div>
