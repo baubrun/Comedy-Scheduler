@@ -29,10 +29,6 @@
     background-color: rgb(224, 39, 33) ;
 }
 
-/* #events-history-btn {
-    background-color: white;
-    color: black;
-} */
 
 #events-history-btn {
     background-color: #020202;
@@ -40,8 +36,8 @@
 }
 
 #loading{
-    margin-left: 40%;
-    margin-top: 100px;
+    margin-left: 43%;
+    margin-top: 5%;
     position: absolute;
 }
 
@@ -51,12 +47,9 @@
 }
 
 #profile-btns  {
-    /* background-color: #020202; */
     color: white;
     display: flex;
-    /* flex-flow: row wrap; */
     justify-content: space-between;
-    /* position: fixed; */
     top: 148px;
     z-index: 10;
     width: 100%;
@@ -66,11 +59,8 @@
     cursor: pointer;
     font-size: 18px;
     padding:  0 30px ;
-    /* height: 155px; */
     text-align: center;
     letter-spacing: 2px;
-    /* width: 25%; */
-    /* min-width: 120px; */
 
 }
 
@@ -102,7 +92,6 @@ Mobile Styles: 0 to 480px
     #loading{
         margin-left: 20%;
         margin-top: 40px;
-        /* position: absolute; */
     }
 
     .profile-header h1 {
@@ -111,13 +100,6 @@ Mobile Styles: 0 to 480px
     }
 
     #profile-btns {
-        /* background-color: #fff; */
-        /* margin-bottom: 20px; */
-        /* text-align: center; */
-        /* top: auto; */
-        /* position: relative; */
-        /* width: 100%; */
-        /* z-index: 10; */
         flex-flow: row wrap;
 
     }
@@ -147,30 +129,12 @@ Tablet Styles: 481px to 768px
 @media only screen and (min-width: 481px) {
 
 
-    #profile-btns  {
-        /* display: flex; */
-        /* margin-bottom: 100px; */
-        /* position: fixed; */
-        /* top: 0px; */
-        /* z-index: 10; */
-        /* flex-flow: row wrap; */
-        /* margin: 10px 50px; */
-        /* margin: 10px ; */
-        /* text-align: center; */
-        /* padding: 0; */
-        /* width: 25%; */
-        /* position: relative; */
-        /* justify-content: space-around; */
-        /* margin-left: 300px; */
-
-    } 
     
     #profile-btns  {
         display: flex;
         margin-bottom: 100px;
         margin: 10px ;
         position: fixed;
-        /* top: 130px; */
         top: 120px;
         z-index: 10;
         width: 100%;
@@ -194,7 +158,6 @@ Desktop Styles: 768px and greater
         margin-bottom: 100px;
         margin: 10px ;
         position: fixed;
-        /* top: 130px; */
         top: 120px;
         z-index: 10;
         width: 100%;

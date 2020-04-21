@@ -6,7 +6,7 @@ Mobile Styles: 0 to 480px
 
 
 
-@media only screen and (max-width: 480px) {
+ @media only screen and (max-width: 480px) {
 
 
 
@@ -37,10 +37,6 @@ Mobile Styles: 0 to 480px
     .event>li a:hover {
         color: white;
     }
-/* 
-    #events-history-header {
-        margin: 0;
-    } */
 
 
     .navbar {
@@ -53,4 +49,4 @@ Mobile Styles: 0 to 480px
     }
 
 
-}
+} 

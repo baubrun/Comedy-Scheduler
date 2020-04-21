@@ -16,13 +16,8 @@ const Event = (props) => {
           <div className="event-title">
             <Link to={`/event/${title}`}>{title}</Link>
           </div>
-          {/* <div id="performer-img-container">
-            <img src={`../../${image}`} alt="" />
-          </div> */}
           <div className="event-info">
             <div id="performer-img-events-container">
-              {/* <div id="performer-img-container"> */}
-              {/* <div id="performer-img-events"> */}
               <img src={`../../${image}`} alt="" />
             </div>
 

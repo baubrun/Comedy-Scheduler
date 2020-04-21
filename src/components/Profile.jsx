@@ -86,17 +86,6 @@ class Profile extends Component {
     this.props.getSeatsAvail(seats);
   };
 
-  // toDelete = () => {
-  //   const found = this.state.userEvents.find(
-  //     (event) => event._id === this.state.selectedOption
-  //   );
-  //   return {
-  //     startDate: found.startDate,
-  //     venue: found.venue,
-  //     image: found.image,
-  //   };
-  // };
-
   deleteEvent = async () => {
     if (this.state.selectedOption === "") {
       window.alert("Please select an event.");
@@ -106,12 +95,6 @@ class Profile extends Component {
       if (confirm) {
         const dataEvents = new FormData();
         dataEvents.append("id", this.state.selectedOption);
-        // dataEvents.append("image", this.toDelete().image);
-
-        // const dataSeating = new FormData();
-        // dataSeating.append("startDate", this.toDelete().startDate);
-        // dataSeating.append("venue", this.toDelete().venue);
-
         await Promise.all([
           fetch("/deleteEvents", { method: "POST", body: dataEvents })
         ]).catch(err => console.log(err));
@@ -151,10 +134,6 @@ class Profile extends Component {
     } else {
       doc.style.display = "flex";
     }
-    //   doc.style.visibility = "hidden";
-    // } else {
-    //   doc.style.visibility = "visible";
-    // }
   };
 
   showAddEvent = () => {

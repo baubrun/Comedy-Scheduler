@@ -144,25 +144,14 @@ class CalendarView extends Component {
     data.append("instagram", this.state.instagram);
     data.append("twitter", this.state.twitter);
 
-    //   await Promise.all([
-    //     fetch("/addEvent", { method: "POST", body: data }),
-    //     fetch("/setVenueSeating", { method: "POST", body: data })
-    //   ]).catch( err => console.log(err));
-    // };
-
-    const eventAdded = this.fetchAddData(data);
-
-    if (!eventAdded.success) {
-      window.prompt(eventAdded.msg);
+    await Promise.all([
+        fetch("/addEvent", { method: "POST", body: data }),
+        fetch("/setVenueSeating", { method: "POST", body: data })
+      ]).catch( err => console.log(err));
     }
-    const seatsAvail = this.fetchSeatsAvail(data);
-    if (!seatsAvail.success) {
-      console.log(seatsAvail.msg);
-    }
-  };
 
   handleSelect = ({ start, end }) => {
-=    if (this.state.venue === "") {
+   if (this.state.venue === "") {
       return;
     }
     const title = window.prompt("New event title?");
@@ -185,7 +174,7 @@ class CalendarView extends Component {
           eventPropGetter={eventStyleGetter}
           events={this.state.events}
           localizer={localizer}
-          // longPressThreshold={10}
+          longPressThreshold={10}
           onSelectEvent={(event) => alert(event.title)}
           onSelectSlot={this.props.loggedIn ? this.handleSelect : ""}
           showMultiDayTimes={true}

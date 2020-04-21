@@ -97,9 +97,3 @@ export const resetSeatsAvailAction = () => ({
     payload: []
 })
 
-// export const getSeatsAvailAction = seats => ({
-//     type: GOT_SEATS_AVAIL,
-//     payload: {
-//         venue: seats
-//     }
-// })

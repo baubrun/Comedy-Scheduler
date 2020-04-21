@@ -55,44 +55,6 @@ const deleteEmptySeating = async (startDate, req, res) => {
     })
 }
 
-const deleteImg = result => {
-    console.log('deleteImg result', result.value.image)
-    process.chdir("./uploads")
-
-    fs.unlink(result.value.image, err => {
-        if (err) {
-            console.log("deleteImg:", err)
-        }
-    })
-}
-
-const delOriginalImg = (res) => {
-
-    const regex = /[\w+-]*chUpload-\w+\.\w+/
-    process.chdir("./uploads")
-
-    fs.readdir(process.cwd(), (err, files) => {
-        if (err) {
-            console.log("delOriginalImg err:", err)
-            return res.status(400)
-        }
-
-        const excludedFiles = files.filter(f =>
-            f.indexOf(f.match(regex)) === -1
-        )
-        console.log("in delOriginalImg excludedFiles:", excludedFiles)
-        //     if (excludedFiles.length > 0) {
-        //         excludedFiles.forEach(f => {
-        //             fs.unlink(f, err => {
-        //                 if (err) {
-        //                     console.log(err)
-        //                     return res.status(400)
-        //                 }
-        //             })
-        //         })
-        //     }
-    })
-}
 
 
 const fileFilter = (req, file, cb) => {
@@ -103,27 +65,6 @@ const fileFilter = (req, file, cb) => {
     }
 }
 
-const isOverlap = (start, end, result) => {
-    const [h1, m1] = start.split(":")
-    const [h2, m2] = end.split(":")
-    const [eventSt1H, eventSt1M] = result.startTime.split(":")
-    const [eventEnd1H, eventEnd1M] = result.endTime.split(":")
-    const givenStart = new Date(0, 0, 0, h1, m1, 0)
-    const givenEnd = new Date(0, 0, 0, h2, m2, 0)
-    const eventStart = new Date(0, 0, 0, eventSt1H, eventSt1M, 0)
-    const eventEnd = new Date(0, 0, 0, eventEnd1H, eventEnd1M, 0)
-    if ((givenStart >= eventStart && givenEnd <= eventEnd) ||
-        (givenStart < eventStart && givenEnd > eventEnd) ||
-        (givenStart < eventStart && givenEnd <= eventEnd) ||
-        (givenStart > givenEnd) ||
-        ((givenStart > eventStart && givenStart < eventEnd) &&
-            (givenEnd > eventEnd)
-        )) {
-        return true
-    } else {
-        return false
-    }
-}
 
 const renameImg = file => {
     const sp = file.split(".")
@@ -136,7 +77,6 @@ seatsPerVenue.RIRE_NOW = 80
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        // cb(null, "uploads")
         cb(null, "/uploads/")
     },
     filename: function (req, file, cb) {
@@ -167,21 +107,16 @@ const venueSeatingInit = venue => {
 }
 
 
+const deleteImg = result => {
+    process.chdir("./uploads")
 
-/* ==================
-DELETE
-====================*/
+    fs.unlink(result.value.image, err => {
+        if (err) {
+            console.log("deleteImg:", err)
+        }
+    })
+}
 
-app.post("/delOriginalImg", (req, res) => {
-    // try {
-    //     delOriginalImg(res)
-    //     return res.status(200)
-    // } catch (error) {
-    //     console.log(error)
-    //     return res.status(400)
-    // }
-    delOriginalImg(res)
-})
 
 
 
@@ -255,7 +190,6 @@ POST
 ========================*/
 
 app.post("/addEvent", upload.single("image"), async (req, res) => {
-    console.log("/addEvent")
     const {
         title,
         startDate,
@@ -282,20 +216,12 @@ app.post("/addEvent", upload.single("image"), async (req, res) => {
             })
         }
         if (result) {
-            let overlaps = true
-            overlaps = isOverlap(
-                startTime,
-                endTime,
-                result)
-            // if (!overlaps) {
-            if (overlaps) {
-                return res.json({
-                    success: false,
-                    msg: "Time slot unavailable."
-                })}
-        }
-        else {
-                dbo.collection("events").insertOne({
+            return res.json({
+                success: false,
+                msg: "Time slot unavailable."
+            })
+        } else {
+            dbo.collection("events").insertOne({
                 title: title,
                 startDate: startDate,
                 startTime: startTime,
@@ -315,7 +241,7 @@ app.post("/addEvent", upload.single("image"), async (req, res) => {
         }
     })
 })
-        
+
 
 
 app.post("/checkout", upload.none(), async (req, res) => {
@@ -354,7 +280,7 @@ app.post("/deleteEvents", upload.none(), async (req, res) => {
                     success: false
                 })
             }
-            deleteImg(result, req)
+            deleteImg(result)
         })
     return res.json({
         success: true
@@ -595,7 +521,6 @@ app.post("/updateEvent", upload.single("image"), async (req, res) => {
         sharp(req.file.path)
             .resize(450, 450)
             .toFile(`./uploads/${img}`, (err) => {
-            // .toFile(`/uploads/${img}`, (err) => {
                 if (err) {
                     console.log("sharp:", err)
                 }
@@ -649,7 +574,7 @@ app.post("/charge", upload.none(), async (req, res) => {
         id,
         amount,
         order,
-        
+
     } = req.body
 
     orderNum = order
@@ -677,15 +602,6 @@ app.post("/charge", upload.none(), async (req, res) => {
     }
 
 })
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-// import { confirmCheckoutAction } from "../actions/actions";
-// import { emptyCartAction } from "../actions/actions";
-// import { resetCheckoutAction } from "../actions/actions";
 import CheckoutForm from "./CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
@@ -58,10 +55,6 @@ class Checkout extends Component {
         })
       : this.props.history.push("/events");
   }
-
-  dispatchEmptyCart = () => {
-    this.props.emptyCart();
-  };
 
   dispatchResetCheckout = () => {
     this.props.resetCheckout();
@@ -143,12 +136,5 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    // confirmCheckout: () => dispatch(confirmCheckoutAction()),
-    // emptyCart: () => dispatch(emptyCartAction()),
-    // resetCheckout: () => dispatch(resetCheckoutAction()),
-  };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
+export default connect(mapStateToProps)(Checkout);

@@ -133,9 +133,8 @@ Mobile Styles: 0 to 480px
         flex: 3 1 275px;
     }
         
-    .update-event-form-container label {
-        margin-left: 20px;
-        padding-right: 20px;
+    .update-event-form-container input {
+        width: 100%;
     }
     
 

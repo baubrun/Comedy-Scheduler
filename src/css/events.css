@@ -9,7 +9,6 @@
     color: white;
     margin: 15px 0;
     padding: 20px 30px;
-    /* width: 25%; */
 }
 
 .event a {
@@ -23,20 +22,6 @@
     text-align: center;
 }
 
-
-
-/* .performer-img-events-container {
-    height: 250px;
-    width: 250px;
-    margin-bottom: 15px;
-    width: 10px;
-}
-
-.performer-img-events-container img {
-    border-radius: 5px;
-    width: 100%;
-
-}  */
 
 
 #events-body {
@@ -76,11 +61,9 @@
 
 
 .no-events {
-    /* display: flex; */
     font-size: 18px;
     margin-top: 100px;
     text-align: center;
-    /* justify-content: center; */
 }
 
 
@@ -106,7 +89,6 @@
 .reserve-btn:hover{
     background-color: whitesmoke;
     color:  rgb(224, 151, 33);
-    /* color: #663A2B; */
 }
 
 #calendar-view {
@@ -141,13 +123,6 @@
     justify-content: center;
 }
 
-/* .venue-select h2 {
-    background-color: #663A2B;
-    color: white;
-    margin-bottom: 5px;
-    text-align: center;
-    width: 100%;
-} */
 
 .venue-select > select {
     border-color: #020202;
@@ -172,10 +147,8 @@ new layout
 ======================*/
 
 .event-title {
-    /* font-size: 38px; */
     letter-spacing: 2px;
     margin-bottom: 20px;
-    /* padding: 0 20px; */
     text-align: center;
     width: 100%
 }
@@ -209,27 +182,18 @@ Mobile Styles: 0 to 480px
 @media only screen and (max-width: 480px) {
 
     .event {
-        /* justify-content: center;  */
         width: 100%;
     }
     
-
-    #events-body {
-        /* justify-content: center; */
-    }
-
-    #performer-img-container {
-        /* text-align: center; */
-        /* margin-left: 25px; */
-        /* margin-bottom: 15px; */
-
-    }
 
     
     .events-list-view {
         width: 100%;
     }
 
+    .reserve-btn{
+        margin-top: 10px;
+    }
     
 
 }
@@ -250,19 +214,6 @@ Tablet Styles: 481px to 768px
         margin: 15px;
     }
     
-
-
-}
-
-
-    /* =============================
-Desktop Styles: 768px and greater
-=============================== */
-
-
-
-@media only screen and (min-width: 769px) {
-
 
 
 }

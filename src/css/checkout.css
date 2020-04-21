@@ -2,40 +2,19 @@
 .checkout{
     display: flex;
     flex-flow: row wrap;
-    /* min-height: 100%; */
-    /* position: relative; */
-    /* width: 100%; */
     background-color:#020202;
-    /* height: 100vh; */
 }
 
-/* .checkout-word{
-    color: white;
-    height: 100vh;
-    letter-spacing: -50px;
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    font-size: 120px;
-    position: absolute;
-} */
 
 
 .checkout-body {
-    /* background-color: #02020213; */
-    /* background-color: rgb(224, 151, 33); */
-    /* background-color: rgb(224, 151, 33); */
     background-color: #020202;
     display: flex;
     height: 100vh;
-    /* height: 100%; */
     margin-top: 5px;
     width: 100%;
 }
 
-/* .checkout-header {
-    justify-content: center;
-    width: 100%;
-} */
 
 .card-detail{
     margin-right: 5px;
@@ -52,7 +31,6 @@
 
 .checkout-summary h2 {
     border-bottom: 1px solid #663A2B ;
-    /* color: #663A2B ; */
     color: #020202 ;
     font-size: 20px;
     letter-spacing: 2px;
@@ -63,7 +41,6 @@
 
 .checkout-summary-items {
     padding: 10px;
-    /* margin: 55px 0; */
 }
 
 .checkout-summary-items ul{
@@ -220,12 +197,9 @@ Mobile Styles: 0 to 480px
 =============================== */
 
 
-
-
 @media only screen and (max-width: 480px) {
 
     .checkout-body {
-        /* display: block; */
     flex-flow: row wrap;
     height: 100%;
     }

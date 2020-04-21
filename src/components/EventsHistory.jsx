@@ -20,7 +20,7 @@ export const EventsHistory = (props) => {
       <div className="events-history-body">
         <div id="loading">
           <Loader
-            type="Triangle"
+            type="Rings"
             color="rgba(224, 151, 33, 0.7)"
             height={loadingSize}
             width={loadingSize}

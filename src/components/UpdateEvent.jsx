@@ -1,19 +1,10 @@
 import React, { Component } from "react";
 
-const validTime = (start, end) => {
-  const [h1, m1] = start.split(":");
-  const [h2, m2] = end.split(":");
-  const givenStart = new Date(0, 0, 0, h1, m1, 0);
-  const givenEnd = new Date(0, 0, 0, h2, m2, 0);
-  return givenStart < givenEnd || givenStart === givenEnd ? true : false;
-};
 
 const validTimeFormat = (start, end) => {
-  // const time = validTime(start, end);
   const regex = RegExp(/([0-1]?\d|2[0-3]):[0-5]\d$/);
   const startFormat = regex.test(start);
   const endFormat = regex.test(end);
-  // return startFormat && endFormat && time ? true : false;
   return startFormat && endFormat  ? true : false;
 };
 

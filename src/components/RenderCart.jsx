@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { getCartAction } from "../actions/actions";
 import { deleteFromCartAction } from "../actions/actions";
 import { getItemsBoughtAction } from "../actions/actions";
 
@@ -39,10 +38,6 @@ class RenderCart extends Component {
     this.props.delItem(item);
   };
 
-  dispatchGetCart = () => {
-    this.props.getCart(this.props.cart);
-  };
-
   handleCheckout = () => {
     this.props.getBoughtItems(this.state.cartItems);
     this.props.history.push("/checkout");
@@ -77,8 +72,6 @@ class RenderCart extends Component {
         <div className="cart-body">
           {this.state.cartItems.length > 0 ? (
             <>
-              {/* <div className="tfoot">Maximum of 6 tickets per show</div> */}
-
               <table>
                 <thead>
                   <tr>
@@ -155,7 +148,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getCart: (items) => dispatch(getCartAction(items)),
     delItem: (item) => dispatch(deleteFromCartAction(item)),
     getBoughtItems: (items) => dispatch(getItemsBoughtAction(items)),
   };

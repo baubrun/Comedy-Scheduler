@@ -34,7 +34,6 @@
 
 .events-history-body {
     display: flex;
-    
 }
 
 
@@ -45,13 +44,10 @@
 .events-history {
     border-bottom: 5px double #663A2B;
     display: flex;
-    /* margin-left: 135px; */
 }
 
 .events-history-delUpt-container {
     border-right: 5px double #663A2B;
-    /* padding-left: 50px; */
-    /* padding-right: 50px; */
 
 }
 
@@ -67,25 +63,10 @@
 }
 
 
-/* .performer-img-event-history {
-    width: 250px;
-    height: 250px;
-
-}
-
-.performer-img-event-history img {
-    border-radius: 5px;
-} */
-
 
 
 #performer-img-events-history-container {
     display: flex;
-    /* height: 250px; */
-    /* width: 250px; */
-    /* margin: 15px 0; */
-    /* margin-left: 35px; */
-    /* text-align: center; */
     justify-content: center;
     width: 100%;
 
@@ -94,7 +75,6 @@
 
 #performer-img-events-history-container img {
     border-radius: 5px;
-    /* width: 100%; */
     justify-content: center;
     height: 250px;
     width: 250px;
@@ -153,8 +133,6 @@ Mobile Styles: 0 to 480px
     .events-history-img-container  {
       display: flex;
       flex-flow: row wrap;
-      /* margin-left: 100px; */
-      /* justify-content: center; */
       width: 100%;
     }
 
@@ -187,18 +165,12 @@ Tablet Styles: 481px to 768px
     }
        
     #performer-img-events-history-container {
-        /* height: 250px;
-        width: 250px;
-        margin-bottom: 15px; */
         padding: 0 10px;
     }
     
     #performer-img-events-history-container img {
         border-radius: 10px;
-        /* width: 100%; */
-        /* text-align: center; */
         justify-content: center;
-        /* padding: 0 15px; */
     }
     
     #performer-img-events-history-container:first-of-type {
@@ -211,10 +183,6 @@ Tablet Styles: 481px to 768px
 
     .events-history-delUpt-container {
         border-right: 5px double #663A2B;
-        /* padding-left: 50px; */
-        /* padding-right: 50px; */
-        /* margin-left: 50px; */
-    
     }
     
 
@@ -240,9 +208,6 @@ Desktop Styles: 768px and greater
 
     .events-history-delUpt-container {
         border-right: 5px double #663A2B;
-        /* padding-left: 50px; */
-        /* padding-right: 50px; */
-        /* margin-left: 50px; */
     
     }
     
