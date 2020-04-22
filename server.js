@@ -23,7 +23,7 @@ let total = ""
 app.use(express.json())
 app.use(cookieParser())
 app.use("/", express.static("uploads"))
-
+app.use("/", express.static("build"))
 
 MongoClient.connect(
     process.env.DB_URI, {
@@ -603,6 +603,9 @@ app.post("/charge", upload.none(), async (req, res) => {
 })
 
 
+app.all("/*", (req, res) => {
+    res.sendFile(__dirname + "/build/index.html")
+})
 
 
 /*================
