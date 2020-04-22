@@ -1,6 +1,5 @@
 const express = require('express')
 const app = express()
-const port = 4000
 require("dotenv/config")
 const multer = require("multer")
 const cookieParser = require("cookie-parser")
@@ -610,6 +609,7 @@ app.post("/charge", upload.none(), async (req, res) => {
 Port
 ===================*/
 
-app.listen(port, () => {
-    console.log("Server running on port:", port)
+const {PORT = 4000, LOCAL_ADDRESS = "0.0.0.0"} = process.env
+app.listen(PORT, LOCAL_ADDRESS, () => {
+    console.log("Server running on port:", PORT)
 })

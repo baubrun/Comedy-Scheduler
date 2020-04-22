@@ -43,19 +43,6 @@
 
 
 
-/*====================
-EVENT DETAIL
-=======================*/
-
-
-.event li {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    padding: 10px;
-    width: 100%;
-}
-
 .event-detail-body {
     background-color: #020202;
     display: flex;
@@ -72,6 +59,14 @@ EVENT DETAIL
     margin-left: 50px;
     margin-top: 20px;
     padding: 10px 0;
+}
+
+.event li {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    padding: 10px;
+    width: 100%;
 }
 
 .event-detail-info li {
@@ -162,13 +157,10 @@ Desktop Styles: 768px and greater
 =============================== */
 
 
-
 @media only screen and (min-width: 769px) {
     .performer-img-detail  {
         height: 450px;
         width: 450px;
     }
-
-
 
 }
