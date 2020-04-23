@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import EventsHistory from "./EventsHistory";
-import { getEventsAction, getSeatsAvailAction } from "../actions/actions";
 import AddEvent from "./AddEvent";
 import UpdateEvent from "./UpdateEvent";
 import { compareDates } from "./Events";
-import { loadingAction, loadedAction } from "../actions/actions";
+import { getEventsAction, getSeatsAvailAction, loadingAction, loadedAction } from "../actions/actions";
 
 class Profile extends Component {
   constructor(props) {

@@ -1,27 +1,28 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getEventsAction, getSeatsAvailAction } from "../actions/actions";
 import CalendarView from "./CalendarView";
-import Event from "./Event"
-import { loadingAction, loadedAction } from "../actions/actions";
-
+import Event from "./Event";
+import {
+  getEventsAction,
+  getSeatsAvailAction,
+  loadingAction,
+  loadedAction,
+} from "../actions/actions";
 export const compareDates = (a, b) => {
   let dateA = new Date(a.startDate);
   let dateB = new Date(b.startDate);
   return dateA - dateB;
 };
 
-const toggleBlockFlex = state => {
-  const doc = document.getElementById("events-body")
-  if (!state){
-    doc.style.display = "block"
+const toggleBlockFlex = (state) => {
+  const doc = document.getElementById("events-body");
+  if (!state) {
+    doc.style.display = "block";
   } else {
-    doc.style.display = "flex"
-    doc.style.flexFlow = "row wrap"
+    doc.style.display = "flex";
+    doc.style.flexFlow = "row wrap";
   }
-}
-
-
+};
 
 class Events extends Component {
   constructor(props) {
@@ -32,17 +33,16 @@ class Events extends Component {
       listViewShow: true,
       venue: "",
       startDate: "",
-      events: []
+      events: [],
     };
   }
   audio = () => {
-    const audio = new Audio("LW-Ab/mp3")
-    audio.play()
-  }
-
+    const audio = new Audio("LW-Ab/mp3");
+    audio.play();
+  };
 
   componentDidMount() {
-    this.fetchData()
+    this.fetchData();
     this.eventsByVenue();
   }
 
@@ -51,16 +51,15 @@ class Events extends Component {
       this.eventsByVenue();
     }
     if (prevState.listViewShow !== this.state.listViewShow) {
-      toggleBlockFlex(this.state.listViewShow)
+      toggleBlockFlex(this.state.listViewShow);
     }
-
   }
 
-  dispatchGetEvents = events => {
+  dispatchGetEvents = (events) => {
     this.props.getEvents(events);
   };
 
-  dispatchGetSeatsAvail = seats => {
+  dispatchGetSeatsAvail = (seats) => {
     this.props.getSeatsAvail(seats);
   };
 
@@ -91,35 +90,33 @@ class Events extends Component {
 
   eventsByVenue = () => {
     const events = this.props.events.filter(
-      event => event.venue.indexOf(this.state.venue) !== -1
+      (event) => event.venue.indexOf(this.state.venue) !== -1
     );
     const eventsSorted = events.sort(compareDates);
     this.setState({ events: eventsSorted });
   };
 
-  handleSearchInput = event => {
+  handleSearchInput = (event) => {
     this.setState({ searchInput: event.target.value });
   };
 
-  handleVenueChange = event => {
+  handleVenueChange = (event) => {
     this.setState({ venue: event.target.value });
   };
 
   toggleCalendarView = () => {
     this.setState({
       calendarViewShow: true,
-      listViewShow: false
+      listViewShow: false,
     });
   };
 
   toggleListView = () => {
     this.setState({
       listViewShow: true,
-      calendarViewShow: false
+      calendarViewShow: false,
     });
   };
-
-
 
   showEvents = () => {
     if (
@@ -130,7 +127,7 @@ class Events extends Component {
     }
     if (this.state.listViewShow && this.state.events.length > 0) {
       return this.state.events
-        .filter(event =>
+        .filter((event) =>
           event.venue.toLowerCase().includes(this.state.venue.toLowerCase())
         )
         .map((event, idx) => (
@@ -145,7 +142,7 @@ class Events extends Component {
     if (this.state.calendarViewShow)
       return <CalendarView events={this.state.events} />;
     else {
-    return <h1 className="events-no-events">NO EVENTS</h1>
+      return <h1 className="events-no-events">NO EVENTS</h1>;
     }
   };
 
@@ -153,7 +150,6 @@ class Events extends Component {
     const venueFormatted = this.state.venue.split("_").join(" ");
     return (
       <>
-        
         <div className="events-header">
           <h1>EVENTS</h1>
           <div className="venue-select">
@@ -182,15 +178,13 @@ class Events extends Component {
             />
           </div>
         </div>
-        <div id="events-body">
-          {this.showEvents()}         
-          </div>
+        <div id="events-body">{this.showEvents()}</div>
       </>
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     events: state.events,
     seatsAvail: state.seatsAvail,
@@ -198,13 +192,12 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getEvents: events => dispatch(getEventsAction(events)),
-    getSeatsAvail: seats => dispatch(getSeatsAvailAction(seats)),
+    getEvents: (events) => dispatch(getEventsAction(events)),
+    getSeatsAvail: (seats) => dispatch(getSeatsAvailAction(seats)),
     loadingData: () => dispatch(loadingAction()),
     loadedData: () => dispatch(loadedAction()),
-
   };
 };
 

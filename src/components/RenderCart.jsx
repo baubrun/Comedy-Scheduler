@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { deleteFromCartAction } from "../actions/actions";
-import { getItemsBoughtAction } from "../actions/actions";
+import { deleteFromCartAction, getItemsBoughtAction} from "../actions/actions";
+
 
 export const currencyFormat = (amount) => {
   return new Intl.NumberFormat("decimal", {

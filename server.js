@@ -23,7 +23,13 @@ let total = ""
 app.use(express.json())
 app.use(cookieParser())
 app.use("/", express.static("uploads"))
-app.use("/", express.static("build"))
+// app.use("/", express.static("build"))
+
+// app.all("/*", (req, res) => {
+//     res.sendFile(__dirname + "/build/index.html")
+// })
+
+
 
 MongoClient.connect(
     process.env.DB_URI, {
@@ -115,7 +121,6 @@ const deleteImg = result => {
         }
     })
 }
-
 
 
 
@@ -603,16 +608,17 @@ app.post("/charge", upload.none(), async (req, res) => {
 })
 
 
-app.all("/*", (req, res) => {
-    res.sendFile(__dirname + "/build/index.html")
-})
-
 
 /*================
 Port
 ===================*/
 
-const {PORT = 4000, LOCAL_ADDRESS = "0.0.0.0"} = process.env
-app.listen(PORT, LOCAL_ADDRESS, () => {
-    console.log("Server running on port:", PORT)
+// const {PORT = 4000, LOCAL_ADDRESS = "0.0.0.0"} = process.env
+// app.listen(PORT, LOCAL_ADDRESS, () => {
+//     console.log("Server running on port:", PORT)
+// })
+
+const port = 4000
+app.listen(port, () => {
+    console.log("Server running on port:", port)
 })
