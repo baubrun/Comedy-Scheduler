@@ -1,8 +1,8 @@
-This Node/React project is a portal for a company that owns 3 comedy clubs.
+This Node.js/React/Redux project.  
+It is a web portal for 3 comedy clubs. 
+Users can purchase tickets to events. 
+Registered users can create and update event information along with photos and social media links for performers.
 
-
-Users can purchase tickets without logging in.
-Users can register to become hosts and add events.
 
 Enter "npm run dev" to start the project.
 
