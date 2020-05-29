@@ -1,55 +1,10 @@
 import React, { Component } from "react";
+import { Button } from "./Button";
+import {
+  timeFixed15,
+  validTimeFormat
+} from "../Utils"
 
-
-const validTimeFormat = (start, end) => {
-  const regex = RegExp(/([0-1]?\d|2[0-3]):[0-5]\d$/);
-  const startFormat = regex.test(start);
-  const endFormat = regex.test(end);
-  return startFormat && endFormat  ? true : false;
-};
-
-const minutesToTenDigits = (min) => {
-  if (min >= 0 && min < 10) {
-    return `0${min}`;
-  }
-};
-
-const timeToNumber = (time) => {
-  const h = parseInt(time.split(":")[0]);
-  const m = parseInt(time.split(":")[1]);
-  return [h, m];
-};
-
-const timeFixed15 = (givenTime) => {
-  console.log("givenTime :", givenTime);
-  const [givenHour, givenMinute] = timeToNumber(givenTime);
-  let hour = givenHour;
-  let minute = 0;
-  let time = [];
-  if (givenMinute % 15 === 0) {
-    time[0] = givenHour;
-    const mins = minutesToTenDigits(givenMinute);
-    time[1] = givenMinute === 0 ? mins : givenMinute;
-    return time.join(":");
-  }
-  if (givenMinute > 0 && givenMinute < 15) {
-    minute = 15;
-  }
-  if (givenMinute > 15 && givenMinute < 30) {
-    minute = 30;
-  }
-  if (givenMinute > 30 && givenMinute < 45) {
-    minute = 45;
-  }
-  if (givenMinute > 45) {
-    minute = 0;
-    hour += 1;
-  }
-  time[0] = hour;
-  const mins = minutesToTenDigits(minute);
-  time[1] = mins ? mins : minute;
-  return time.join(":");
-};
 
 const DEFAULT_STATE = {
   title: "",
@@ -110,8 +65,7 @@ class UpdateEvent extends Component {
       twitter,
     });
     this.preFillVenueOption();
-    fetch("/delOriginalImg", {method: "DELETE"})
-
+    fetch("/delOriginalImg", { method: "DELETE" });
   }
 
   handleCloseErrors = () => {
@@ -120,9 +74,7 @@ class UpdateEvent extends Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
-
     const vf = validTimeFormat(this.state.startTime, this.state.endTime);
-
     if (!vf) {
       return this.setState({ errors: ["Please enter a valid time."] });
     }
@@ -131,7 +83,7 @@ class UpdateEvent extends Component {
     data.append("id", this.props.id);
     data.append("title", this.state.title);
     data.append("startDate", this.state.startDate);
-    data.append("startTime", timeFixed15(this.state.startTime));    
+    data.append("startTime", timeFixed15(this.state.startTime));
     data.append("endDate", this.state.endDate);
     data.append("endTime", timeFixed15(this.state.endTime));
     data.append("venue", this.state.venue);
@@ -149,8 +101,7 @@ class UpdateEvent extends Component {
     await Promise.all([
       fetch("/setVenueSeating", { method: "POST", body: data }),
       fetch("/updateEvent", { method: "POST", body: data }),
-    ]).catch(err => err);
-
+    ]).catch((err) => err);
 
     this.props.dispatchLoading();
   };
@@ -336,19 +287,16 @@ class UpdateEvent extends Component {
                   onChange={this.handleImage}
                 />
               </li>
-              <li className="update-btns">
-                <button id="submit-update-btn" type="submit">
-                  UPDATE
-                </button>
-                <button
+            </ul>
+            <div className="update-events-btns">
+                <Button id="submit-update-btn" text="UPDATE" />
+                <Button
                   id="cancel-update-btn"
                   onClick={this.props.dispatchLoading}
-                  type="button"
-                >
-                  CANCEL
-                </button>
-              </li>
-            </ul>
+                  text="Cancel"
+                />
+              </div>
+
           </form>
         </div>
       </>

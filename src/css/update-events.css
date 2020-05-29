@@ -2,8 +2,11 @@
     background-color: rgb(224, 151, 33);
 }
 
-.update-btns button:first-child {
-    margin-right: auto;
+.update-events-btns {
+    display: flex;
+    justify-content: space-between;
+    /* padding-bottom: 80px; */
+    width: 100%;
 }
 
 .update-body {

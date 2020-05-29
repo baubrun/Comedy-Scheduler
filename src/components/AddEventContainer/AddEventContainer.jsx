@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getSeatsAvailAction } from "../actions/actions";
-import CalendarView from "./CalendarView";
+import { getSeatsAvailAction } from "../../actions/actions";
+import {CalendarView} from "../CalendarView";
+import {AddEvent} from "../AddEvent";
 
 const DEFAULT_STATE = {
   title: "",
@@ -15,7 +16,7 @@ const DEFAULT_STATE = {
   price: "",
 };
 
-class AddEvent extends Component {
+class AddEventContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -34,6 +35,10 @@ class AddEvent extends Component {
       this.eventsByVenueHostId();
     }
   }
+
+  // dispatchLoading = () => {
+  //   this.props.loadData();
+  // };
 
   eventsByVenueHostId = () => {
     const filter = {
@@ -106,25 +111,13 @@ class AddEvent extends Component {
   render() {
     return (
       <>
-        <div className="add-event-header">
-          <h2
-            className="show-events-addPage"
-            onClick={this.props.dispatchLoading}
-          >
-            LOAD EVENTS
-          </h2>
-          <h2>ADD EVENTS</h2>
+        <div className="add-event-body">
+          <AddEvent
+            dispatchLoading={this.props.dispatchLoading}
+            handleVenueChange={this.handleVenueChange}
+          />
         </div>
         <div className="add-event-body">
-          <div className="venue-select">
-            <select onChange={this.handleVenueChange} name="venue">
-              <option value="">SELECT A VENUE</option>
-              <option value="LE_FOU_FOU">LE FOU FOU</option>
-              <option value="JOKES_BLAGUES">JOKES BLAGUES</option>
-              <option value="RIRE_NOW">RIRE NOW</option>
-            </select>
-          </div>
-          <div className="add-events-header-img"></div>
           <CalendarView
             selectedVenue={this.state.venue}
             events={this.state.userEvents}
@@ -149,4 +142,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddEvent);
+export default connect(mapStateToProps, mapDispatchToProps)(AddEventContainer);

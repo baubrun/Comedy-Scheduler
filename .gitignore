@@ -26,7 +26,7 @@ notes.txt
 prac.html
 
 
-src/data
+src/data/
 
 .env
 *.env

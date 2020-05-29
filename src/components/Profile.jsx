@@ -1,10 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import EventsHistory from "./EventsHistory";
-import AddEvent from "./AddEvent";
+import { AddEventContainer } from "./AddEventContainer";
 import UpdateEvent from "./UpdateEvent";
-import { compareDates } from "./Events";
-import { getEventsAction, getSeatsAvailAction, loadingAction, loadedAction } from "../actions/actions";
+import { compareDates } from "./../Utils";
+import {
+  getEventsAction,
+  getSeatsAvailAction,
+  loadingAction,
+  loadedAction,
+} from "../actions/actions";
+import {Button} from "./Button"
 
 class Profile extends Component {
   constructor(props) {
@@ -95,8 +101,8 @@ class Profile extends Component {
         const dataEvents = new FormData();
         dataEvents.append("id", this.state.selectedOption);
         await Promise.all([
-          fetch("/deleteEvents", { method: "POST", body: dataEvents })
-        ]).catch(err => console.log(err));
+          fetch("/deleteEvents", { method: "POST", body: dataEvents }),
+        ]).catch((err) => console.log(err));
         this.dispatchLoading();
       }
     }
@@ -162,25 +168,16 @@ class Profile extends Component {
     return (
       <ul id="profile-btns">
         <li>
-          <div id="add-event-btn" onClick={this.showAddEvent}>
-            ADD EVENTS
-          </div>
+          <Button id="add-event-btn" text="ADD EVENTS" onClick={this.showAddEvent}/>
         </li>
         <li>
-          <div id="delete-event-btn" onClick={this.deleteEvent}>
-            DELETE EVENT
-          </div>
+          <Button id="delete-event-btn" text="DELETE EVENT" onClick={this.deleteEvent}/>
         </li>
         <li>
-          <div id="events-history-btn" onClick={this.dispatchLoading}>
-            LOAD EVENTS
-          </div>
+          <Button id="events-history-btn" text="LOAD EVENTS" onClick={this.dispatchLoading}/>
         </li>
-
         <li>
-          <div id="update-event-btn" onClick={this.showUpdateEventForm}>
-            UPDATE EVENT
-          </div>
+          <Button id="update-event-btn" text="UPDATE EVENT" onClick={this.showUpdateEventForm}/>
         </li>
       </ul>
     );
@@ -202,7 +199,7 @@ class Profile extends Component {
             />
           )}
           {this.state.showAddEvent && (
-            <AddEvent
+            <AddEventContainer
               userEvents={this.state.userEvents}
               dispatchLoading={this.dispatchLoading}
             />

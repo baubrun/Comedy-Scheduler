@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import CalendarView from "./CalendarView";
+import {CalendarView} from "./CalendarView";
 import Event from "./Event";
 import {
   getEventsAction,
@@ -8,11 +8,10 @@ import {
   loadingAction,
   loadedAction,
 } from "../actions/actions";
-export const compareDates = (a, b) => {
-  let dateA = new Date(a.startDate);
-  let dateB = new Date(b.startDate);
-  return dateA - dateB;
-};
+import {compareDates} from "./../Utils"
+
+
+
 
 const toggleBlockFlex = (state) => {
   const doc = document.getElementById("events-body");
@@ -36,10 +35,6 @@ class Events extends Component {
       events: [],
     };
   }
-  audio = () => {
-    const audio = new Audio("LW-Ab/mp3");
-    audio.play();
-  };
 
   componentDidMount() {
     this.fetchData();

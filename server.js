@@ -43,7 +43,6 @@ MongoClient.connect(
 
 
 
-
 /*===============
  Helper functions 
  ================*/
