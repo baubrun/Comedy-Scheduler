@@ -1,15 +1,15 @@
 import React, {Component} from "react";
-import HomePage from "./components/HomePage"
+import {HomePage} from "./components/HomePage"
 import {BrowserRouter, Route, Redirect} from "react-router-dom"
-import Register from "./components/Register";
-import Events from "./components/Events";
-import RenderEvent from "./components/EventDetail"
-import Profile from "./components/Profile"
-import Login from "./components/Login"
-import NavBar from "./components/NavBar"
-import Checkout from "./components/Checkout"
-import Confirmation from "./components/Confirmation"
-import RenderCart from "./components/RenderCart"
+import {Register} from "./components/Register";
+import {Events} from "./components/Events";
+import RenderEvent from "./components/EventDetail/EventDetail"
+import {Profile} from "./components/Profile"
+import {Login} from "./components/Login"
+import {NavBar} from "./components/NavBar"
+import {Checkout} from "./components/Checkout"
+import {Confirmation} from "./components/Confirmation"
+import {RenderCart} from "./components/RenderCart"
 import { connect } from "react-redux";
 
 class App extends Component {

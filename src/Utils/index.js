@@ -1,27 +1,34 @@
+export const orderNumber = () => {
+  return "CB3" + Math.floor(Math.random() * 1000);
+};
+
+
 export const compareDates = (a, b) => {
     let dateA = new Date(a.startDate);
     let dateB = new Date(b.startDate);
     return dateA - dateB;
 };
 
-export const validTimeFormat = (start, end) => {
-    const regex = RegExp(/([0-1]?\d|2[0-3]):[0-5]\d$/);
-    const startFormat = regex.test(start);
-    const endFormat = regex.test(end);
-    return startFormat && endFormat ? true : false;
-  };
-  
+
+export const formattedAmount = (amount) => {
+  const [wholeNum, decimal] = amount.split(".");
+  return wholeNum + decimal;
+};
+
+
+export const minutesToTenDigits = (min) => {
+  if (min >= 0 && min < 10) {
+    return `0${min}`;
+  }
+};
+
+
 export const timeToNumber = (time) => {
     const h = parseInt(time.split(":")[0]);
     const m = parseInt(time.split(":")[1]);
     return [h, m];
   };
   
-export const minutesToTenDigits = (min) => {
-    if (min >= 0 && min < 10) {
-      return `0${min}`;
-    }
-  };
   
 export const timeFixed15 = (givenTime) => {
     console.log("givenTime :", givenTime);
@@ -52,4 +59,11 @@ export const timeFixed15 = (givenTime) => {
     const mins = minutesToTenDigits(minute);
     time[1] = mins ? mins : minute;
     return time.join(":");
+  };
+
+  export const validTimeFormat = (start, end) => {
+    const regex = RegExp(/([0-1]?\d|2[0-3]):[0-5]\d$/);
+    const startFormat = regex.test(start);
+    const endFormat = regex.test(end);
+    return startFormat && endFormat ? true : false;
   };

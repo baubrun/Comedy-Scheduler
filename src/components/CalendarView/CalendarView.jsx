@@ -4,6 +4,7 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { connect } from "react-redux";
 import "moment/locale/en-gb";
+import "./CalendarView.css"
 
 const allViews = Object.keys(Views).map((k) => Views[k]);
 const localizer = momentLocalizer(moment);
