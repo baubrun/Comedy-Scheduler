@@ -147,7 +147,7 @@ class CalendarView extends Component {
 
     await Promise.all([
         fetch("/addEvent", { method: "POST", body: data }),
-        fetch("/setVenueSeating", { method: "POST", body: data })
+        // fetch("/setVenueSeating", { method: "POST", body: data })
       ]).catch( err => console.log(err));
     }
 

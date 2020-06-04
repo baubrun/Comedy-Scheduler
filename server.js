@@ -2,7 +2,6 @@ const express = require('express')
 const app = express()
 require("dotenv/config")
 const multer = require("multer")
-const cookieParser = require("cookie-parser")
 const mongodb = require("mongodb")
 const MongoClient = mongodb.MongoClient
 const ObjectID = mongodb.ObjectID
@@ -21,13 +20,10 @@ let total = ""
  ==============*/
 
 app.use(express.json())
-app.use(cookieParser())
 app.use("/", express.static("uploads"))
-// app.use("/", express.static("build"))
 
-// app.all("/*", (req, res) => {
-//     res.sendFile(__dirname + "/build/index.html")
-// })
+app.use("/", express.static("build"))
+
 
 
 
