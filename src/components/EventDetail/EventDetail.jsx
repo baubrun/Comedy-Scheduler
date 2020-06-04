@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 import { addToCartAction } from "../../actions/actions";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import "./EventDetail.css"
-
+import "./EventDetail.css";
+import { Header } from "../Header";
+import { Button } from "../Button";
 
 const EventDetail = (props) => {
   const dispatchAddToCart = () => {
@@ -26,49 +27,61 @@ const EventDetail = (props) => {
 
   return (
     <>
-      <div className="event-detail-header">
-        <Link to="/events">
-          <h1>EVENTS</h1>
-        </Link>
-      </div>
-      <div className="event-detail-body">
-        <div className="performer-img-detail">
-          <img src={`../../${image}`} alt="" />
+      <Header text="EVENTS" type="secondary" />
+      <div id="event-detail-body" className="row bg-dark">
+        <div className="col-5 offset-2 mt-5">
+          <img
+            id="performer-img-detail"
+            className="img-fluid "
+            src={`../../${image}`}
+            alt=""
+          />
         </div>
-        <ul className="event-detail-info">
-          <li>
-            <Link to="/cart">
-              <button className="reserve-btn" onClick={dispatchAddToCart}>
-                RESERVE
-              </button>
-            </Link>
-          </li>
-          <li>Title: {title}</li>
-          <li>Date: {moment(`${startDate}`).format("DD-MM-YYYY")}</li>
-          <li>Time: {startTime}</li>
-          <li>Venue: {venue.split("_").join(" ")}</li>
-          <li>Performer: {performer}</li>
-          <li>Price: {price} $</li>
-          <li>
-            <div className="social-media">
-              {facebook && (
-                <Link to={`facebook.com/${facebook}`}>
-                  <img src={require("../../images/fb.png")} alt="facebook" />
-                </Link>
-              )}
-              {instagram && (
-                <Link to={`instagram.com/${instagram}`}>
-                  <img src={require("../../images/ig-color.png")} alt="instagram" />
-                </Link>
-              )}
-              {twitter && (
-                <Link to={`instagram.com/${twitter}`}>
-                  <img src={require("../../images/tt.png")} alt="twitter" />
-                </Link>
-              )}
-            </div>
-          </li>
-        </ul>
+        <div className="col-5 mt-5">
+          <ul id="event-detail" className="list-group ">
+            <li className="list-group-item ">
+              <Link to="/cart">
+                <Button
+                  text="RESERVE"
+                  cn="secondary"
+                  onClick={dispatchAddToCart}
+                />
+              </Link>
+            </li>
+            <li className="list-group-item ">Title: {title}</li>
+            <li className="list-group-item ">
+              Date: {moment(`${startDate}`).format("DD-MM-YYYY")}
+            </li>
+            <li className="list-group-item  ">Time: {startTime}</li>
+            <li className="list-group-item  ">
+              Venue: {venue.split("_").join(" ")}
+            </li>
+            <li className="list-group-item  ">Performer: {performer}</li>
+            <li className="list-group-item  ">Price: {price} $</li>
+            <li className="list-group-item  ">
+              <div className="social-media">
+                {facebook && (
+                  <Link to={`facebook.com/${facebook}`}>
+                    <img src={require("../../images/fb.png")} alt="facebook" />
+                  </Link>
+                )}
+                {instagram && (
+                  <Link to={`instagram.com/${instagram}`}>
+                    <img
+                      src={require("../../images/ig-color.png")}
+                      alt="instagram"
+                    />
+                  </Link>
+                )}
+                {twitter && (
+                  <Link to={`instagram.com/${twitter}`}>
+                    <img src={require("../../images/tt.png")} alt="twitter" />
+                  </Link>
+                )}
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </>
   );

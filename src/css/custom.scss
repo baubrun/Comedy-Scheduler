@@ -1,0 +1,18 @@
+
+$theme-colors: (
+    "primary": #E09721,
+    "secondary": #663A2B,
+    "dark": #020202
+    
+    );
+
+
+
+a {
+    text-decoration: none !important;
+}
+
+
+$card-border-width: 0;
+
+@import "../../node_modules/bootstrap/scss/bootstrap";

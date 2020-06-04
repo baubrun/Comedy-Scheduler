@@ -1,44 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import "./Event.css";
 
 const Event = (props) => {
-  const seatingLeft = (eventDate, seats, venue) => {
-    const seat = seats.find((i) => i.startDate === eventDate);
-    return seat.venue[venue];
-  };
+  // const seatingLeft = (eventDate, seats, venue) => {
+  //   const seat = seats.find((i) => i.startDate === eventDate);
+  //   return seat.venue[venue];
+  // };
 
   const { title, startDate, performer, startTime, image } = props.events;
   return (
-    <div className="events-list-view">
-      {
-        <div className="event">
-          <div className="event-title">
-            <Link to={`/event/${title}`}>{title}</Link>
-          </div>
-          <div className="event-info">
-            <div id="performer-img-events-container">
-              <img src={`../../${image}`} alt="" />
-            </div>
-
-            <div id="performer-name">{performer}</div>
-            <div>{moment(`${startDate}`).format("DD-MM-YYYY")}</div>
-            <div>{startTime}</div>
-            <div className="seats-avail-img-container">
-              Seats Available:{" "}
-              {seatingLeft(startDate, props.seatsAvail, props.venue) > 0 ? (
-                <img
-                  id="seats-avail-img"
-                  src="green-check-grn-wht-15px.png"
-                  alt=""
-                />
-              ) : (
-                <img id="seats-avail-img" src="red-x-red-wht-15px.png" alt="" />
-              )}{" "}
-            </div>
-          </div>
-        </div>
-      }
+    <div className="card mx-3" style={{ width: "18rem" }}>
+      <div className="card-body text-center mb-2">
+        <Link className="card-link text-center" to={`/event/${title}`}>
+          {title}
+        </Link>
+        <img className="card-img mb-2" src={`../../${image}`} alt="" />
+        <div className="card-text" id="performer-name">{performer}</div>
+        <div className="card-text">{moment(`${startDate}`).format("DD-MM-YYYY")}</div>
+        <div className="card-text">{startTime}</div>
+      </div>
     </div>
   );
 };

@@ -67,3 +67,15 @@ export const timeFixed15 = (givenTime) => {
     const endFormat = regex.test(end);
     return startFormat && endFormat ? true : false;
   };
+
+
+export const toggleProfileButtons = (add, upt) => {
+    const doc = document.getElementById("profile-btns");
+    const addEventShown = add;
+    const updateEventShown = upt;
+    if (addEventShown || updateEventShown) {
+      doc.style.display = "none";
+    } else {
+      doc.style.display = "flex";
+    }
+  };

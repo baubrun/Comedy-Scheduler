@@ -1,167 +1,20 @@
-.add-events-header-img {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-}
-
-.update-event-header,
-.add-event-header {
-    background-color: #663A2B;
-    color: white;
-    display: flex;
-    padding: 5px 0; 
-    justify-content: space-evenly;
-    width: 100%;
-}
-
-.hostId {
-    margin-left: 100px;
-    margin-top: 10px;
-}
-
-#add-event-btn,
-#remove-btn {
-    background-color: #663A2B;
-    color: white;
-}
-
-#delete-event-btn {
-    background-color: rgb(224, 39, 33) ;
-}
-
-
-#events-history-btn {
-    background-color: #020202;
-    color: white;
-}
-
-#loading{
-    margin-left: 43%;
-    margin-top: 5%;
-    position: absolute;
-}
-
-.profile-body{
-    position: relative;
-    width: 100%;
-}
-
-#profile-btns  {
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    top: 148px;
-    z-index: 10;
-    width: 100%;
-}
-
-#profile-btns li {
-    cursor: pointer;
-    font-size: 18px;
-    padding:  0 30px ;
-    text-align: center;
-    letter-spacing: 2px;
-
-}
-
-#profile-btns li div {
-    border-radius: 5px;
-    opacity: 0.7;
-    padding: 10px 10px;
-}
-
-#profile-btns li div:hover {
-    opacity: 1;
-}
-
-
-
-/* =============================
-Mobile Styles: 0 to 480px
-=============================== */
-
-
-
-@media only screen and (max-width: 480px) {
-
-    
-    .add-event-header {
-        background-color: #020202;
-    }
-
-    #loading{
-        margin-left: 20%;
-        margin-top: 40px;
-    }
-
-    .profile-header h1 {
-        background-color:#663A2B;
-        margin: 0;
-    }
-
-    #profile-btns {
-        flex-flow: row wrap;
-
-    }
-
-    #profile-btns li {
-        font-size: 18px;
-        padding: 10px 0;
-        width: 100%;
-        height: auto;
-
-
-    }
-    
-    #events-history-btn {
-        background-color: #020202;
-        color: white;
-    }
-
-}
-
-
 /* =============================
 Tablet Styles: 481px to 768px
 =============================== */
 
 
-@media only screen and (min-width: 481px) {
 
 
-    
-    #profile-btns  {
-        display: flex;
-        margin-bottom: 100px;
-        margin: 10px ;
-        position: fixed;
-        top: 120px;
-        z-index: 10;
+
+@media screen and (max-width:480px) {
+    #update-event-btn {
         width: 100%;
+        display: block;
     }
-
-
-    
 }
 
 
-/* =============================
-Desktop Styles: 768px and greater
-=============================== */
-
-@media only screen and (min-width: 769px) {
-
-    #profile-btns  {
-        display: flex;
-        margin-bottom: 100px;
-        margin: 10px ;
-        position: fixed;
-        top: 120px;
-        z-index: 10;
-        width: 100%;
-
-    } 
-    
 
 
-}
+
+/* ============================*/

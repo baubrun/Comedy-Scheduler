@@ -1,27 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {CalendarView} from "../CalendarView";
-import {Event} from "../Event";
+import { CalendarView } from "../CalendarView";
+import { Event } from "../Event";
 import {
   getEventsAction,
   getSeatsAvailAction,
   loadingAction,
   loadedAction,
 } from "../../actions/actions";
-import {compareDates} from "../../Utils"
-import "./Events.css"
-
-
-
-const toggleBlockFlex = (state) => {
-  const doc = document.getElementById("events-body");
-  if (!state) {
-    doc.style.display = "block";
-  } else {
-    doc.style.display = "flex";
-    doc.style.flexFlow = "row wrap";
-  }
-};
+import { compareDates } from "../../Utils";
+import "./Events.css";
+import { Header } from "../Header";
+import {
+  fetchEvents} from "../../api"
 
 class Events extends Component {
   constructor(props) {
@@ -45,9 +36,6 @@ class Events extends Component {
     if (prevState.venue !== this.state.venue) {
       this.eventsByVenue();
     }
-    if (prevState.listViewShow !== this.state.listViewShow) {
-      toggleBlockFlex(this.state.listViewShow);
-    }
   }
 
   dispatchGetEvents = (events) => {
@@ -58,29 +46,38 @@ class Events extends Component {
     this.props.getSeatsAvail(seats);
   };
 
-  fetchEvents = async () => {
-    const response = await fetch("/events");
-    const body = await response.text();
-    const parsed = JSON.parse(body);
-    if (Array.isArray(parsed)) {
-      this.dispatchGetEvents(parsed);
-    }
-  };
+  // fetchEvents = async () => {
+  //   const response = await fetch("http://localhost:4000/events");
+  //   const body = await response.text();
+  //   const parsed = JSON.parse(body);
+  //   if (Array.isArray(parsed)) {
+  //     this.dispatchGetEvents(parsed);
+  //   }
+  // };
 
-  fetchSeatsAvail = async () => {
-    const response = await fetch("/getSeatsAvail");
-    const body = await response.text();
-    const parsed = JSON.parse(body);
-    if (Array.isArray(parsed)) {
-      this.dispatchGetSeatsAvail(parsed);
-    }
-  };
+  // fetchSeatsAvail = async () => {
+  //   const response = await fetch("http://localhost:4000/getSeatsAvail");
+  //   const body = await response.text();
+  //   const parsed = JSON.parse(body);
+  //   if (Array.isArray(parsed)) {
+  //     this.dispatchGetSeatsAvail(parsed);
+  //   }
+  // };
+
+  // fetchData = async () => {
+  //   await Promise.all([
+  //     this.fetchEvents(),
+  //     this.fetchSeatsAvail(),
+  //   ]).catch((err) => console.log(err));
+  // };
 
   fetchData = async () => {
-    await Promise.all([
-      this.fetchEvents(),
-      this.fetchSeatsAvail(),
-    ]).catch((err) => console.log(err));
+      try {
+        const data = await fetchEvents()
+        this.dispatchGetEvents(data)
+      } catch (error) {
+        
+      }
   };
 
   eventsByVenue = () => {
@@ -118,7 +115,7 @@ class Events extends Component {
       (!this.state.listViewShow && this.state.events.length < 1) ||
       !this.state.venue
     ) {
-      return <h1 className="events-no-events">NO EVENTS</h1>;
+      return <h3>NO EVENTS</h3>;
     }
     if (this.state.listViewShow && this.state.events.length > 0) {
       return this.state.events
@@ -135,21 +132,33 @@ class Events extends Component {
         ));
     }
     if (this.state.calendarViewShow)
-      return <CalendarView events={this.state.events} />;
+      return (
+        <div className="container-fluid">
+      <CalendarView events={this.state.events} />
+      </div>
+      );
     else {
-      return <h1 className="events-no-events">NO EVENTS</h1>;
+      return <h3>NO EVENTS</h3>;
     }
   };
 
   render() {
-    const venueFormatted = this.state.venue.split("_").join(" ");
     return (
-      <>
-        <div className="events-header">
-          <h1>EVENTS</h1>
-          <div className="venue-select">
-            <h2>{venueFormatted ? venueFormatted : "CHOOSE A VENUE"}</h2>
-            <select onChange={this.handleVenueChange} name="venue">
+      <div className="container-fluid">
+        <div className="row events-header">
+          <div className="col">
+            <div>
+              <Header text="EVENTS" type="dark" />
+            </div>
+          </div>
+        </div>
+        <div className="row select-option ">
+          <div className="mx-auto my-2">
+            <select
+              className="custom-select custom-select-lg bg-secondary text-center"
+              onChange={this.handleVenueChange}
+              name="venue"
+            >
               <option value="" default>
                 CHOOSE A VENUE
               </option>
@@ -158,23 +167,28 @@ class Events extends Component {
               <option value="RIRE_NOW">RIRE NOW</option>
             </select>
           </div>
-          <div className="events-header-img">
-            <img
-              id="list-view"
-              onClick={this.toggleListView}
-              src="list-view-30px.png"
-              alt=""
-            />
-            <img
-              id="calendar-view"
-              onClick={this.toggleCalendarView}
-              src="calendar2-view-30px.png"
-              alt=""
-            />
-          </div>
         </div>
-        <div id="events-body">{this.showEvents()}</div>
-      </>
+        <div className="row mb-4 events-toggler">
+            <div className="col text-right" >
+              <img
+                id="list-view"
+                onClick={this.toggleListView}
+                src="list-view-30px.png"
+                alt=""
+              />
+            </div>
+            <div className="col">
+              <img
+                id="calendar-view"
+                onClick={this.toggleCalendarView}
+                src="calendar2-view-30px.png"
+                alt=""
+              />
+            </div>
+        </div>
+        <div className="d-md-flex"
+         id="events-body">{this.showEvents()}</div>
+      </div>
     );
   }
 }

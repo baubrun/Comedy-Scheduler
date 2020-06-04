@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { logInAction } from "../../actions/actions";
+import { FormInput } from "../FormInput";
+import { Button } from "../Button";
+import { Header } from "../Header";
+import "./Login.css";
 
 class Login extends Component {
   constructor(props) {
@@ -36,9 +40,12 @@ class Login extends Component {
       username: "",
       password: "",
     });
-    const response = await fetch("/login", { method: "POST", body: data });
+
+    const response = await fetch("/login", 
+    { method: "POST", body: data });
     const body = await response.text();
     const parser = JSON.parse(body);
+
     if (parser.success) {
       this.dispatchLogin(parser.hostId);
       this.props.history.push("/profile");
@@ -56,56 +63,87 @@ class Login extends Component {
 
   render() {
     return (
-      <div className="modal login">
-        <form className="login-flex-container" onSubmit={this.handleSubmit}>
-          <div className="login-form-container">
-            {this.state.errors.map((err, idx) => {
-              return (
-                <div key={idx} className="errors">
-                  {err.msg}
-                  <span id="close-btn" onClick={this.handleCloseErrors}>
-                    &times;
-                  </span>
+      <div id="login-page" className="">
+        <Header text="" type="secondary" />
+
+        <div className="container my-5 ">
+          <div className="row justify-content-center">
+            <div className="col-12 col-md-8">
+              <form onSubmit={this.handleSubmit}>
+               
+
+                <div id="login-card" className="card border-primary border-0 mt-5">
+                  <div className="card-header p-0">
+                    <div className="bg-primary text-white text-center py-2">
+                      <h3>
+                      <i className="fas fa-user-circle fa-2x"></i> Login
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div className="card-body border-primary p-3">
+                    
+                    <div className="form-group">
+                      <div className="input-group mb-2 p">
+                        <div className="input-group-prepend">
+                          <div className="input-group-text">
+                            <i className="fa fa-user text-primary"></i>
+                          </div>
+                        </div>
+                        <FormInput
+                              name="username"
+                              onChange={this.handleChange}
+                              placeholder="Username"
+                              type="text"
+                              value={this.state.username}
+                            />
+                      </div>
+                    </div>
+
+                    <div className="form-group">
+                      <div className="input-group mb-2">
+                        <div className="input-group-prepend">
+                          <div className="input-group-text">
+                            <i className="fa fa-key text-primary"></i>
+                          </div>
+                        </div>
+                        <FormInput
+                              name="password"
+                              onChange={this.handleChange}
+                              placeholder="Password"
+                              type="text"
+                              value={this.state.password}
+                            />
+                      </div>
+                    </div>
+
+                    <div className="text-center">
+                      <Button cn="primary btn-block rounded-0" text="login" type="submit"/>
+                    </div>
+                  </div>
                 </div>
-              );
-            })}
-            <div>
-              <img className="user-icon" src="user_icon_gros.png" alt=""></img>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </form>
             </div>
           </div>
-          <div className="container">
-            <label htmlFor="username">
-              <b>Username</b>
-            </label>
-            <input
-              type="text"
-              placeholder="Username"
-              name="username"
-              value={this.state.username}
-              onChange={this.handleChange}
-            />
-            <label htmlFor="password">
-              <b>Password</b>
-            </label>
-            <input
-              type="password"
-              placeholder="Password"
-              name="password"
-              value={this.state.password}
-              onChange={this.handleChange}
-            />
-            <button className="login-btn" type="submit">
-              Login
-            </button>
-            <button
-              className="not-registered-btn"
-              type="submit"
-              onClick={this.handleRegister}
-            >
-              Not registered? Register here!
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
     );
   }
@@ -118,3 +156,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(null, mapDispatchToProps)(Login);
+

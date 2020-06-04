@@ -1,17 +1,4 @@
-
-.checkbox {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    margin-top: 150px;
-    padding: 10px;
-} 
-
-.checkbox-input {
-    display: none;
-}
-
-#custom-checkbox {
+/* #custom-checkbox {
     align-items: center;
     border: 2px solid  rgb(224, 151, 33);
     border-radius: 5px;
@@ -23,180 +10,33 @@
     width: 1.25em;
 }
 
+
 #custom-checkbox::after {
     color: white;
     content: "\2714";
 }
 
+
 .checkbox-input:checked + #custom-checkbox {
     background-color: rgb(224, 151, 33);
-} 
+}  */
 
-.events-history-body {
+/* .checkbox {
     display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-top: 150px;
+    padding: 10px;
+}  */
+
+
+#history-card-img {
+    border-radius: 100px !important;
 }
 
 
-.events-history-container {
-    width: 100%;
-}
-
-.events-history {
-    border-bottom: 5px double #663A2B;
-    display: flex;
-}
-
-.events-history-delUpt-container {
-    border-right: 5px double #663A2B;
-
-}
-
-.events-history-info-container {
-    border-right: 5px double #663A2B;
-    text-align: center;
-    flex: 2 1 261px;
+#history-card-img {
+   max-height: 450px;
 }
 
 
-.events-history-info-container div {
-    margin: 10px 0;
-}
-
-
-
-
-#performer-img-events-history-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-
-
-}
-
-#performer-img-events-history-container img {
-    border-radius: 5px;
-    justify-content: center;
-    height: 250px;
-    width: 250px;
-
-}
-
-
-
-.events-history-img-title {
-    text-align: center;
-}
-
-
-/* =============================
-Mobile Styles: 0 to 480px
-=============================== */
-
-@media only screen and (max-width: 480px) {
-
-    
-    .checkbox {
-        margin-top: 15px;
-        padding: 0;
-        justify-content: center;
-    } 
-    
-
-    .events-history-body {
-        display: block;
-    }
-    
-    .events-history-container {
-        text-align: center;
-        width: 100%;
-    }
-    
-    .events-history {
-        display: block;
-        margin-left: 0;
-        padding-bottom: 10px;
-    }
-    
-    .events-history-delUpt-container {
-        border-right: 0;
-        padding-left: 0;
-        padding-right: 0;
-    }
-    
-    .events-history-info-container {
-        border-right: 0;
-        margin-top: 10px;
-        padding: 0;
-        width: 100%;
-    }
-    
-    .events-history-img-container  {
-      display: flex;
-      flex-flow: row wrap;
-      width: 100%;
-    }
-
-    .events-history-img-title {
-        text-align: center;
-        margin-bottom: 10px;
-        width: 100%;
-    }
-       
-    .events-history-info-container div {
-        margin: 0;
-        padding: 10px 0;
-    }
-   
-}
-
-/* =============================
-Tablet Styles: 481px to 768px
-=============================== */
-
-
-@media only screen and (min-width: 481px) {
-
-    #events-history-header {
-        margin-top: 90px;
-
-    }
-       
-    #performer-img-events-history-container {
-        padding: 0 10px;
-    }
-    
-    #performer-img-events-history-container img {
-        border-radius: 10px;
-        justify-content: center;
-    }
-    
-    #performer-img-events-history-container:first-of-type {
-        text-align: center;
-    }
-
-    .events-history-delUpt-container {
-        border-right: 5px double #663A2B;
-    }
-    
-}
-
-
-/* =============================
-Desktop Styles: 768px and greater
-=============================== */
-
-
-
-@media only screen and (min-width: 769px) {
-
-    #events-history-header {
-        margin-top: 70px;
-
-    }
-   
-    .events-history-delUpt-container {
-        border-right: 5px double #663A2B;
-    
-    }    
-}
-    

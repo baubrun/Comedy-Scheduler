@@ -1,42 +1,36 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import "./Homepage.css"
 
-
-class HomePage extends Component {
-  render() {
-    return (
-      <>
-        <div className="home-header">
-          <div className="venues">
-            <div>
-              <h1>LE FOU FOU</h1>
-            </div>
-            <div>
-              <h1>RIRE NOW</h1>
-            </div>
-            <div>
-              <h1>JOKES BLAGUES</h1>
-            </div>
-          </div>
+const HomePage = () => {
+  return (
+    <div className="container-fluid">
+      <div className="row">
+        <div className="col-md-4">
+          <h4 className="font-weight-bold text-left">LE FOU FOU </h4>
         </div>
-        <div className="home-body">
-          <img src="club-2.jpg" alt="" />
-          <Link className="home-events btn" to="/events">
-            <div>
-              <h1>TICKETS</h1>
-            </div>
-          </Link>
-          <div className="break"></div>
-          <Link className="home-add btn" to="/login">
-            <div>
-              <h1>HOST AN EVENT</h1>
-            </div>
+        <div className="col-md-4">
+          <h4 className="font-weight-bold text-center">RIRE NOW </h4>
+        </div>
+        <div className="col-md-4">
+          <h4 className="font-weight-bold text-right">JOKES BLAGUES</h4>
+        </div>
+      </div>
+      <div className="row position-relative">
+        <div className="col">
+          <Link  className="btn btn-secondary btn-lg font-weight-bolder" role="button" to="/events">
+            TICKETS
           </Link>
         </div>
-      </>
-    );
-  }
-}
+
+        <div className="col">
+          <Link id="host-btn" className="btn btn-primary btn-lg font-weight-bolder" role="button" to="/login">
+            HOST AN EVENT
+          </Link>
+        </div>
+        <img className="img-fluid home-img " src="club-2.jpg" alt="club" />
+      </div>
+    </div>
+  );
+};
 
 export default HomePage;

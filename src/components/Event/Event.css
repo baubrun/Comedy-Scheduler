@@ -1,0 +1,29 @@
+.card {
+    background-color: #020202;
+}
+
+.card-link {
+    font-size: 28px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.card-link:hover {
+    color: white
+}
+
+.card-text {
+    color: white;
+    font-family: 'Courier Prime', monospace;
+}
+
+
+.custom-select {
+    color: white;
+    cursor: pointer;
+    background: none;
+}
+#performer-name {
+    font-size: 20px;
+    letter-spacing: 2PX;
+}

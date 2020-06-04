@@ -1,56 +1,70 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import {Dropdown} from "../Dropdown";
+import { Dropdown } from "../Dropdown";
 import {
   logOutAction,
   resetSeatsAvailAction,
   resetEventsAction,
-  emptyCartAction, 
+  emptyCartAction,
 } from "../../actions/actions";
+import "./NavBar.css";
 
 const NavBar = (props) => {
   const currentPage = useLocation().pathname;
 
   const logout = () => {
     props.logoutUser();
-    props.emptyCart()
+    props.emptyCart();
     props.resetSeatsAvail();
     props.resetEvents();
   };
 
   return (
-    <div className="navbar">
-      <div className="home-title">
-        <h1>
-          <Link to="/">LE COMEDY HUB</Link>
-        </h1>
-        {!props.loggedIn && currentPage !== "/login" ? (
-          <Link to="/login">
-            <div id="login-link"><h1>LOGIN</h1></div>
-          </Link>
-        ) : (
-          ""
-        )}
-      </div>
+    <>
+      <nav className="navbar bg-primary p-0 m-0">
+          {/* <div className="home-title"> */}
+          <div>
+            <h1>
+              <Link
+                id="logo"
+                className="badge-primary font-weight-bolder"
+                to="/"
+              >
+                <h3>LE COMEDY HUB</h3>
+              </Link>
+            </h1>
+            {!props.loggedIn && currentPage !== "/login" ? (
+              <Link className="badge-secondary" to="/login">
+                <div className="font-weight-bold" id="login-link">
+                  <h4>LOGIN</h4>
+                </div>
+              </Link>
+            ) : (
+              ""
+            )}
+          </div>
 
-      {props.loggedIn && <Dropdown logout={logout} />}
+          {props.loggedIn && <Dropdown logout={logout} />}
 
-      <div className="hostId">
-        {props.loggedIn ? `Salut ${props.hostId}!` : ""}
-      </div>
+          <div >
+            {props.loggedIn ? `Salut ${props.hostId}!` : ""}
+          </div>
 
-      <div className="cart">
-        <Link to="/cart">
-          <img src="ticket-blk-white.png" alt="CART"></img>
-          {props.cart.length > 0 ? (
-            <span className="cart-length">{props.cart.length}</span>
-          ) : (
-            ""
-          )}
-        </Link>
-      </div>
-    </div>
+          {/* <div className="cart"> */}
+          <div>
+            <Link to="/cart">
+              <img src="ticket-blk-white.png" alt="CART"></img>
+              {props.cart.length > 0 ? (
+                // <span className="cart-length">{props.cart.length}</span>
+                <span>{props.cart.length}</span>
+              ) : (
+                ""
+              )}
+            </Link>
+          </div>
+      </nav>
+    </>
   );
 };
 
@@ -69,7 +83,6 @@ const mapDispatchToProps = (dispatch) => {
     resetSeatsAvail: () => dispatch(resetSeatsAvailAction()),
     resetEvents: () => dispatch(resetEventsAction()),
     emptyCart: () => dispatch(emptyCartAction()),
-
   };
 };
 
