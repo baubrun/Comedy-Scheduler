@@ -1,3 +1,8 @@
+### I am Currently refactoring. When completed, I will deploy.
+
+Please view the video link until deployed.
+
+
 ## A web portal for 3 comedy clubs. 
 
 Users can purchase tickets to events. 
