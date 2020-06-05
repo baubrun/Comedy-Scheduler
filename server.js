@@ -1,21 +1,6 @@
 const express = require('express')
 const app = express()
 require("dotenv/config")
-<<<<<<< HEAD
-const multer = require("multer")
-const mongodb = require("mongodb")
-const MongoClient = mongodb.MongoClient
-const ObjectID = mongodb.ObjectID
-const bcrypt = require("bcryptjs")
-const validateLoginForm = require("./validators").validateLoginForm
-const validateRegisterForm = require("./validators").validateRegisterForm
-const SALT_FACTOR = 10
-let dbo = undefined
-=======
->>>>>>> transferred refactoring from deploy dir
-const stripe = require("stripe")(process.env.STRIPE_SECRET)
-const sharp = require("sharp")
-const fs = require('fs')
 const userRouter = require("./routers/user")
 const eventRouter = require("./routers/event")
 const cors = require("cors")
@@ -26,33 +11,13 @@ let total = ""
  Middleware 
  ==============*/
 
-app.use(express.json())
-<<<<<<< HEAD
-app.use("/", express.static("uploads"))
 
-app.use("/", express.static("build"))
-
-
-
-
-MongoClient.connect(
-    process.env.DB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    }).then(client => {
-    dbo = client.db("Comedy-hub")
-    console.log("\nConnected to Mongo DB!\n")
-}).catch(err => console.log(err))
-
-
-
-=======
 app.use(userRouter)
 app.use(eventRouter)
+app.use(express.json())
 app.use("/", express.static("uploads"))
 app.use("/", express.static("build"))
 app.use(cors())
->>>>>>> transferred refactoring from deploy dir
 
 /*===============
  Helper functions 

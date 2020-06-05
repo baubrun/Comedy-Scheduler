@@ -8,7 +8,10 @@ import {
   emptyCartAction,
 } from "../../actions/actions";
 import { connect } from "react-redux";
-import {orderNumber, formattedAmount} from "../../Utils"
+import { orderNumber, formattedAmount } from "../../Utils";
+import {FormInput} from "../FormInput";
+import {Button} from "../Button";
+import "./CheckoutForm.css"
 
 
 const CARD_OPTIONS = {
@@ -27,8 +30,6 @@ const CARD_OPTIONS = {
     },
   },
 };
-
-
 
 const CheckoutForm = (props) => {
   const stripe = useStripe();
@@ -64,7 +65,6 @@ const CheckoutForm = (props) => {
   const dispatchEmptyCart = () => {
     props.emptyCart();
   };
-
 
   const storePay = async (order) => {
     const { amount, items } = props;
@@ -126,17 +126,11 @@ const CheckoutForm = (props) => {
   };
 
   return (
-    <form className="stripe-container" onSubmit={handleSubmit}>
-      <div className="stripe-header">
-        <h1>CARD DETAIL</h1>
-      </div>
+    <form className="form-group" onSubmit={handleSubmit}>
       <fieldset>
-        <label className="stripe-label" htmlFor="name">
-          Name
-        </label>
-        <input
-          className="stripe-input"
-          id="name"
+ 
+        <FormInput
+          className=""
           type="text"
           onChange={handleName}
           placeholder="Name on Card"
@@ -144,21 +138,16 @@ const CheckoutForm = (props) => {
           value={name}
         />
       </fieldset>
-      <fieldset>
-        <label className="stripe-label" htmlFor="email">
-          Email
-        </label>
-        <input
-          className="stripe-input"
-          id="email"
-          type="email"
+      <fieldset id="stripe-input">
+        <FormInput
+          type="text"
           onChange={handleEmail}
           placeholder="Email"
           required
           value={email}
         />
       </fieldset>
-      <fieldset>{<CardElement options={CARD_OPTIONS} />}</fieldset>
+      <fieldset  className="form-control">{<CardElement options={CARD_OPTIONS} />}</fieldset>
 
       <div className="stripe-error-msg">
         {pmtErrors.map((err, idx) => {
@@ -173,8 +162,13 @@ const CheckoutForm = (props) => {
         })}
       </div>
 
-      <button type="submit" disabled={!stripe || props.loading}>
-        PURCHASE
+      {/* <button type="submit" disabled={!stripe || props.loading}> */}
+      <Button 
+      color="dark text-white my-3" 
+      size="block"
+      text="PURCHASE"
+      type="submit" disabled={!stripe || props.loading}>
+        
         <div className="stripe-spinner">
           <Loader
             type="BallTriangle"
@@ -184,7 +178,7 @@ const CheckoutForm = (props) => {
             visible={props.loading}
           />
         </div>
-      </button>
+      </Button>
     </form>
   );
 };

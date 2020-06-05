@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {CheckoutForm} from "../CheckoutForm";
+import { CheckoutForm } from "../CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import "./Checkout.css"
-
+import "./Checkout.css";
+import { Header } from "../Header";
 
 export const PK_STRIPE = "pk_test_1jcRkbFeUYqVsCGYpNX51Ggv00oyStF042";
 const stripePromise = loadStripe(PK_STRIPE);
-
-
 
 class Checkout extends Component {
   constructor(props) {
@@ -31,6 +29,9 @@ class Checkout extends Component {
     return subTotal;
   };
 
+  tps = () => 0.05 * this.calcSubtotal();
+  tvq = () => 0.09975 * this.calcSubtotal();
+  total = () => this.calcSubtotal() + this.tps() + this.tvq();
 
   filterItemsBought = () => {
     return this.props.checkout.map((i) => {
@@ -62,16 +63,12 @@ class Checkout extends Component {
     this.props.resetCheckout();
   };
 
-  tps = () => 0.05 * this.calcSubtotal();
-  tvq = () => 0.09975 * this.calcSubtotal();
-  total = () => this.calcSubtotal() + this.tps() + this.tvq();
-
   superscript = () => {
-    const s = this.state.total.toString()
-    const sp = s.split(".")
-    return sp
-  }
-  
+    const s = this.state.total.toString();
+    const sp = s.split(".");
+    return sp;
+  };
+
   render() {
     const numTickets = () => {
       return this.props.checkout.length > 0
@@ -82,49 +79,51 @@ class Checkout extends Component {
     };
 
     return (
-      <div className="checkout">
-        <div className="checkout-header"><h1>CHECKOUT</h1></div>
+      <div id="checkout" className="container-fluid bg-dark">
+        <Header text="CHECKOUT" type="text-light text-center" />
+        <div className="row">
+          <div className="col-12 col-md-6 my-2">
 
-        <div className="checkout-body">
-          {this.props.checkout === []
-            ? this.props.history.push("/events")
-            : !this.props.checkedOut && (
-                <>
-                  <div className="checkout-summary">
-                    <div>
-                      <h2>SUMMARY</h2>
-                    </div>
-                    <div  className="checkout-summary-items">
-                      {`${numTickets()} ticket${
-                        numTickets() > 1 ? "s" : ""
-                      } for:`}
-                      {this.state.itemsBought.map((item, idx) => (
-                        <ul key={idx}>
-                          <li>{item.title}</li>
-                        </ul>
-                      ))}
-                    </div>
-                    <div className="checkout-summary-total-amount">
-                      <div className="checkout-summary-total">TOTAL </div>
-                      <div className="checkout-summary-amount"> 
-                        {`$ ${this.superscript()[0]}`}<sup>{this.superscript()[1]}</sup>
-                      </div>
-                    </div>
-                  </div>
+            <div className="card bg-white">
+              <div className="div card-header text-dark  bg-white">
+                <h3 className="text-center">SUMMARY</h3>
+              </div>
+              <div className="card-body bg-primary">
+                <div className="card-text text-dark">
+                  {`${numTickets()} ticket${numTickets() > 1 ? "s" : ""} for:`}
+                  {this.state.itemsBought.map((item, idx) => (
+                    <ul className="list-group" key={idx}>
+                      <li className="list-group-item">{item.title}</li>
+                    </ul>
+                  ))}
+                </div>
+                <div className="card-text text-dark">TOTAL</div>
+                <div className="card-text text-dark">
+                  {`$ ${this.superscript()[0]}`}
+                  <sup>{this.superscript()[1]}</sup>
+                </div>
+              </div>
+            </div>
+          </div>
 
-                  <div className="card-detail">
-                    <div>
-                      <Elements stripe={stripePromise}>
+          <div className="col-12 col-md-6">
+            <div className="card bg-primary">
+              <div className="div card-header text-white bg-secondary mb-3">
+                <h3 className="text-center">CARD DETAIL</h3>
+              </div>
+              <div className="card-body">
+                  <div className="card-text">
+                  <Elements stripe={stripePromise}>
                         <CheckoutForm
                           amount={this.state.total}
                           history={this.props.history}
                           items={this.state.itemsBought}
                         />
                       </Elements>
-                    </div>
                   </div>
-                </>
-              )}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -137,3 +136,46 @@ const mapStateToProps = (state) => {
   };
 };
 export default connect(mapStateToProps)(Checkout);
+
+/*
+<div className="checkout-body">
+{this.props.checkout === []
+  ? this.props.history.push("/events")
+  : !this.props.checkedOut && (
+      <>
+        <div className="checkout-summary">
+          <div>
+            <h2>SUMMARY</h2>
+          </div>
+          <div  className="checkout-summary-items">
+            {`${numTickets()} ticket${
+              numTickets() > 1 ? "s" : ""
+            } for:`}
+            {this.state.itemsBought.map((item, idx) => (
+              <ul key={idx}>
+                <li>{item.title}</li>
+              </ul>
+            ))}
+          </div>
+          <div className="checkout-summary-total-amount">
+            <div className="checkout-summary-total">TOTAL </div>
+            <div className="checkout-summary-amount"> 
+              {`$ ${this.superscript()[0]}`}<sup>{this.superscript()[1]}</sup>
+            </div>
+          </div>
+        </div>
+
+        <div className="card-detail">
+          <div>
+            <Elements stripe={stripePromise}>
+              <CheckoutForm
+                amount={this.state.total}
+                history={this.props.history}
+                items={this.state.itemsBought}
+              />
+            </Elements>
+          </div>
+        </div>
+      </>
+    )}
+</div> */

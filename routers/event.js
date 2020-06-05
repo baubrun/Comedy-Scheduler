@@ -3,6 +3,10 @@ const Events = require("../models/Events")
 const router = express.Router()
 const multer = require("multer")
 const upload = multer()
+const stripe = require("stripe")(process.env.STRIPE_SECRET)
+const sharp = require("sharp")
+const fs = require('fs')
+
 /*===========================
 UPLOADS
 =============================*/

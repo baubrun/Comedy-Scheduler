@@ -1,8 +1,9 @@
 import React from "react";
 
-const FormInput = ({ name, onChange, placeholder, type, value }) => {
+const FormInput = ({id, name, onChange, placeholder, type, value }) => {
   return (
     <input
+      id={id}
       className="form-control"
       name={name}
       onChange={onChange}
