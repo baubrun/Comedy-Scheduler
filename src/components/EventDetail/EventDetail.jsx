@@ -43,7 +43,7 @@ const EventDetail = (props) => {
               <Link to="/cart">
                 <Button
                   text="RESERVE"
-                  cn="secondary"
+                  color="secondary"
                   onClick={dispatchAddToCart}
                 />
               </Link>

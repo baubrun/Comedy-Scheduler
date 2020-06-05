@@ -58,10 +58,9 @@ class RenderCart extends Component {
     this.props.delItem(item);
   };
 
-
   getButtonName = () => {
-    return 
-  }
+    return;
+  };
 
   render() {
     let subtotal = 0;
@@ -78,10 +77,11 @@ class RenderCart extends Component {
           {this.state.cartItems.length > 0 ? (
             <>
               <div className="row">
-                <div className="col-md-5 offset-1">
+                <div className="col-12 mx-auto">
                   <table id="tickets-table" className="table mt-3">
                     <thead>
                       <tr>
+                        <th scope="col"></th>
                         <th scope="col">Event</th>
                         <th scope="col">Venue</th>
                         <th scope="col">Price</th>
@@ -93,6 +93,15 @@ class RenderCart extends Component {
                       {this.state.cartItems.map((item, idx) => {
                         return (
                           <tr key={idx}>
+                            <td>
+                              <Button
+                                text="REMOVE"
+                                color="secondary"
+                                name={item._id}
+                                onClick={this.deleteCartItem}
+                                size="md"
+                              />
+                            </td>
                             <td>{item.title}</td>
                             <td>{item.venue.split("_").join(" ")}</td>
                             <td>{item.price}</td>
@@ -106,22 +115,14 @@ class RenderCart extends Component {
                                 onChange={this.handleQtyChange}
                               />
                             </td>
-                            <td>
-                              <Button
-                                text="REMOVE"
-                                cn="secondary"
-                                name={item._id}
-                                onClick={this.deleteCartItem}
-                              />
-                            </td>
                           </tr>
                         );
                       })}
                     </tbody>
                   </table>
                 </div>
-                <div className="col-md-5">
-                  <table id="total-table" className="table mt-3">
+                <div className="col-12">
+                  <table id="total-table " className="table table-bordered mt-3">
                     <thead>
                       <tr>
                         <th scope="col">Sub-Total</th>
@@ -146,7 +147,7 @@ class RenderCart extends Component {
                 <Button
                   className="mx-auto"
                   text="CHECKOUT"
-                  cn="dark"
+                  color="dark"
                   onClick={this.handleCheckout}
                 />
               </div>

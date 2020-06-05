@@ -118,7 +118,7 @@ class Login extends Component {
                     </div>
 
                     <div className="text-center">
-                      <Button cn="primary btn-block rounded-0" text="login" type="submit"/>
+                      <Button color="primary btn-block rounded-0" text="login" type="submit"/>
                     </div>
                   </div>
                 </div>

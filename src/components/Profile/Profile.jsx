@@ -177,7 +177,7 @@ class Profile extends Component {
       <div id="profile-btns" className="row sticky-top" style={{ backgroundColor: "white" }}>
         <div className="col-6 col-md-3 my-2">
           <Button
-            cn="secondary"
+            color="secondary"
             id="add-event-btn"
             text="ADD EVENTS"
             onClick={this.showAddEvent}
@@ -185,7 +185,7 @@ class Profile extends Component {
         </div>
         <div className="col-6 col-md-3 my-2">
           <Button
-            cn="danger"
+            color="danger"
             id="delete-event-btn"
             text="DELETE EVENT"
             onClick={this.deleteEvent}
@@ -193,7 +193,7 @@ class Profile extends Component {
         </div>
         <div className="col-6 col-md-3 my-2">
           <Button
-            cn="dark"
+            color="dark"
             id="events-history-btn"
             text="LOAD EVENTS"
             onClick={this.dispatchLoading}
@@ -201,7 +201,7 @@ class Profile extends Component {
         </div>
         <div className="col-6 col-md-3 my-2">
           <Button
-            cn="primary text-white"
+            color="primary text-white"
             id="update-event-btn"
             text="UPDATE EVENT"
             onClick={this.showUpdateEventForm}
