@@ -11,12 +11,12 @@ const Event = (props) => {
 
   const { title, startDate, performer, startTime, image } = props.events;
   return (
-    <div className="card mx-3" style={{ width: "18rem" }}>
-      <div className="card-body text-center mb-2">
+    <div className="card m-3" style={{ width: "18rem" }}>
+      <div className="card-body text-center mb-3">
         <Link className="card-link text-center" to={`/event/${title}`}>
           {title}
         </Link>
-        <img className="card-img mb-2" src={`../../${image}`} alt="" />
+        <img className="card-img img-fluid img-event mb-2" src={`../../${image}`} alt="" />
         <div className="card-text" id="performer-name">{performer}</div>
         <div className="card-text">{moment(`${startDate}`).format("DD-MM-YYYY")}</div>
         <div className="card-text">{startTime}</div>

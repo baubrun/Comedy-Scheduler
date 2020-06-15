@@ -1,8 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&family=Roboto:wght@400;500&display=swap');
 
 
-#performer-img-detail {
+.img-detail {
+    height: 450px;
+    width: 450px;
     border-radius: 1000px;
+    object-fit: cover;
+}
+
+.img-event {
+    height: 250px;
+    width: 250px;
+    border-radius: 1000px;
+    object-fit: cover;
 }
 
 #event-detail-body {
@@ -18,3 +28,5 @@
     letter-spacing: 2px;
     font-size: large;
 }
+
+

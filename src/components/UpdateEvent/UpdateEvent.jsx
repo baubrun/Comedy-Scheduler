@@ -245,7 +245,6 @@ class UpdateEvent extends Component {
                   name="price"
                   onChange={this.handleChange}
                   value={this.state.price}
-                  defaultValue={10}
                 />
               </li>
               <li>

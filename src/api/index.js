@@ -7,21 +7,17 @@ export const fetchEvents = async () => {
 
 
 export const delEvents = async (data) => {
-    await axios.post("/deleteEvents", {
-        body: data,
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer '
+    await axios({
+            data,
+            url: "/deleteEvents",
+            method: "post"
         }
+    ).catch(err => {
+        console.log("delEvents Util", err)
     })
+
 }
 
-// export const delEvents = async (data) => {
-//     await axios.post("/deleteEvents", {
-//         body: data,
-//     })
-// }
 
 
 export const fetchLogin = async (data) => {

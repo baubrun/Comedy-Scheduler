@@ -100,10 +100,7 @@ class Profile extends Component {
         let dataEvents = new FormData();
         dataEvents.append("_id", this.state.selectedOption);
         console.log("this.state.selectedOption", this.state.selectedOption);
-
-        for (var key of dataEvents.entries()) {
-          console.log(key);
-        }
+        
         try {
           await delEvents(dataEvents);
           this.dispatchLoading();
@@ -174,8 +171,8 @@ class Profile extends Component {
 
   renderProfileButtons = () => {
     return (
-      <div id="profile-btns" className="row sticky-top" style={{ backgroundColor: "white" }}>
-        <div className="col-6 col-md-3 my-2">
+      <div id="profile-btns" className="row sticky-top text-center" style={{ backgroundColor: "white" }}>
+        <div className="col-6 col-md-3 my-2 justify-content-center">
           <Button
             color="secondary"
             id="add-event-btn"

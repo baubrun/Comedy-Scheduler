@@ -8,6 +8,7 @@ import { Header } from "../Header";
 import { Button } from "../Button";
 
 const EventDetail = (props) => {
+  
   const dispatchAddToCart = () => {
     props.addToCart(props.event);
   };
@@ -29,10 +30,10 @@ const EventDetail = (props) => {
     <>
       <Header text="EVENTS" type="secondary" />
       <div id="event-detail-body" className="row bg-dark">
-        <div className="col-5 offset-2 mt-5">
+        <div className="col-5 offset-2 mt-5 img-detail">
           <img
             id="performer-img-detail"
-            className="img-fluid "
+            className="img-detail "
             src={`../../${image}`}
             alt=""
           />

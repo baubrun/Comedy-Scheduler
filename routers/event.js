@@ -68,24 +68,23 @@ POST
 
 
 router.post("/deleteEvents", upload.none(), async (req, res) => {
+
     const {_id} = req.body
-    console.log("in /deleteEvents",  req.body._id)
-    // res.json(req.body)
-    // await Events.deleteOne(
-    //     {_id}, (err, evt) => {
-    //         if (err) {
-    //             return res.json({
-    //                 success: false,
-    //                 err: err
-    //             })
-    //         } else {
-    //             return res.json({
-    //                 success: true,
-    //                 dc: evt.deletedCount,
-    //                 id: _id
-    //             })
-    //         }
-    //     })
+    await Events.deleteOne(
+        {_id}, (err, evt) => {
+            if (err) {
+                return res.json({
+                    success: false,
+                    err: err
+                })
+            } else {
+                return res.json({
+                    success: true,
+                    dc: evt.deletedCount,
+                    id: _id
+                })
+            }
+        })
 })
 
 

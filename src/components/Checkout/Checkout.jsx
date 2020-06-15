@@ -82,25 +82,28 @@ class Checkout extends Component {
       <div id="checkout" className="container-fluid bg-dark">
         <Header text="CHECKOUT" type="text-light text-center" />
         <div className="row">
-          <div className="col-12 col-md-6 my-2">
-
+          <div className="col-12 col-md-6">
             <div className="card bg-white">
-              <div className="div card-header text-dark  bg-white">
+              <div className="div card-header text-dark bg-white">
                 <h3 className="text-center">SUMMARY</h3>
               </div>
               <div className="card-body bg-primary">
-                <div className="card-text text-dark">
+                <div className="card-text text-dark text-center">
                   {`${numTickets()} ticket${numTickets() > 1 ? "s" : ""} for:`}
                   {this.state.itemsBought.map((item, idx) => (
                     <ul className="list-group" key={idx}>
-                      <li className="list-group-item">{item.title}</li>
+                      <li className="list-group-item text-center">{item.title}</li>
                     </ul>
                   ))}
                 </div>
-                <div className="card-text text-dark">TOTAL</div>
-                <div className="card-text text-dark">
-                  {`$ ${this.superscript()[0]}`}
-                  <sup>{this.superscript()[1]}</sup>
+                <div className="card-text text-center my-2">
+                  <h3>TOTAL</h3>
+                </div>
+                <div className="card-text text-center">
+                  <h3>
+                    {`$ ${this.superscript()[0]}`}
+                    <sup>{this.superscript()[1]}</sup>
+                  </h3>
                 </div>
               </div>
             </div>
@@ -112,15 +115,15 @@ class Checkout extends Component {
                 <h3 className="text-center">CARD DETAIL</h3>
               </div>
               <div className="card-body">
-                  <div className="card-text">
+                <div className="card-text">
                   <Elements stripe={stripePromise}>
-                        <CheckoutForm
-                          amount={this.state.total}
-                          history={this.props.history}
-                          items={this.state.itemsBought}
-                        />
-                      </Elements>
-                  </div>
+                    <CheckoutForm
+                      amount={this.state.total}
+                      history={this.props.history}
+                      items={this.state.itemsBought}
+                    />
+                  </Elements>
+                </div>
               </div>
             </div>
           </div>

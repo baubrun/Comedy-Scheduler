@@ -7,7 +7,9 @@ import {EMPTIED_CART} from "../actions/actionTypes"
 const cartReducer = (state = [], action) => {
     switch (action.type) {
         case ADDED_TO_CART:
-            return [...state, action.payload]
+            const index = state.findIndex(i => i._id === action.payload._id)
+            if (index === -1) return [...state, action.payload]
+            return state
         case GOT_CART:
             return [...state]
         case DELETED_FROM_CART:

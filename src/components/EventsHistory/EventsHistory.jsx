@@ -51,8 +51,7 @@ export const EventsHistory = (props) => {
                   <div className="row no-gutters">
                     <div className="col-12 col-md-4">
                       <img
-                        id="history-card-img"
-                        className="card-img mx-3"
+                        className="card-img mx-3 img-event"
                         src={`../../${event.image}`}
                         alt=""
                       />{" "}

@@ -1,0 +1,32 @@
+.dropdown {
+    position: relative;
+
+}
+
+.dropdown img {
+    opacity: 0.7;
+
+}
+
+.dropdown img:hover {
+    opacity: 1;
+}
+
+.dropdown-content {
+    background-color: black;
+    border-radius: 5px;
+    display: none;
+    margin-top: -6px;
+    padding: 10px;
+    z-index: 100;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+.dropdown-content li {
+    list-style: none; 
+}
+

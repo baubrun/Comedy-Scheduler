@@ -1,28 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "./Dropdown.css";
 
 const Dropdown = (props) => {
   return (
-    <div className="dropdown">
-      <button
-        className="btn btn-default dropdown-toggle"
-        type="button"
-        id="dropdownMenu"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-        <img src="menu-grid-50.png" alt="" />
-      </button>
-      <div className="dropdown-menu" aria-labelledby="dropdownMenu">
-        <Link className="dropdown-item" to="/profile">
-          PROFILE
+    <div className="dropdown ">
+      <img src="menu-grid-50.png" alt="" />
+      <div className="dropdown-content">
+        <Link to="/profile">
+          <li>PROFILE</li>{" "}
         </Link>
-        <Link className="dropdown-item" to="/events">
-          EVENTS
+        <Link to="/events">
+          <li>EVENTS</li>{" "}
         </Link>
-        <Link className="dropdown-item" to="/" onClick={props.logout}>
-          LOGOUT
+        <Link to="/" onClick={props.logout}>
+          <li>LOGOUT</li>
         </Link>
       </div>
     </div>

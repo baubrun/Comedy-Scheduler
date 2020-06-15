@@ -186,7 +186,7 @@ class Events extends Component {
               />
             </div>
         </div>
-        <div className="d-md-flex"
+        <div className="d-md-flex flex-wrap justify-content-center"
          id="events-body">{this.showEvents()}</div>
       </div>
     );
