@@ -1,6 +1,7 @@
 import axios from "axios"
 
-let herokuPrefix = "https://bb-cm-hub.herokuapp.com" 
+// let herokuPrefix = "https://b-c-hub.herokuapp.com" 
+let herokuPrefix = "" 
 
 
 export const goToEndpoint = (str, props) => props.history.push(herokuPrefix + str);
