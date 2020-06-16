@@ -8,7 +8,7 @@
 
 
 #tickets-btn {
-  left: 250px;
+  left: 150px;
   position: absolute;
   top: 150px;
   z-index: 1000;
@@ -16,3 +16,14 @@
 
 
 /*# sourceMappingURL=Homepage.css.map */
+
+
+@media only screen and (max-width: 480px) {
+
+  #home-img {
+    height: 100vh;
+    object-fit: cover;
+  }
+
+
+}

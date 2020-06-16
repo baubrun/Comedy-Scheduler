@@ -4,7 +4,6 @@ import { addToCartAction } from "../../actions/actions";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import "./EventDetail.css";
-import { Header } from "../Header";
 import { Button } from "../Button";
 import { Nav } from "../Nav";
 
@@ -31,7 +30,7 @@ const EventDetail = (props) => {
     <>
       <Nav text="EVENTS" type="secondary" loc="events"/>
       <div id="event-detail-body" className="row bg-dark">
-        <div className="col-5 offset-2 mt-5 img-detail">
+        <div className="col-12 col-md-5 offset-2 mt-5 img-detail">
           <img
             id="performer-img-detail"
             className="img-detail "
@@ -39,7 +38,7 @@ const EventDetail = (props) => {
             alt=""
           />
         </div>
-        <div className="col-5 mt-5">
+        <div className="col-12 col-md-5 mt-5">
           <ul id="event-detail" className="list-group ">
             <li className="list-group-item ">
               <Link to="/cart">

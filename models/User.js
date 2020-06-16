@@ -19,6 +19,7 @@ const UserSchema = new Schema({
     events: {
         type: String
     },
+    dateAdded: {type: Date, default: Date.now}
 })
 
 module.exports = mongoose.model("User", UserSchema)

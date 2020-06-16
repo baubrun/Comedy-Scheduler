@@ -11,8 +11,7 @@ import {
 import { compareDates } from "../../Utils";
 import "./Events.css";
 import { Header } from "../Header";
-import {
-  fetchEvents} from "../../api"
+import { fetchEvents } from "../../api";
 
 class Events extends Component {
   constructor(props) {
@@ -46,38 +45,11 @@ class Events extends Component {
     this.props.getSeatsAvail(seats);
   };
 
-  // fetchEvents = async () => {
-  //   const response = await fetch("http://localhost:4000/events");
-  //   const body = await response.text();
-  //   const parsed = JSON.parse(body);
-  //   if (Array.isArray(parsed)) {
-  //     this.dispatchGetEvents(parsed);
-  //   }
-  // };
-
-  // fetchSeatsAvail = async () => {
-  //   const response = await fetch("http://localhost:4000/getSeatsAvail");
-  //   const body = await response.text();
-  //   const parsed = JSON.parse(body);
-  //   if (Array.isArray(parsed)) {
-  //     this.dispatchGetSeatsAvail(parsed);
-  //   }
-  // };
-
-  // fetchData = async () => {
-  //   await Promise.all([
-  //     this.fetchEvents(),
-  //     this.fetchSeatsAvail(),
-  //   ]).catch((err) => console.log(err));
-  // };
-
   fetchData = async () => {
-      try {
-        const data = await fetchEvents()
-        this.dispatchGetEvents(data)
-      } catch (error) {
-        
-      }
+    try {
+      const data = await fetchEvents();
+      this.dispatchGetEvents(data);
+    } catch (error) {}
   };
 
   eventsByVenue = () => {
@@ -115,7 +87,7 @@ class Events extends Component {
       (!this.state.listViewShow && this.state.events.length < 1) ||
       !this.state.venue
     ) {
-      return <h3>NO EVENTS</h3>;
+      return <h3 className="text-center">NO EVENTS</h3>;
     }
     if (this.state.listViewShow && this.state.events.length > 0) {
       return this.state.events
@@ -134,8 +106,8 @@ class Events extends Component {
     if (this.state.calendarViewShow)
       return (
         <div className="container-fluid">
-      <CalendarView events={this.state.events} />
-      </div>
+          <CalendarView events={this.state.events} />
+        </div>
       );
     else {
       return <h3>NO EVENTS</h3>;
@@ -169,25 +141,28 @@ class Events extends Component {
           </div>
         </div>
         <div className="row mb-4 events-toggler">
-            <div className="col text-right" >
-              <img
-                id="list-view"
-                onClick={this.toggleListView}
-                src="list-view-30px.png"
-                alt=""
-              />
-            </div>
-            <div className="col">
-              <img
-                id="calendar-view"
-                onClick={this.toggleCalendarView}
-                src="calendar2-view-30px.png"
-                alt=""
-              />
-            </div>
+          <div className="col text-right">
+            <img
+              id="list-view"
+              onClick={this.toggleListView}
+              src="list-view-30px.png"
+              alt="list-view"
+            />
+          </div>
+          <div className="col">
+            <img
+              id="calendar-view"
+              onClick={this.toggleCalendarView}
+              src="calendar2-view-30px.png"
+              alt="calendar-view"
+            />
+          </div>
         </div>
-        <div className="d-md-flex flex-wrap justify-content-center"
-         id="events-body">{this.showEvents()}</div>
+        <div
+          className="d-md-flex flex-wrap justify-content-center"
+          id="events-body">
+            {this.showEvents()}
+        </div>
       </div>
     );
   }

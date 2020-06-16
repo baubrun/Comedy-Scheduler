@@ -42,8 +42,7 @@ class Login extends Component {
       password: "",
     });
 
-    const response = await fetch("/login", 
-    { method: "POST", body: data });
+    const response = await fetch("/login", { method: "POST", body: data });
     const body = await response.text();
     const parser = JSON.parse(body);
 
@@ -65,25 +64,33 @@ class Login extends Component {
   render() {
     return (
       <div id="login-page" className="">
-        <Header text="" type="secondary" />
 
         <div className="container my-5 ">
           <div className="row justify-content-center">
             <div className="col-12 col-md-8">
               <form onSubmit={this.handleSubmit}>
-               
-
-                <div id="login-card" className="card border-primary border-0 mt-5">
+                <div
+                  id="login-card"
+                  className="card border-primary border-0 mt-5"
+                >
                   <div className="card-header p-0">
                     <div className="bg-primary text-white text-center py-2">
                       <h3>
-                      <i className="fas fa-user-circle fa-2x"></i> Login
+                        <i className="fas fa-user-circle fa-2x"></i> Login
                       </h3>
                     </div>
                   </div>
 
+                  <div onClick={this.handleCloseErrors} style={{cursor: "pointer"}}>
+                      {this.state.errors.map((err, idx) => {
+                          return (
+                            <div className="bg-danger text-light text-center py-2" key={idx} id="errors">
+                              {err.msg}
+                            </div>)
+                        })}
+                  </div>
+
                   <div className="card-body border-primary p-3">
-                    
                     <div className="form-group">
                       <div className="input-group mb-2 p">
                         <div className="input-group-prepend">
@@ -92,12 +99,12 @@ class Login extends Component {
                           </div>
                         </div>
                         <FormInput
-                              name="username"
-                              onChange={this.handleChange}
-                              placeholder="Username"
-                              type="text"
-                              value={this.state.username}
-                            />
+                          name="username"
+                          onChange={this.handleChange}
+                          placeholder="Username"
+                          type="text"
+                          value={this.state.username}
+                        />
                       </div>
                     </div>
 
@@ -109,19 +116,27 @@ class Login extends Component {
                           </div>
                         </div>
                         <FormInput
-                              name="password"
-                              onChange={this.handleChange}
-                              placeholder="Password"
-                              type="text"
-                              value={this.state.password}
-                            />
+                          name="password"
+                          onChange={this.handleChange}
+                          placeholder="Password"
+                          type="text"
+                          value={this.state.password}
+                        />
                       </div>
                     </div>
 
                     <div className="text-center">
-                      <Button color="primary btn-block rounded-0" text="login" type="submit"/>
+                      <Button
+                        color="primary btn-block rounded-0"
+                        text="login"
+                        type="submit"
+                      />
                     </div>
-                    <div className="text-white"><Link to="/register">Register Here.</Link></div>
+                    <div>
+                      <Link className="text-white font-weight-bold" to="/register">
+                        Register Here.
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </form>
@@ -140,4 +155,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(null, mapDispatchToProps)(Login);
-

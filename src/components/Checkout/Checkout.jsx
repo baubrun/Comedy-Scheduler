@@ -80,7 +80,7 @@ class Checkout extends Component {
 
     return (
       <div id="checkout" className="container-fluid bg-dark">
-        <Header text="CHECKOUT" type="text-light text-center" />
+        <Header text="CHECKOUT" type="secondary text-light text-center mb-3" />
         <div className="row">
           <div className="col-12 col-md-6">
             <div className="card bg-white">
@@ -140,45 +140,3 @@ const mapStateToProps = (state) => {
 };
 export default connect(mapStateToProps)(Checkout);
 
-/*
-<div className="checkout-body">
-{this.props.checkout === []
-  ? this.props.history.push("/events")
-  : !this.props.checkedOut && (
-      <>
-        <div className="checkout-summary">
-          <div>
-            <h2>SUMMARY</h2>
-          </div>
-          <div  className="checkout-summary-items">
-            {`${numTickets()} ticket${
-              numTickets() > 1 ? "s" : ""
-            } for:`}
-            {this.state.itemsBought.map((item, idx) => (
-              <ul key={idx}>
-                <li>{item.title}</li>
-              </ul>
-            ))}
-          </div>
-          <div className="checkout-summary-total-amount">
-            <div className="checkout-summary-total">TOTAL </div>
-            <div className="checkout-summary-amount"> 
-              {`$ ${this.superscript()[0]}`}<sup>{this.superscript()[1]}</sup>
-            </div>
-          </div>
-        </div>
-
-        <div className="card-detail">
-          <div>
-            <Elements stripe={stripePromise}>
-              <CheckoutForm
-                amount={this.state.total}
-                history={this.props.history}
-                items={this.state.itemsBought}
-              />
-            </Elements>
-          </div>
-        </div>
-      </>
-    )}
-</div> */

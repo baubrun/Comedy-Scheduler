@@ -17,7 +17,7 @@ const HomePage = () => {
         </div>
       </div>
       <div className="row position-relative">
-        <div className="col">
+        <div className="col-12 col-md-4">
           <Link
             id="tickets-btn"
             className="btn btn-secondary btn-lg font-weight-bolder"
@@ -28,21 +28,15 @@ const HomePage = () => {
           </Link>
         </div>
 
-        <div className="col">
+        <div className="col-12 col-md-4">
           <Link id="host-btn" 
           className="btn btn-primary btn-lg font-weight-bolder" 
           role="button" 
           to="/login">
-            HOST AN EVENT
+            HOST EVENTS
           </Link>
         </div>
-        {/* <div className="row"> */}
-          {/* <div className="col"> */}
-            <img className="img-fluid" src="club-2.jpg" alt="club" />
-            {/* <div className="home-img"></div> */}
-
-          {/* </div> */}
-        {/* </div> */}
+            <img id="home-img" className="img-fluid" src="club-2.jpg" alt="club" />
       </div>
     </div>
   );

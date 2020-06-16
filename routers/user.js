@@ -79,7 +79,7 @@ router.post("/register", upload.none(), async (req, res) => {
         username: username
     }, async (err, user) => {
         if (err) {
-            return res.status(400).json({
+            return res.json({
                 success: false
             })
         }
@@ -104,13 +104,13 @@ router.post("/register", upload.none(), async (req, res) => {
                 })
                 await newUser.save()
 
-                return res.status(200).json({
+                return res.json({
                     success: true,
                     hostId: hostId
                 })
             } catch (error) {
                 console.log(error)
-                return res.status(400).json({
+                return res.json({
                     success: false
                 })
             }

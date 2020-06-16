@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { logInAction } from "../../actions/actions";
+import { Header } from "../Header";
+import { Button } from "../Button";
+import { Link } from "react-router-dom";
+import { FormInput } from "../FormInput";
 
 class Register extends Component {
   constructor(props) {
@@ -11,26 +15,25 @@ class Register extends Component {
       password: "",
       email: "",
       hostId: "",
-      errors: []
+      errors: [],
     };
   }
 
-  dispatchLogin = hostId => {
-    this.props.loginUser(hostId)
-  }
+  dispatchLogin = (hostId) => {
+    this.props.loginUser(hostId);
+  };
 
-
-  handleChange = event => {
+  handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     this.setState({ [name]: value });
   };
 
   handleCancel = () => {
-    this.props.history.push("/")
-  }
+    this.props.history.push("/");
+  };
 
-  handleSubmit = async event => {
+  handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData();
     data.append("username", this.state.username);
@@ -41,108 +44,171 @@ class Register extends Component {
       username: "",
       password: "",
       email: "",
-      hostId: ""
+      hostId: "",
     });
     const response = await fetch("/register", { method: "POST", body: data });
     const body = await response.text();
     const parser = JSON.parse(body);
     if (parser.success) {
-      this.dispatchLogin(parser.hostId)
+      this.dispatchLogin(parser.hostId);
       this.props.history.push("/profile");
     }
-    if (Array.isArray(parser)){
-      this.setState({errors: parser})
+    else {
+      this.setState({ errors: parser });
     }
   };
 
   handleCloseErrors = () => {
-    this.setState({errors: []})
-  }
-
+    this.setState({ errors: [] });
+  };
 
   render() {
     return (
-      <div className="modal register">
-        <form className="register-flex-container" onSubmit={this.handleSubmit}>
-          <div className="home-header">
-            <div className="home-title">
-              <h1>BIENVENUE TO THE COMEDY HUB</h1>
-              <h3>Please register to host events.</h3>
-            </div>
-          </div>
-          <div className="register-form-container">
-          {this.state.errors.map((err, idx) => {
-              return (
-                <div key={idx} id="errors">
-                  {err.msg}
-                  <span
-                    id="close-btn"
-                    onClick={this.handleCloseErrors}
-                  >
-                    &times;
-                  </span>
+      <>
+        <Header text="BIENVENUE TO THE COMEDY HUB" type="dark" />
+        <div className="container ">
+          <div className="row justify-content-center">
+            <div className="col-12 col-md-8">
+              <form onSubmit={this.handleSubmit}>
+                <div
+                  id="login-card"
+                  className="card border-secondary border-0 mt-5"
+                >
+                  <div className="card-header p-0">
+                    <div className="bg-secondary text-white text-center py-2">
+                      <h3>
+                        <i className="fas fa-user-circle fa-2x"></i> Register
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div onClick={this.handleCloseErrors} style={{cursor: "pointer"}}>
+                      {this.state.errors.map((err, idx) => {
+                          return (
+                            <div className="bg-danger text-light text-center py-2" key={idx} id="errors">
+                              {err.msg}
+                            </div>)
+                        })}
+                  </div>
+
+
+                  <div className="card-body border-secondary p-3">
+                    <div className="form-group">
+                      <div className="input-group mb-2 p">
+                        <div className="input-group-prepend">
+                          <div className="input-group-text">
+                            <i className="fa fa-user text-secondary"></i>
+                          </div>
+                        </div>
+                        <FormInput
+                          name="username"
+                          onChange={this.handleChange}
+                          placeholder="Username"
+                          type="text"
+                          value={this.state.username}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group">
+                      <div className="input-group mb-2">
+                        <div className="input-group-prepend">
+                          <div className="input-group-text">
+                            <i className="fa fa-key text-secondary"></i>
+                          </div>
+                        </div>
+                        <FormInput
+                          name="password"
+                          onChange={this.handleChange}
+                          placeholder="Password"
+                          type="text"
+                          value={this.state.password}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group">
+                      <div className="input-group mb-2">
+                        <div className="input-group-prepend">
+                          <div className="input-group-text">
+                            <i className="fa fa-envelope text-secondary"></i>
+                          </div>
+                        </div>
+                        <FormInput
+                          type="email"
+                          placeholder="Email"
+                          name="email"
+                          value={this.state.email}
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                    </div>
+
+                    <label
+                      className="text-white font-weight-bold my-2"
+                      htmlFor="host"
+                    >
+                      Choose a host name
+                    </label>
+
+                    <div className="form-group">
+                      <div className="input-group mb-2">
+                        <div className="input-group-prepend">
+                          <div className="input-group-text">
+                            <i className="fa fa-portrait text-secondary"></i>
+                          </div>
+                        </div>
+                        <FormInput
+                          id="host"
+                          type="text"
+                          name="hostId"
+                          placeholder="Host Name"
+                          onChange={this.handleChange}
+                          value={this.state.hostId}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="text-center">
+                      <Button
+                        color="secondary btn-block rounded-0"
+                        text="REGISTER"
+                        type="submit"
+                        onClick={this.handleSubmit}
+                      />
+                    </div>
+                    <div>
+                    <div className="text-center my-3">
+                      <Button
+                        color="danger btn-block rounded-0"
+                        text="CANCEL"
+                        type="submit"
+                        onClick={this.handleCancel}
+                      />
+                    </div>
+                    <Link
+                        className="text-white font-weight-bold my-2"
+                        to="/login"
+                      >
+                        Already registered? Login.
+                      </Link>
+                    </div>
+
+                  </div>
                 </div>
-              );
-            })}
-            <div>
-              <img className="user-icon" src="user_icon_gros.png" alt=""></img>
+              </form>
             </div>
           </div>
-          <div className="container">
-            <label htmlFor="username">
-              <b>Username</b>
-            </label>
-            <input
-              type="text"
-              placeholder="Username"
-              name="username"
-              value={this.state.username}
-              onChange={this.handleChange}
-            />
-            <label htmlFor="password">
-              <b>Password</b>
-            </label>
-            <input
-              type="password"
-              placeholder="Password"
-              name="password"
-              value={this.state.password}
-              onChange={this.handleChange}
-            />
-            <label htmlFor="email">
-              <b>Email</b>
-            </label>
-            <input
-              type="email"
-              placeholder="Email"
-              name="email"
-              value={this.state.email}
-              onChange={this.handleChange}
-            />
-            <label htmlFor="host">
-              <b>What is your host name?</b>
-            </label>
-            <input
-              id="host"
-              type="text"
-              name="hostId"              
-              placeholder="Host Name"
-              onChange={this.handleChange}
-            />
-            <button className="register-btn" type="submit">REGISTER</button>
-            <button className="cancel-btn" type="submit" onClick={this.handleCancel}>CANCEL</button>
-          </div>
-        </form>
-      </div>
+        </div>
+      </>
     );
   }
 }
 
-
-const mapDispatchToProps = dispatch => {
-  return{
-    loginUser: hostId => dispatch(logInAction(hostId))
-  }
-}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loginUser: (hostId) => dispatch(logInAction(hostId)),
+  };
+};
 
 export default connect(null, mapDispatchToProps)(Register);

@@ -50,13 +50,13 @@ const NavBar = (props) => {
             {props.loggedIn ? `Salut ${props.hostId}!` : ""}
           </div>
 
-          {/* <div className="cart"> */}
-          <div>
+          <div className="mx-3">
             <Link to="/cart">
-              <img className="mr-1" src="ticket-blk-white.png" alt="CART"></img>
+              <img 
+              src="ticket-blk-white.png" 
+              alt="CART" />
               {props.cart.length > 0 ? (
-                // <span className="cart-length">{props.cart.length}</span>
-                <span>{props.cart.length}</span>
+                <span className="bg-secondary text-light cart-length">{props.cart.length}</span>
               ) : (
                 ""
               )}

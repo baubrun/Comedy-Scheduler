@@ -76,7 +76,7 @@ class RenderCart extends Component {
         <div className="cart-body">
           {this.state.cartItems.length > 0 ? (
             <>
-              <div className="row">
+              <div className="row d-flex">
                 <div className="col-12 mx-auto">
                   <table id="tickets-table" className="table mt-3">
                     <thead>
@@ -154,7 +154,7 @@ class RenderCart extends Component {
             </>
           ) : (
             <div>
-              <h1>Empty</h1>
+              <h1 className="text-center">Empty</h1>
             </div>
           )}
         </div>
