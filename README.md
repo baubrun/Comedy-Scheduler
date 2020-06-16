@@ -1,7 +1,3 @@
-### I am Currently refactoring. When completed, I will deploy.
-
-Please view the video link until deployed.
-
 
 ## A web portal for 3 comedy clubs. 
 
@@ -11,7 +7,7 @@ Registered users can CRUD event information along with photos and social media l
 
 Technologies: Express.js, Mongo DB, Node.js, React, Redux, Stripe
 
-Demo: https://youtu.be/1ewU3d966ww
+Demo: https://b-cc-hub.herokuapp.com
 
 
 
