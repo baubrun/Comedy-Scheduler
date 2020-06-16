@@ -8,6 +8,7 @@ const validateLoginForm = require("../validators").validateLoginForm
 const validateRegisterForm = require("../validators").validateRegisterForm
 const multer = require("multer")
 const upload = multer()
+let herokuPrefix =  "https://comedy-hub-bb.herokuapp.com/"
 
 
 
@@ -17,7 +18,7 @@ const upload = multer()
 POST
 ===========================*/
 
-router.post("/login", upload.none(), async (req, res) => {
+router.post(herokuPrefix + "/login", upload.none(), async (req, res) => {
     const givenPassword = req.body.password
     const givenUsername = req.body.username
 
@@ -62,7 +63,7 @@ router.post("/login", upload.none(), async (req, res) => {
     })
 })
 
-router.post("/register", upload.none(), async (req, res) => {
+router.post(herokuPrefix + "/register", upload.none(), async (req, res) => {
     const {
         username,
         password,
