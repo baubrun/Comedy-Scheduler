@@ -4,7 +4,8 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { connect } from "react-redux";
 import "moment/locale/en-gb";
-import "./CalendarView.css"
+import "./CalendarView.css";
+import { dataRequestPost } from "../../api";
 
 const allViews = Object.keys(Views).map((k) => Views[k]);
 const localizer = momentLocalizer(moment);
@@ -112,23 +113,6 @@ class CalendarView extends Component {
     this.props.loadData();
   };
 
-  fetchAddData = async (data) => {
-    const response = await fetch("/addEvent", { method: "POST", body: data });
-    const body = await response.text();
-    const parser = JSON.parse(body);
-    return parser;
-  };
-
-  fetchSeatsAvail = async (data) => {
-    const response = await fetch("/setVenueSeating", {
-      method: "POST",
-      body: data,
-    });
-    const body = await response.text();
-    const parser = JSON.parse(body);
-    return parser;
-  };
-
   storeCalendarEvent = async () => {
     const data = new FormData();
     data.append("title", this.state.title);
@@ -145,14 +129,15 @@ class CalendarView extends Component {
     data.append("instagram", this.state.instagram);
     data.append("twitter", this.state.twitter);
 
-    await Promise.all([
-        fetch("/addEvent", { method: "POST", body: data }),
-        // fetch("/setVenueSeating", { method: "POST", body: data })
-      ]).catch( err => console.log(err));
+    try {
+      await dataRequestPost(data);
+    } catch (error) {
+      console.log(error);
     }
+  };
 
   handleSelect = ({ start, end }) => {
-   if (this.state.venue === "") {
+    if (this.state.venue === "") {
       return;
     }
     const title = window.prompt("New event title?");

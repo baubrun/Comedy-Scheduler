@@ -3,7 +3,6 @@ const Events = require("../models/Events")
 const router = express.Router()
 const multer = require("multer")
 const sharp = require("sharp")
-let herokuPrefix =  "https://comedy-hub-bb.herokuapp.com/"
 
 const fileFilter = (req, file, cb) => {
     if (file.mimetype.startsWith("image")) {
@@ -38,7 +37,7 @@ GET
 
 
 
-router.get(herokuPrefix +"/events", async (req, res) => {
+router.get("/events", async (req, res) => {
     try {
         const events = await Events.find({});
         return res.json(events)

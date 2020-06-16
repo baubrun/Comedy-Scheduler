@@ -29,12 +29,22 @@ const options = {
 
 
 const mongoose = require('mongoose');
-mongoose.connect(process.env.DB_URI, options);
+mongoose.connect(process.env.MONGODB_URI, options);
 const db = mongoose.connection
 db.on("error", err => console.error(err))
 db.once("open", () => {
     console.log("\nMongoose connected to DB!\n")
 })
+
+
+/*================
+test
+===================*/
+
+app.get("/server", (req, res) => {
+    res.json("server running...")
+})
+
 
 
 /*================

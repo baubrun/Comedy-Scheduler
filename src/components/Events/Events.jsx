@@ -11,7 +11,7 @@ import {
 import { compareDates } from "../../Utils";
 import "./Events.css";
 import { Header } from "../Header";
-import { fetchEvents } from "../../api";
+import { dataRequestGet } from "../../api";
 
 class Events extends Component {
   constructor(props) {
@@ -47,9 +47,11 @@ class Events extends Component {
 
   fetchData = async () => {
     try {
-      const data = await fetchEvents();
+      const data = await dataRequestGet("/events")
       this.dispatchGetEvents(data);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   eventsByVenue = () => {

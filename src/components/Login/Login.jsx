@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { logInAction } from "../../actions/actions";
 import { FormInput } from "../FormInput";
 import { Button } from "../Button";
-import { Header } from "../Header";
 import "./Login.css";
 import { Link } from "react-router-dom";
+import { dataRequestPost, goToEndpoint } from "../../api";
 
 class Login extends Component {
   constructor(props) {
@@ -29,7 +29,7 @@ class Login extends Component {
   };
 
   handleRegister = () => {
-    this.props.history.push("/register");
+    goToEndpoint("/register", this.props) 
   };
 
   handleSubmit = async (event) => {
@@ -42,17 +42,13 @@ class Login extends Component {
       password: "",
     });
 
-    const response = await fetch("/login", { method: "POST", body: data });
-    const body = await response.text();
-    const parser = JSON.parse(body);
-
-    if (parser.success) {
-      this.dispatchLogin(parser.hostId);
-      this.props.history.push("/profile");
+    const lg = await dataRequestPost("/login", data)
+    if (lg.success) {
+      this.dispatchLogin(lg.hostId);
+      goToEndpoint("/profile", this.props)
       return;
-    }
-    if (Array.isArray(parser)) {
-      this.setState({ errors: parser });
+    }else {
+      this.setState({ errors: lg });
       return;
     }
   };

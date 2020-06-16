@@ -15,17 +15,7 @@ import {
 import { Button } from "../Button";
 import { Header } from "../Header";
 import "./Profile.css";
-import { fetchEvents, delEvents } from "../../api";
-
-// const del = document.getElementById("delete-event-btn")
-// const upt = document.getElementById("update-event-btn")
-
-// const hideButtons = () => {
-//   // del.style.display = "none"
-//   del.disabled = true
-//   // upt.style.display = "none"
-//   upt.disabled = true
-// }
+import { dataRequestGet, dataRequestPost } from "../../api";
 
 
 
@@ -51,7 +41,7 @@ class Profile extends Component {
     this.props.loadingData();
 
     try {
-      const data = await fetchEvents();
+      const data = await dataRequestGet("/events");
       this.dispatchGetEvents(data);
       setTimeout(() => {
         this.dispatchLoaded();
@@ -99,10 +89,9 @@ class Profile extends Component {
       if (confirm) {
         let dataEvents = new FormData();
         dataEvents.append("_id", this.state.selectedOption);
-        console.log("this.state.selectedOption", this.state.selectedOption);
         
         try {
-          await delEvents(dataEvents);
+          await dataRequestPost("/deleteEvents", dataEvents);
           this.dispatchLoading();
         } catch (error) {
           console.log(error);

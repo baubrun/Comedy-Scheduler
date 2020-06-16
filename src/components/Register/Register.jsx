@@ -5,7 +5,7 @@ import { Header } from "../Header";
 import { Button } from "../Button";
 import { Link } from "react-router-dom";
 import { FormInput } from "../FormInput";
-
+import { dataRequestPost, goToEndpoint } from "../../api";
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -46,15 +46,14 @@ class Register extends Component {
       email: "",
       hostId: "",
     });
-    const response = await fetch("/register", { method: "POST", body: data });
-    const body = await response.text();
-    const parser = JSON.parse(body);
-    if (parser.success) {
-      this.dispatchLogin(parser.hostId);
-      this.props.history.push("/profile");
+
+    const rg = dataRequestPost("/register", data)
+    if (rg.success) {
+      this.dispatchLogin(rg.hostId);
+      goToEndpoint("/profile", this.props);
     }
     else {
-      this.setState({ errors: parser });
+      this.setState({ errors: rg });
     }
   };
 

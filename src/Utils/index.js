@@ -31,7 +31,6 @@ export const timeToNumber = (time) => {
   
   
 export const timeFixed15 = (givenTime) => {
-    console.log("givenTime :", givenTime);
     const [givenHour, givenMinute] = timeToNumber(givenTime);
     let hour = givenHour;
     let minute = 0;

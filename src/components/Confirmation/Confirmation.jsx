@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { confirmCheckoutAction, emptyCartAction } from "../../actions/actions";
 import "./Confirmation.css"
 import {Header} from "../Header"
+import { dataRequestGet } from "../../api";
 
 
 class Confirmation extends Component {
@@ -25,35 +26,22 @@ class Confirmation extends Component {
     });
   };
 
-  updateSeating = async () => {
-    const data = new FormData();
-    data.append("seatsTaken", JSON.stringify(this.seatsTaken()));
-    await fetch("/updateSeatsAvail", {
-      method: "POST",
-      body: data,
-    });
-  };
 
-  componentDidMount() {
-    this.updateSeating();
-    this.fetchConfirmation();
+  async componentDidMount() {
+    const cf = await dataRequestGet("/orderNum")
+    if (cf.success) {
+      this.setState({
+        orderNum: cf.order,
+        total: cf.amount,
+      });
+    }
+
   }
 
   handlePrint = () => {
     window.print();
   };
 
-  fetchConfirmation = async () => {
-    const response = await fetch("/orderNum");
-    const body = await response.text();
-    const parser = JSON.parse(body);
-    if (parser.success) {
-      this.setState({
-        orderNum: parser.order,
-        total: parser.amount,
-      });
-    }
-  };
 
   render() {
     return (

@@ -9,9 +9,10 @@ import {
 } from "../../actions/actions";
 import { connect } from "react-redux";
 import { orderNumber, formattedAmount } from "../../Utils";
-import {FormInput} from "../FormInput";
-import {Button} from "../Button";
-import "./CheckoutForm.css"
+import { FormInput } from "../FormInput";
+import { Button } from "../Button";
+import "./CheckoutForm.css";
+import { dataRequestPost, goToEndpoint } from "../../api";
 
 const CARD_OPTIONS = {
   style: {
@@ -71,17 +72,15 @@ const CheckoutForm = (props) => {
     data.append("amount", amount);
     data.append("itemsBought", JSON.stringify(items));
     data.append("order", order);
-    const response = await fetch("/checkout", {
-      method: "POST",
-      body: data,
-    });
-    const body = await response.text();
-    const parser = JSON.parse(body);
-    if (parser.success) {
+
+    const ckout = await dataRequestPost("/checkout", data);
+    console.log(ckout);
+    
+    if (ckout.success) {
       dispatchEmptyCart();
-      props.history.push("/confirmation");
+      goToEndpoint("/confirmation", props);
     } else {
-      console.log(parser.msg);
+      console.log(ckout.msg);
     }
   };
 
@@ -92,20 +91,13 @@ const CheckoutForm = (props) => {
     stripeData.append("order", orderNum);
     stripeData.append("customer", name);
 
-    const response = await fetch("/charge", {
-      method: "POST",
-      body: stripeData,
-    });
-    const body = await response.text();
-    const parser = JSON.parse(body);
+    const chr = await dataRequestPost("/charge", stripeData);
     dispatchLoaded();
-    if (!parser.success) {
-      setPmtErrors([parser.msg]);
+    if (!chr.success) {
+      setPmtErrors([chr.msg]);
     } else {
       storePay(order);
     }
-    
-
   };
 
   const handleSubmit = async (event) => {
@@ -130,7 +122,6 @@ const CheckoutForm = (props) => {
   return (
     <form className="form-group" onSubmit={handleSubmit}>
       <fieldset>
- 
         <FormInput
           className=""
           type="text"
@@ -149,26 +140,32 @@ const CheckoutForm = (props) => {
           value={email}
         />
       </fieldset>
-      <fieldset  
-      className="form-control">{<CardElement options={CARD_OPTIONS} />}</fieldset>
+      <fieldset className="form-control">
+        {<CardElement options={CARD_OPTIONS} />}
+      </fieldset>
 
       <div className="stripe-error-msg bg-danger text-light my-2 text-center">
         {pmtErrors.map((err, idx) => {
           return (
-            <div key={idx} className="errors" onClick={handleCloseErrors} style={{cursor: "pointer"}}>
+            <div
+              key={idx}
+              className="errors"
+              onClick={handleCloseErrors}
+              style={{ cursor: "pointer" }}
+            >
               {err}
             </div>
           );
         })}
       </div>
-      <Button 
-      color="dark text-white my-3" 
-      size="block"
-      text="PURCHASE"
-      type="submit" disabled={!stripe || props.loading}
-       loading={props.loading}
-       > 
-      </Button>
+      <Button
+        color="dark text-white my-3"
+        size="block"
+        text="PURCHASE"
+        type="submit"
+        disabled={!stripe || props.loading}
+        loading={props.loading}
+      ></Button>
     </form>
   );
 };

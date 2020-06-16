@@ -6,13 +6,12 @@ const upload = multer()
 const stripe = require("stripe")(process.env.STRIPE_SECRET)
 let orderNum = ""
 let total = ""
-let herokuPrefix =  "https://comedy-hub-bb.herokuapp.com/"
 
 
-
-router.post(herokuPrefix +"/checkout", upload.none(), async (req, res) => {
+router.post("/checkout", upload.none(), async (req, res) => {
+    console.log("in checkout server")
     const {amount, itemsBought, order } = req.body
-
+    console.log('req.body checkout server', req.body)
     try {
         const purchase = Purchases({
             amount: amount,
@@ -34,7 +33,7 @@ router.post(herokuPrefix +"/checkout", upload.none(), async (req, res) => {
 })
 
 
-router.post(herokuPrefix +"/charge", upload.none(), async (req,res) => {
+router.post("/charge", upload.none(), async (req,res) => {
     const {
         id,
         amount,
@@ -69,7 +68,7 @@ router.post(herokuPrefix +"/charge", upload.none(), async (req,res) => {
 })
 
 
-router.get(herokuPrefix +"/orderNum", (req, res) => {
+router.get("/orderNum", (req, res) => {
     return res.json({
         success: true,
         order: orderNum,

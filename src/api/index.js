@@ -1,25 +1,23 @@
 import axios from "axios"
 
-export const fetchEvents = async () => {
-    const resp = await axios.get("/events");
+let herokuPrefix = "" 
+
+
+export const goToEndpoint = (str, props) => props.history.push(herokuPrefix + str);
+
+export const dataRequestGet = async (url) => {
+    const resp = await axios.get(herokuPrefix + url);
     return resp.data
-};
+}
 
 
-export const delEvents = async (data) => {
-    await axios({
-            data,
-            url: "/deleteEvents",
-            method: "post"
-        }
-    ).catch(err => {
-        console.log("delEvents Util", err)
+export const dataRequestPost = async (url, data) => {
+    const response = await fetch(herokuPrefix + url, {
+        method: "POST",
+        body: data
     })
-
+    const body = await response.text()
+    const parser = JSON.parse(body);
+    return parser
 }
 
-
-
-export const fetchLogin = async (data) => {
-    const resp = await axios.post("/login")
-}
