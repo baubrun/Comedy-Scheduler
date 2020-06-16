@@ -1,6 +1,6 @@
 import axios from "axios"
 
-let herokuPrefix = "" 
+let herokuPrefix = "https://bb-cm-hub.herokuapp.com" 
 
 
 export const goToEndpoint = (str, props) => props.history.push(herokuPrefix + str);
@@ -17,6 +17,7 @@ export const dataRequestPost = async (url, data) => {
         body: data
     })
     const body = await response.text()
+    console.log(body)
     const parser = JSON.parse(body);
     return parser
 }

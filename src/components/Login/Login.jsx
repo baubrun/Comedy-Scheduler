@@ -48,7 +48,7 @@ class Login extends Component {
       goToEndpoint("/profile", this.props)
       return;
     }else {
-      this.setState({ errors: lg });
+      this.setState({ errors: lg.errors });
       return;
     }
   };

@@ -53,7 +53,7 @@ class Register extends Component {
       goToEndpoint("/profile", this.props);
     }
     else {
-      this.setState({ errors: rg });
+      this.setState({ errors: rg.errors });
     }
   };
 

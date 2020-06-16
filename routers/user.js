@@ -22,7 +22,7 @@ router.post("/login", upload.none(), async (req, res) => {
     const givenUsername = req.body.username
 
     const errors = validateLoginForm(givenUsername, givenPassword)
-    if (errors.length > 0) return res.json(errors)
+    if (errors.length > 0) return res.json({success: false, errors})
 
     await User.findOne({
         username: givenUsername

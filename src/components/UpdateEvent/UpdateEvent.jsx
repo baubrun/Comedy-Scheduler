@@ -99,7 +99,7 @@ class UpdateEvent extends Component {
     delDup.append("delDup", true);
 
     await Promise.all([
-      fetch("/setVenueSeating", { method: "POST", body: data }),
+      // fetch("/setVenueSeating", { method: "POST", body: data }),
       fetch("/updateEvent", { method: "POST", body: data }),
     ]).catch((err) => err);
 
