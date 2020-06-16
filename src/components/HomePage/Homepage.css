@@ -1,4 +1,18 @@
 #host-btn {
   color: white !important;
+  left: 150px;
+  position: absolute;
+  top: 350px;
+  z-index: 1000;
 }
+
+
+#tickets-btn {
+  left: 250px;
+  position: absolute;
+  top: 150px;
+  z-index: 1000;
+}
+
+
 /*# sourceMappingURL=Homepage.css.map */

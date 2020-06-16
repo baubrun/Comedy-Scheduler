@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import "./EventDetail.css";
 import { Header } from "../Header";
 import { Button } from "../Button";
+import { Nav } from "../Nav";
 
 const EventDetail = (props) => {
   
@@ -28,7 +29,7 @@ const EventDetail = (props) => {
 
   return (
     <>
-      <Header text="EVENTS" type="secondary" />
+      <Nav text="EVENTS" type="secondary" loc="events"/>
       <div id="event-detail-body" className="row bg-dark">
         <div className="col-5 offset-2 mt-5 img-detail">
           <img

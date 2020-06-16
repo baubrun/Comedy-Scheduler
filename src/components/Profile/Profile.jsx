@@ -55,8 +55,8 @@ class Profile extends Component {
       this.dispatchGetEvents(data);
       setTimeout(() => {
         this.dispatchLoaded();
-        // }, 2000);
-      }, 0);
+        }, 2000);
+      ;
       this.showEvents();
     } catch (error) {
       console.log(error);

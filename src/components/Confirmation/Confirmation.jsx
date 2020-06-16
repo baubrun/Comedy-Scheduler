@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { confirmCheckoutAction, emptyCartAction } from "../../actions/actions";
 import "./Confirmation.css"
+import {Header} from "../Header"
+
 
 class Confirmation extends Component {
   constructor(props) {
@@ -56,15 +58,13 @@ class Confirmation extends Component {
   render() {
     return (
       <>
-        <div className="confirmation-header">
-          <h1>CONFIRMATION</h1>
-        </div>
-        <div id="print" onClick={this.handlePrint}>
+        <Header text="CONFIRMATION" type="dark"/>
+        <div className="text-right m-1" id="print" onClick={this.handlePrint}>
           <img src="print-40.png" alt="" />
         </div>
 
-        <div className="confirmation-body">
-          <table className="confirm">
+        <div className="container-fluid">
+          <table className="table my-2">
             <thead>
               <tr>
                 <th>Event</th>
@@ -90,13 +90,11 @@ class Confirmation extends Component {
               })}
             </tbody>
           </table>
-          <div className="order-number">
-            <div>
-              <h2>Confirmation #: </h2> {this.state.orderNum}
-            </div>
+          <div className="text-center my-3">
+            <h4 >Confirmation #: </h4> {this.state.orderNum}
           </div>
-          <div className="order-total">
-            <h2>Total Paid: </h2> ${parseInt(this.state.total) / 100}
+          <div className="text-center my-3">
+            <h4 >Total Paid: </h4> ${(parseInt(this.state.total) / 100).toFixed(2)}
           </div>
         </div>
       </>

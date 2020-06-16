@@ -7,31 +7,24 @@ import Loader from "react-loader-spinner";
 import "./EventsHistory.css";
 import { Header } from "../Header";
 
-const seatingEmpty = null;
-
 export const EventsHistory = (props) => {
-  // const seatingLeft = (eventDate, seats, venue) => {
-  //   const seat = seats.find((i) => i.startDate === eventDate);
-  //   return !seat ? seatingEmpty === true : seat.venue[venue];
-  // };
-
   const loadingSize = 200;
   return (
-    <div className="">
+    <div className="container-fluid">
       <Header text="EVENTS HISTORY" type="secondary" />
 
-      <div className="">
-        <div className="col mx-auto">
-          {/* <Loader
+      <div>
+        <div className="d-flex justify-content-center">
+          <Loader
             type="Rings"
             color="rgba(224, 151, 33, 0.7)"
             height={loadingSize}
             width={loadingSize}
             visible={props.loading}
-          /> */}
+          />
         </div>
 
-        <div className="">
+        <div>
           {!props.loading &&
             (props.userEvents.length > 0 ? (
               props.userEvents.map((event, idx) => (
@@ -54,50 +47,86 @@ export const EventsHistory = (props) => {
                         className="card-img mx-3 img-event"
                         src={`../../${event.image}`}
                         alt=""
-                      />{" "}
+                      />
                     </div>
                     <div className="col-md-8">
                       <div className="card-body text-center">
                         <div className="card-text">
-                          <h5 className="text-primary" style={{display: "inline"}}>
-                            Date</h5> {moment(event.startDate).format("DD-MM-YYYY")}
+                          <h5
+                            className="text-primary"
+                            style={{ display: "inline" }}
+                          >
+                            Date
+                          </h5>{" "}
+                          {moment(event.startDate).format("DD-MM-YYYY")}
                         </div>
                         <div className="card-text">
-                          <h5 className="text-primary" style={{display: "inline"}}>
-                            Time</h5> {event.startTime}
+                          <h5
+                            className="text-primary"
+                            style={{ display: "inline" }}
+                          >
+                            Time
+                          </h5>{" "}
+                          {event.startTime}
                         </div>
                         <div className="card-text">
-                          <h5 className="text-primary" style={{display: "inline"}}>
-                            Venue</h5> {event.venue.split("_").join(" ")}
-                        </div>                        
-                        <div className="card-text">
-                          <h5 className="text-primary" style={{display: "inline"}}>
-                            Performer</h5> {event.performer}
+                          <h5
+                            className="text-primary"
+                            style={{ display: "inline" }}
+                          >
+                            Venue
+                          </h5>{" "}
+                          {event.venue.split("_").join(" ")}
                         </div>
                         <div className="card-text">
-                          <h5 className="text-primary" style={{display: "inline"}}>
-                            Price</h5> {event.price}
-                        </div>                        
+                          <h5
+                            className="text-primary"
+                            style={{ display: "inline" }}
+                          >
+                            Performer
+                          </h5>{" "}
+                          {event.performer}
+                        </div>
                         <div className="card-text">
-                          <h5 className="text-primary" style={{display: "inline"}}>
-                            Facebook </h5> {event.facebook}
-                        </div>                        
-                        
+                          <h5
+                            className="text-primary"
+                            style={{ display: "inline" }}
+                          >
+                            Price
+                          </h5>{" "}
+                          {event.price}
+                        </div>
                         <div className="card-text">
-                          <h5 className="text-primary" style={{display: "inline"}}>
-                            Instagram </h5> {event.instagram}
-                        </div> 
+                          <h5
+                            className="text-primary"
+                            style={{ display: "inline" }}
+                          >
+                            Facebook{" "}
+                          </h5>{" "}
+                          {event.facebook}
+                        </div>
 
                         <div className="card-text">
-                          <h5 className="text-primary" style={{display: "inline"}}>
-                            Twitter </h5> {event.twitter}
-                        </div> 
-                        <div className="form-check">
-                          <label
-                            className="form-check-label text-white"
-                            // htmlFor={`checkbox${event._id}`}
-                            style={{fontFamily: "Roboto", fontWeight: "bold", letterSpacing: "2px"}}
+                          <h5
+                            className="text-primary"
+                            style={{ display: "inline" }}
                           >
+                            Instagram{" "}
+                          </h5>{" "}
+                          {event.instagram}
+                        </div>
+
+                        <div className="card-text">
+                          <h5
+                            className="text-primary"
+                            style={{ display: "inline" }}
+                          >
+                            Twitter{" "}
+                          </h5>{" "}
+                          {event.twitter}
+                        </div>
+                        <div className="form-check">
+                          <label className="form-check-label text-white">
                             <input
                               className="check-form-input mr-2"
                               id={`checkbox${event._id}`}
@@ -105,7 +134,6 @@ export const EventsHistory = (props) => {
                               type="radio"
                               onChange={props.handleOptionChange}
                               value={event._id}
-                              
                             />
                             Delete / Update
                           </label>

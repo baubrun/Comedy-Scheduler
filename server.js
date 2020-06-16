@@ -3,10 +3,9 @@ const app = express()
 require("dotenv/config")
 const userRouter = require("./routers/user")
 const eventRouter = require("./routers/event")
+const purchaseRouter = require("./routers/purchase")
 const cors = require("cors")
 
-let orderNum = ""
-let total = ""
 /*=============
  Middleware 
  ==============*/
@@ -14,57 +13,11 @@ let total = ""
 
 app.use(userRouter)
 app.use(eventRouter)
+app.use(purchaseRouter)
 app.use(express.json())
 app.use("/", express.static("uploads"))
 app.use("/", express.static("build"))
 app.use(cors())
-
-/*===============
- Helper functions 
- ================*/
-// const deleteEmptySeating = async (startDate, req, res) => {
-//     await dbo.collection("seating").findOneAndDelete({
-//         "startDate": startDate,
-//         "venue": {
-//             $eq: {}
-//         }
-//     }, (err, result) => {
-//         if (err) {
-//             console.log(err)
-//         }
-//     })
-// }
-
-
-
-
-
-
-
-// const venueSeatingInit = venue => {
-//     switch (venue) {
-//         case "LE_FOU_FOU":
-//             return seatsPerVenue.LE_FOU_FOU
-//         case "JOKES_BLAGUES":
-//             return seatsPerVenue.JOKES_BLAGUES
-//         case "RIRE_NOW":
-//             return seatsPerVenue.RIRE_NOW
-//         default:
-//             return 0
-//     }
-// }
-
-
-// const deleteImg = result => {
-//     process.chdir("./uploads")
-
-//     fs.unlink(result.value.image, err => {
-//         if (err) {
-//             console.log("deleteImg:", err)
-//         }
-//     })
-// }
-
 
 
 

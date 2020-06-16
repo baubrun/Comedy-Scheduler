@@ -23,7 +23,6 @@ const NavBar = (props) => {
   return (
     <>
       <nav className="navbar bg-primary p-0 m-0">
-          {/* <div className="home-title"> */}
           <div>
             <h1>
               <Link
@@ -31,7 +30,7 @@ const NavBar = (props) => {
                 className="badge-primary font-weight-bolder"
                 to="/"
               >
-                <h3>LE COMEDY HUB</h3>
+                <h3 className="ml-1">LE COMEDY HUB</h3>
               </Link>
             </h1>
             {!props.loggedIn && currentPage !== "/login" ? (
@@ -54,7 +53,7 @@ const NavBar = (props) => {
           {/* <div className="cart"> */}
           <div>
             <Link to="/cart">
-              <img src="ticket-blk-white.png" alt="CART"></img>
+              <img className="mr-1" src="ticket-blk-white.png" alt="CART"></img>
               {props.cart.length > 0 ? (
                 // <span className="cart-length">{props.cart.length}</span>
                 <span>{props.cart.length}</span>

@@ -5,6 +5,7 @@ import { FormInput } from "../FormInput";
 import { Button } from "../Button";
 import { Header } from "../Header";
 import "./Login.css";
+import { Link } from "react-router-dom";
 
 class Login extends Component {
   constructor(props) {
@@ -120,26 +121,9 @@ class Login extends Component {
                     <div className="text-center">
                       <Button color="primary btn-block rounded-0" text="login" type="submit"/>
                     </div>
+                    <div className="text-white"><Link to="/register">Register Here.</Link></div>
                   </div>
                 </div>
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                
               </form>
             </div>
           </div>
